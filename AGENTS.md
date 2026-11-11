@@ -45,3 +45,6 @@ use the editor.
 - Keep region display ordering in the browser-safe region-order helper without changing progress calculations. Why: presentation ranking must not affect visit totals.
 - Store the optional display name through the existing auth user's metadata and keep logout in Profile. Why: personal presentation needs no new tables or authentication flow.
 - Diary date sorting uses the supplied visit date, otherwise the existing updated_at timestamp only for ordering, with a city-key tie-breaker; never display a fallback as a visit date. Why: the current schema has no visit creation timestamp and missing dates must not be invented.
+- Award badges only through protected database functions/triggers; keep badge_rules thresholds in parity with the browser-safe badge catalog. Why: clients cannot invent achievements, historical awards survive corrections, and graphics remain replaceable.
+- Use one identity-scoped badges query and root observer; invalidate after successful visit/media changes and clear on logout. Why: avoid repeated evaluations and keep collection/showcase consistent.
+- Save the whole featured-badge order atomically through the owner-scoped database function. Why: enforce three unique earned badges without partial replacement or cross-user writes.

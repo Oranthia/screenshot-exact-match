@@ -85,6 +85,7 @@ export function useSaveVisit(userId: string) {
       qc.setQueryData(["visits", userId], context?.previous ?? []);
     },
     onSuccess: (row) => {
+      qc.invalidateQueries({ queryKey: ["badges", userId] });
       qc.setQueryData<Visit[]>(["visits", userId], (old) => {
         const rest = (old ?? []).filter((x) => x.istat_code !== row.istat_code);
         return [row, ...rest];

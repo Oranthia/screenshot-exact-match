@@ -81,6 +81,8 @@
   --color-navy: var(--navy);
   --color-success: var(--success);
   --color-parchment: var(--parchment);
+  --color-badge-bronze: var(--badge-bronze);
+  --color-badge-silver: var(--badge-silver);
 }
 
 :root {
@@ -110,6 +112,8 @@
   --navy: oklch(0.3 0.07 258);
   --success: oklch(0.52 0.1 155);
   --parchment: oklch(0.95 0.025 85);
+  --badge-bronze: oklch(0.67 0.095 62);
+  --badge-silver: oklch(0.74 0.025 245);
   --chart-1: oklch(0.36 0.06 155);
   --chart-2: oklch(0.3 0.07 258);
   --chart-3: oklch(0.74 0.12 82);
@@ -173,6 +177,26 @@
 @utility crest-locked { filter: grayscale(1); opacity: 0.55; }
 
 .crest-initial { font: 600 30px var(--font-display); }
+.badge-medal { --badge-metal: var(--gold); position: relative; width: 80px; height: 96px; flex: none; color: var(--primary); }
+.badge-bronzo { --badge-metal: var(--badge-bronze); }
+.badge-argento { --badge-metal: var(--badge-silver); color: var(--navy); }
+.badge-oro { --badge-metal: var(--gold); }
+.badge-ribbons { position: absolute; inset: 0; width: 100%; height: 100%; }
+.badge-disc { position: absolute; inset: 0 0 auto; aspect-ratio: 1; border-radius: 50%; border: 4px double var(--badge-metal); background: var(--parchment); box-shadow: inset 0 0 0 4px var(--card), inset 0 0 0 5px var(--badge-metal); display: flex; align-items: center; justify-content: center; color: var(--primary); }
+.badge-icon { width: 32px; height: 32px; }
+.badge-ornament { position: absolute; top: 3px; font-size: 10px; color: var(--badge-metal); }
+.badge-ornament-bottom { top: auto; bottom: 4px; font-size: 9px; }
+.badge-lock { position: absolute; top: 54px; right: 0; display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--border); background: var(--card); color: var(--foreground); }
+.badge-medal-locked { filter: grayscale(1); opacity: 0.55; }
+.badge-medal-large { width: 132px; height: 158px; }
+.badge-medal-large .badge-icon { width: 54px; height: 54px; }
+.badge-medal-large .badge-ornament { top: 10px; }
+.badge-medal-large .badge-ornament-bottom { top: auto; bottom: 12px; }
+.badge-medal-large .badge-lock { top: 98px; }
+@media (max-width: 360px) {
+  .toaster[data-sonner-toaster] { --width: calc(100vw - 24px) !important; width: var(--width) !important; max-width: var(--width); left: 50% !important; right: auto !important; transform: translateX(-50%) !important; }
+  [data-sonner-toast] { max-width: 100%; }
+}
 .bottom-navigation { padding-bottom: env(safe-area-inset-bottom, 0px); }
 .app-with-navigation { padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px)); }
 .app-with-navigation main { animation: page-arrive 180ms ease-out; }

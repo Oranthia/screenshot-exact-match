@@ -127,6 +127,50 @@ export type Database = {
         }
         Relationships: []
       }
+      user_badges: {
+        Row: {
+          badge_id: string
+          earned_at: string
+          user_id: string
+        }
+        Insert: {
+          badge_id: string
+          earned_at?: string
+          user_id: string
+        }
+        Update: {
+          badge_id?: string
+          earned_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_featured_badges: {
+        Row: {
+          badge_id: string
+          position: number
+          user_id: string
+        }
+        Insert: {
+          badge_id: string
+          position: number
+          user_id: string
+        }
+        Update: {
+          badge_id?: string
+          position?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_featured_badges_user_id_badge_id_fkey"
+            columns: ["user_id", "badge_id"]
+            isOneToOne: true
+            referencedRelation: "user_badges"
+            referencedColumns: ["user_id", "badge_id"]
+          },
+        ]
+      }
       user_visits: {
         Row: {
           id: string
@@ -211,7 +255,18 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      award_user_badges: { Args: { _user: string }; Returns: undefined }
+      badge_metrics: { Args: { _user: string }; Returns: Json }
+      badge_rules: {
+        Args: never
+        Returns: {
+          badge_id: string
+          metric: string
+          threshold: number
+        }[]
+      }
+      set_my_featured_badges: { Args: { _ids: string[] }; Returns: undefined }
+      sync_my_badges: { Args: never; Returns: Json }
     }
     Enums: {
       [_ in never]: never
