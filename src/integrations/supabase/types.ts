@@ -14,7 +14,192 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      catalog_meta: {
+        Row: {
+          id: number
+          is_complete: boolean
+          national_total: number
+        }
+        Insert: {
+          id?: number
+          is_complete?: boolean
+          national_total?: number
+        }
+        Update: {
+          id?: number
+          is_complete?: boolean
+          national_total?: number
+        }
+        Relationships: []
+      }
+      municipalities: {
+        Row: {
+          coat_of_arms_url: string | null
+          istat_code: string
+          name: string
+          province_code: string
+          region_code: string
+          slug: string
+        }
+        Insert: {
+          coat_of_arms_url?: string | null
+          istat_code: string
+          name: string
+          province_code: string
+          region_code: string
+          slug: string
+        }
+        Update: {
+          coat_of_arms_url?: string | null
+          istat_code?: string
+          name?: string
+          province_code?: string
+          region_code?: string
+          slug?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "municipalities_province_code_fkey"
+            columns: ["province_code"]
+            isOneToOne: false
+            referencedRelation: "provinces"
+            referencedColumns: ["code"]
+          },
+          {
+            foreignKeyName: "municipalities_region_code_fkey"
+            columns: ["region_code"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["code"]
+          },
+        ]
+      }
+      provinces: {
+        Row: {
+          abbreviation: string
+          code: string
+          name: string
+          region_code: string
+        }
+        Insert: {
+          abbreviation: string
+          code: string
+          name: string
+          region_code: string
+        }
+        Update: {
+          abbreviation?: string
+          code?: string
+          name?: string
+          region_code?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "provinces_region_code_fkey"
+            columns: ["region_code"]
+            isOneToOne: false
+            referencedRelation: "regions"
+            referencedColumns: ["code"]
+          },
+        ]
+      }
+      regions: {
+        Row: {
+          code: string
+          name: string
+          slug: string
+        }
+        Insert: {
+          code: string
+          name: string
+          slug: string
+        }
+        Update: {
+          code?: string
+          name?: string
+          slug?: string
+        }
+        Relationships: []
+      }
+      user_visits: {
+        Row: {
+          id: string
+          istat_code: string
+          notes: string | null
+          updated_at: string
+          user_id: string
+          visit_date: string | null
+          visited: boolean
+        }
+        Insert: {
+          id?: string
+          istat_code: string
+          notes?: string | null
+          updated_at?: string
+          user_id: string
+          visit_date?: string | null
+          visited?: boolean
+        }
+        Update: {
+          id?: string
+          istat_code?: string
+          notes?: string | null
+          updated_at?: string
+          user_id?: string
+          visit_date?: string | null
+          visited?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_visits_istat_code_fkey"
+            columns: ["istat_code"]
+            isOneToOne: false
+            referencedRelation: "municipalities"
+            referencedColumns: ["istat_code"]
+          },
+        ]
+      }
+      visit_media: {
+        Row: {
+          caption: string | null
+          created_at: string
+          file_name: string
+          id: string
+          istat_code: string
+          media_type: string
+          storage_path: string
+          user_id: string
+        }
+        Insert: {
+          caption?: string | null
+          created_at?: string
+          file_name: string
+          id?: string
+          istat_code: string
+          media_type: string
+          storage_path: string
+          user_id: string
+        }
+        Update: {
+          caption?: string | null
+          created_at?: string
+          file_name?: string
+          id?: string
+          istat_code?: string
+          media_type?: string
+          storage_path?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "visit_media_istat_code_fkey"
+            columns: ["istat_code"]
+            isOneToOne: false
+            referencedRelation: "municipalities"
+            referencedColumns: ["istat_code"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
