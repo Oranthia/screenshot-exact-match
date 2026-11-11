@@ -1,16 +1,19 @@
 import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "@tanstack/react-router";
 import { Search } from "lucide-react";
 import { geoQuery, visitsQuery } from "@/lib/queries";
 import { computeProgress } from "@/lib/progress";
 import { orderRegions } from "@/lib/region-order";
+import { diaryEntries } from "@/lib/diary";
+import { diaryPhotosQuery } from "@/lib/diary-photos";
+import { DiaryCover } from "./DiaryCover";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ProgressBar, formatPercent } from "./ProgressBar";
 import { RegionCard } from "./RegionCard";
 import { MunicipalityCard } from "./MunicipalityCard";
 import { StatTile } from "./StatTile";
-import { DemoNotice } from "./DemoNotice";
 import { BadgeShowcase } from "./BadgeShowcase";
 
 const norm = (s: string) => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
@@ -19,6 +22,9 @@ export function Dashboard({ userId }: { userId: string }) {
   const geo = useQuery(geoQuery);
   const visits = useQuery(visitsQuery(userId));
   const [term, setTerm] = useState("");
+  const recentEntries = diaryEntries(geo.data?.municipalities ?? [], visits.data ?? [], { q: "", region: "", sort: "date" }).slice(0, 5);
+  const photos = useQuery(diaryPhotosQuery(userId, recentEntries.map(e => e.city.istat_code)));
+  const photoByCity = new Map(photos.data?.map(p => [p.istat_code, p]));
 
   const visitedSet = useMemo(
     () => new Set((visits.data ?? []).filter((v) => v.visited).map((v) => v.istat_code)),
@@ -33,10 +39,8 @@ export function Dashboard({ userId }: { userId: string }) {
   if (!geo.data || !stats || !visits.data) return <DashboardSkeleton />;
   const g = geo.data;
 
-  const muniByCode = new Map(g.municipalities.map((m) => [m.istat_code, m]));
-  const recent = visits.data.filter((v) => v.visited && muniByCode.has(v.istat_code)).slice(0, 5);
   const results = term.trim().length >= 2 ? g.municipalities.filter((m) => norm(m.name).includes(norm(term.trim()))).slice(0, 8) : [];
-  const fmtDate = (d: string) => new Date(d).toLocaleDateString("it-IT", { day: "numeric", month: "long", year: "numeric" });
+  const fmtDate = (d: string) => new Date(`${d}T00:00:00`).toLocaleDateString("it-IT", { day: "numeric", month: "long", year: "numeric" });
 
   return (
     <div className="space-y-7 sm:space-y-9">
@@ -50,10 +54,8 @@ export function Dashboard({ userId }: { userId: string }) {
           <StatTile label="Città visitate" value={`${stats.national.visited}`} sub={`su ${stats.national.total} nel catalogo`} />
           <StatTile label="Regioni esplorate" value={`${stats.regionsExplored} / ${stats.regionsTotal}`} sub={`${stats.regionsCompleted} completate`} />
         </div>
+        {!g.catalogComplete && <p className="mt-3 text-xs text-primary-foreground/75">Catalogo in espansione · Progressi sulle città attualmente disponibili.</p>}
       </section>
-
-      <BadgeShowcase userId={userId} />
-      {!g.catalogComplete && <DemoNotice catalogCount={g.municipalities.length} />}
 
       <section className="space-y-3">
         <h2 className="text-2xl font-semibold">Cerca una città</h2>
@@ -73,21 +75,22 @@ export function Dashboard({ userId }: { userId: string }) {
         )}
       </section>
 
+      <BadgeShowcase userId={userId} />
+
       <section className="space-y-3">
         <h2 className="text-2xl font-semibold">Ultime città visitate</h2>
-        {recent.length === 0 ? (
+        {recentEntries.length === 0 ? (
           <p className="rounded-2xl border border-dashed p-6 text-center text-sm text-muted-foreground">
             Il tuo passaporto è ancora vuoto. Cerca una città e segnala come visitata.
           </p>
         ) : (
           <div className="grid gap-2 sm:grid-cols-2">
-            {recent.map((v) => {
-              const m = muniByCode.get(v.istat_code);
-              if (!m) return null;
+            {recentEntries.map(({ city: m, visit: v }) => {
               return (
-                <MunicipalityCard key={v.id} name={m.name} slug={m.slug} coatUrl={m.coat_of_arms_url} visited
-                  province={g.provinceByCode.get(m.province_code)?.abbreviation ?? ""} region={g.regionByCode.get(m.region_code)?.name}
-                  meta={v.visit_date ? fmtDate(v.visit_date) : undefined} />
+                <Link key={m.istat_code} to="/comune/$slug" params={{ slug: m.slug }} className="flex min-w-0 items-center gap-3 rounded-lg border bg-card p-3 shadow-card">
+                  <DiaryCover compact name={m.name} coatUrl={m.coat_of_arms_url} photo={photoByCity.get(m.istat_code)} pending={photos.isPending} onRetry={() => { if (!photos.isFetching) void photos.refetch(); }} />
+                  <div className="min-w-0"><h3 className="truncate text-xl font-semibold">{m.name}</h3><p className="text-xs text-muted-foreground">{g.regionByCode.get(m.region_code)?.name}</p>{v.visit_date && <p className="mt-1 text-xs text-muted-foreground">{fmtDate(v.visit_date)}</p>}</div>
+                </Link>
               );
             })}
           </div>
@@ -95,7 +98,7 @@ export function Dashboard({ userId }: { userId: string }) {
       </section>
 
       <section className="space-y-3">
-        <h2 className="text-2xl font-semibold">Le 20 regioni</h2>
+        <h2 className="text-2xl font-semibold">Esplora le regioni</h2>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {orderRegions(g.regions, stats.perRegion).map((r) => {
             const progress = stats.perRegion.get(r.code);

@@ -37,6 +37,15 @@ describe("personal diary", () => {
     const rows = [{ id: "2", istat_code: "a", media_type: "photo", created_at: "2026-11-02" }, { id: "1", istat_code: "a", media_type: "photo", created_at: "2026-11-01" }, { id: "0", istat_code: "a", media_type: "video", created_at: "2026-10-01" }] as VisitMedia[];
     expect(firstDiaryPhotos(rows).map(p => p.id)).toEqual(["1"]);
   });
+  it("prefers the single owner-selected photo cover and falls back after deletion", () => {
+    const rows = [
+      { id: "1", istat_code: "a", media_type: "photo", created_at: "2026-11-01", is_cover: false },
+      { id: "2", istat_code: "a", media_type: "photo", created_at: "2026-11-02", is_cover: true },
+    ] as VisitMedia[];
+    expect(firstDiaryPhotos(rows).map(p => p.id)).toEqual(["2"]);
+    expect(firstDiaryPhotos(rows.filter(p => p.id !== "2")).map(p => p.id)).toEqual(["1"]);
+    expect(firstDiaryPhotos([])).toEqual([]);
+  });
   it("sorts oldest visits first", () => {
     const cities = [city("Roma", "a"), city("Bari", "b")];
     expect(diaryEntries(cities, [visit("a", true, "2026-11-02"), visit("b", true, "2026-11-01")], { ...filters, sort: "date-asc" }).map(e => e.city.name)).toEqual(["Bari", "Roma"]);

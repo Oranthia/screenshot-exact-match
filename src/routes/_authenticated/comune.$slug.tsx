@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useBlocker } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { CalendarIcon, ChevronLeft, Loader2, X } from "lucide-react";
 import { format } from "date-fns";
@@ -45,7 +45,11 @@ function MunicipalityPage() {
   const visited = visit?.visited ?? false;
 
   const [notes, setNotes] = useState("");
-  useEffect(() => setNotes(visit?.notes ?? ""), [visit?.notes, m?.istat_code]);
+  const [savedNotes, setSavedNotes] = useState("");
+  const [notesState, setNotesState] = useState<"idle" | "pending" | "saved" | "error">("idle");
+  useEffect(() => { setNotes(visit?.notes ?? ""); setSavedNotes(visit?.notes ?? ""); setNotesState("idle"); }, [m?.istat_code, visits.isPending]);
+  const dirty = notes !== savedNotes;
+  useBlocker({ shouldBlockFn: () => dirty && !window.confirm("Hai modifiche non salvate. Vuoi lasciare la pagina?"), enableBeforeUnload: dirty });
 
   if (geo.isError || visits.isError) {
     return <div className="min-h-screen"><AppHeader /><main className="mx-auto max-w-3xl px-4 py-6 text-center">
@@ -88,12 +92,12 @@ function MunicipalityPage() {
           </Link>
         )}
 
-        <section className={cn("paper relative overflow-hidden rounded-3xl border p-6 shadow-lift transition-colors sm:p-8", visited && "border-gold")}>
-          <div className="flex flex-col items-center gap-6 text-center sm:flex-row sm:text-left">
+        <section className={cn("paper relative overflow-hidden rounded-3xl border p-4 shadow-lift transition-colors sm:p-6", visited && "border-gold")}>
+          <div className="flex flex-col items-center gap-3 text-center sm:flex-row sm:gap-5 sm:text-left">
             <Crest key={m.istat_code} name={m.name} url={m.coat_of_arms_url} visited={visited} size="lg" />
             <div className="flex-1">
-              <p className="text-xs uppercase tracking-[0.2em] text-gold-foreground">Città{m.official_istat_code ? ` · ISTAT ${m.official_istat_code}` : ""}</p>
-              <h1 className="text-5xl font-semibold leading-none">{m.name}</h1>
+              <p className="text-xs uppercase tracking-[0.2em] text-gold-foreground">Città</p>
+              <h1 className="break-words text-4xl font-semibold leading-tight sm:text-5xl">{m.name}</h1>
               <p className="mt-2 text-muted-foreground">
                 {province ? `Provincia di ${province.name} (${province.abbreviation})` : ""} · {region?.name}
               </p>
@@ -137,10 +141,15 @@ function MunicipalityPage() {
 
         <section className="space-y-3">
           <h2 className="text-2xl font-semibold">Note di viaggio</h2>
-          <Textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={5} maxLength={5000}
+          <Textarea aria-label="Note di viaggio" value={notes} onChange={(e) => { setNotes(e.target.value); setNotesState("idle"); }} rows={5} maxLength={5000}
             placeholder="Racconta la tua esperienza: cosa hai visto, mangiato, chi hai incontrato…" className="rounded-xl bg-card" />
-          <div className="flex justify-end">
-            <Button disabled={save.isPending || notes === (visit?.notes ?? "")} onClick={() => persist({ notes: notes.trim() || null }, "Note salvate")}>
+          <div className="flex items-center justify-between gap-3">
+            <p role="status" className={cn("text-xs", notesState === "error" ? "text-destructive" : "text-muted-foreground")}>{notesState === "pending" ? "Salvataggio in corso..." : notesState === "error" ? "Errore durante il salvataggio" : notesState === "saved" ? "Salvato" : dirty ? "Modifiche non salvate" : ""}</p>
+            <Button disabled={save.isPending || !dirty} onClick={async () => {
+              const value = notes.trim(); setNotesState("pending");
+              try { await save.mutateAsync({ istat_code: m.istat_code, notes: value || null }); setSavedNotes(value); setNotes(value); setNotesState("saved"); }
+              catch { setNotesState("error"); }
+            }}>
               Salva note
             </Button>
           </div>
