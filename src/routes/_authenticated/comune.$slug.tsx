@@ -21,10 +21,10 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/_authenticated/comune/$slug")({
   head: () => ({
     meta: [
-      { title: "Scheda comune — Italia Explorer" },
-      { name: "description", content: "Stemma, stato di visita, note e ricordi del comune." },
-      { property: "og:title", content: "Scheda comune — Italia Explorer" },
-      { property: "og:description", content: "Il tuo diario di viaggio per questo comune." },
+      { title: "Scheda città — Italia Explorer" },
+      { name: "description", content: "Stemma, stato di visita, note e ricordi della città." },
+      { property: "og:title", content: "Scheda città — Italia Explorer" },
+      { property: "og:description", content: "Il tuo diario di viaggio per questa città." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -58,7 +58,7 @@ function MunicipalityPage() {
     return (
       <div className="min-h-screen"><AppHeader />
         <main className="mx-auto max-w-3xl px-4 py-16 text-center">
-          <h1 className="text-3xl font-semibold">Comune non trovato</h1>
+          <h1 className="text-3xl font-semibold">Città non trovata</h1>
           <Link to="/" className="mt-4 inline-block text-primary underline">Torna alla dashboard</Link>
         </main>
       </div>
@@ -92,7 +92,7 @@ function MunicipalityPage() {
           <div className="flex flex-col items-center gap-6 text-center sm:flex-row sm:text-left">
             <Crest key={m.istat_code} name={m.name} url={m.coat_of_arms_url} visited={visited} size="lg" />
             <div className="flex-1">
-              <p className="text-xs uppercase tracking-[0.2em] text-gold-foreground">Comune · ISTAT {m.istat_code}</p>
+              <p className="text-xs uppercase tracking-[0.2em] text-gold-foreground">Città{m.official_istat_code ? ` · ISTAT ${m.official_istat_code}` : ""}</p>
               <h1 className="text-5xl font-semibold leading-none">{m.name}</h1>
               <p className="mt-2 text-muted-foreground">
                 {province ? `Provincia di ${province.name} (${province.abbreviation})` : ""} · {region?.name}

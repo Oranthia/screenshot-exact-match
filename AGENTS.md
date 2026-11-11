@@ -30,10 +30,11 @@ use the editor.
 <!-- LOVABLE:END -->
 
 ## Project rules
-- Progress (national/regional %, explored/completed) is computed only in `src/lib/progress.ts` from DB rows; never hardcode counts. Why: catalog grows via ISTAT import.
+- Progress (national/regional %, explored/completed) is computed only in `src/lib/progress.ts` from available DB rows; never hardcode counts. Why: the catalog can expand without changing screens.
 - User data (visits, media) is read/written from the browser Supabase client under RLS; geo tables are public read-only. Why: simple, per-user isolation enforced in DB.
 - Media files live in the private `visit-media` bucket under `<user_id>/<istat>/…`; DB stores only the path. Why: storage RLS keys on the first folder.
-- ISTAT codes are text (leading zeros kept). Full catalog is loaded via `scripts/import-istat.ts`, which also flips `catalog_meta.is_complete`.
+- Municipalities have a stable internal UUID and an optional official ISTAT text code; the legacy `istat_code` key remains immutable for existing visit and storage references and new city keys use `city:<slug>`. Why: adding official codes later must not detach memories.
+- Initial city selection and source provenance live in `scripts/data/initial-cities.json`; initialization is applied through data tools, never on page load. Why: deterministic seeding must not create duplicate cities or overwrite visits.
 - Render all municipal coats through the shared Crest component, with transition-only unlock animation and failed-image fallback; why: list and detail states must stay consistent without duplicating assets.
 - Bulk coat associations are validated by `src/lib/coat-import.ts` and applied as data updates matching ISTAT codes, only to empty URLs; why: protect existing artwork and user visits.
 - Optimistically patch the shared visits query cache and restore it on save failure; why: every mounted list and detail must reflect the same visit state immediately.

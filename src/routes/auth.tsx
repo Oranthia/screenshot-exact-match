@@ -17,9 +17,9 @@ export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
       { title: "Accedi — Italia Explorer" },
-      { name: "description", content: "Accedi o registrati per salvare i comuni italiani che hai visitato." },
+      { name: "description", content: "Accedi o registrati per salvare le città italiane che hai visitato." },
       { property: "og:title", content: "Accedi — Italia Explorer" },
-      { property: "og:description", content: "Il tuo passaporto digitale dei comuni italiani." },
+      { property: "og:description", content: "Il tuo passaporto digitale delle città italiane." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],

@@ -18,9 +18,9 @@ export const Route = createFileRoute("/_authenticated/regione/$slug")({
   head: () => ({
     meta: [
       { title: "Regione — Italia Explorer" },
-      { name: "description", content: "Comuni della regione, progresso di visita e ricerca." },
+      { name: "description", content: "Città della regione, progresso di visita e ricerca." },
       { property: "og:title", content: "Regione — Italia Explorer" },
-      { property: "og:description", content: "Esplora i comuni della regione." },
+      { property: "og:description", content: "Esplora le città della regione." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -94,12 +94,12 @@ function RegionPage() {
                 <div className="rounded-xl bg-muted p-3"><p className="font-display text-2xl font-semibold">{p.total - p.visited}</p><p className="text-xs text-muted-foreground">da visitare</p></div>
               </div>
             </section>
-            {!geo.data!.catalogComplete && <DemoNotice catalogCount={geo.data!.municipalities.length} nationalTotal={geo.data!.nationalTotal} />}
+            {geo.data && !geo.data.catalogComplete && <DemoNotice catalogCount={geo.data.municipalities.length} />}
 
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                <Input value={term} onChange={(e) => setTerm(e.target.value)} placeholder="Cerca per nome" className="h-11 rounded-xl bg-card pl-9" aria-label="Cerca comune" />
+                <Input value={term} onChange={(e) => setTerm(e.target.value)} placeholder="Cerca per nome" className="h-11 rounded-xl bg-card pl-9" aria-label="Cerca città" />
               </div>
               <div className="flex items-center gap-2">
                 <ToggleGroup type="single" value={filter} onValueChange={(v) => v && setFilter(v as typeof filter)} variant="outline">
@@ -116,12 +116,12 @@ function RegionPage() {
             <div className="grid gap-2 sm:grid-cols-2">
               {list.map((m) => (
                 <MunicipalityCard key={m.istat_code} name={m.name} slug={m.slug} coatUrl={m.coat_of_arms_url}
-                  province={geo.data!.provinceByCode.get(m.province_code)?.name ?? ""} visited={visitedSet.has(m.istat_code)} />
+                  province={geo.data?.provinceByCode.get(m.province_code)?.name ?? ""} visited={visitedSet.has(m.istat_code)} />
               ))}
             </div>
             {list.length === 0 && (
               <p className="rounded-2xl border border-dashed p-6 text-center text-sm text-muted-foreground">
-                {p.total === 0 ? "I comuni di questa regione non sono ancora nel catalogo." : "Nessun comune corrisponde ai filtri."}
+                {p.total === 0 ? "Le città di questa regione non sono ancora nel catalogo." : "Nessuna città corrisponde ai filtri."}
               </p>
             )}
           </>
