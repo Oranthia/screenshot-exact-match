@@ -1,4 +1,5 @@
 # Tasks
+- [ ] Implement the 12 permanent earned badges, secure automatic/retroactive awards, private three-slot showcase, collection/details, Home/Profile summaries and unlock notifications; verify rules and real-account flows.
 - [x] Complete V1.1 Diary sort directions, active-filter indicator/reset, photo-and-crest cards and legible national percentage; all 37 tests passed; real-account desktop/390px/320px checks passed with no runtime errors. Real photo-cover visual verification awaits a personal photograph in the diary.
 - [x] Refine Home, Diary, region cards and Profile incrementally; 19 tests passed; real account checks on mobile/desktop verified filters, 20 region links, display-name persistence and logout with no runtime errors.
 - [x] Add shared mobile/desktop navigation and Diary, preparatory Badges and real Profile pages without changing visit logic or database.
