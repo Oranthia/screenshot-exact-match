@@ -1,4 +1,6 @@
 # Tasks
+- [ ] Add shared mobile/desktop navigation and Diary, preparatory Badges and real Profile pages without changing visit logic or database.
+- [ ] Test navigation, diary filtering and immediate updates, profile and logout on small and desktop screens.
 - [x] Adapt the existing catalog non-destructively to 104 real cities across all 20 regions, with stable internal IDs and optional official ISTAT codes.
 - [x] Update catalog copy and percentages to the expanding city catalog while preserving design and visits.
 - [x] Verify the city catalog and finish the functional audit report in functional-audit.md.
