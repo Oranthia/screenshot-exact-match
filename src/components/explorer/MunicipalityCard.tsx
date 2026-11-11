@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Crest } from "./Crest";
 import { cn } from "@/lib/utils";
 
-type Props = { name: string; slug: string; province: string; region?: string; coatUrl?: string | null; visited: boolean; meta?: string };
+type Props = { name: string; slug: string; province: string; region?: string | undefined; coatUrl?: string | null | undefined; visited: boolean; meta?: string | undefined };
 
 export function MunicipalityCard({ name, slug, province, region, coatUrl, visited, meta }: Props) {
   return (

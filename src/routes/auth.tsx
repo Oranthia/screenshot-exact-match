@@ -11,8 +11,8 @@ import { AppHeader } from "@/components/explorer/AppHeader";
 const safePath = (p?: string) => (p && p.startsWith("/") && !p.startsWith("//") ? p : "/");
 
 export const Route = createFileRoute("/auth")({
-  validateSearch: (s: Record<string, unknown>): { redirect?: string } => ({
-    redirect: typeof s.redirect === "string" ? s.redirect : undefined,
+  validateSearch: (s: Record<string, unknown>): { redirect?: string | undefined } => ({
+    redirect: typeof s["redirect"] === "string" ? s["redirect"] : undefined,
   }),
   head: () => ({
     meta: [

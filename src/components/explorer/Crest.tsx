@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-type Props = { name: string; url?: string | null; visited: boolean; size?: "sm" | "lg"; animate?: boolean };
+type Props = { name: string; url?: string | null | undefined; visited: boolean; size?: "sm" | "lg"; animate?: boolean | undefined };
 
 /** Stemma comunale: scala di grigi se non visitato, a colori (con sblocco) se visitato. */
 export function Crest({ name, url, visited, size = "sm", animate }: Props) {
