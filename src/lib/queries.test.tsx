@@ -5,7 +5,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const mocks = vi.hoisted(() => ({ from: vi.fn(), signed: vi.fn() }));
 vi.mock("@/integrations/supabase/client", () => ({ supabase: { from: mocks.from, storage: { from: () => ({ createSignedUrls: mocks.signed }) } } }));
-import { geoQuery, useSaveVisit, visitsQuery } from "./queries";
+import { geoQuery, mediaQuery, useSaveVisit, visitsQuery } from "./queries";
 import { computeProgress } from "./progress";
 
 const saved = { id: "v1", user_id: "user-1", istat_code: "001272", visited: false, visit_date: "2026-11-01", notes: "Ricordo da conservare", updated_at: "2026-11-01T00:00:00Z" };
@@ -37,6 +37,23 @@ describe("complete visit loading", () => {
       return paged([]);
     });
     await expect(new QueryClient().fetchQuery(geoQuery)).rejects.toThrow("metadata unavailable");
+  });
+  it("loads all media rows and refreshes temporary image links before expiry", async () => {
+    const rows = Array.from({ length: 1001 }, (_, i) => ({ id: `m${i}`, storage_path: `user-1/city:aosta/${i}.png` }));
+    const builder = paged(rows);
+    mocks.from.mockReturnValue(builder);
+    mocks.signed.mockResolvedValue({ data: rows.map(r => ({ signedUrl: `https://files.example.invalid/${r.id}`, error: null })), error: null });
+    const options = mediaQuery("user-1", "city:aosta");
+    const result = await new QueryClient().fetchQuery(options);
+    expect(result).toHaveLength(1001);
+    expect(builder.eq).toHaveBeenCalledWith("user_id", "user-1");
+    expect(builder.eq).toHaveBeenCalledWith("istat_code", "city:aosta");
+    expect(options.staleTime).toBeLessThan(60 * 60 * 1000);
+  });
+  it("reports individual storage signing errors instead of rendering broken files", async () => {
+    mocks.from.mockReturnValue(paged([{ id: "m1", storage_path: "user-1/city:aosta/file.png" }]));
+    mocks.signed.mockResolvedValue({ data: [{ signedUrl: "", error: "not found" }], error: null });
+    await expect(new QueryClient().fetchQuery(mediaQuery("user-1", "city:aosta"))).rejects.toThrow("ricordi");
   });
 });
 
