@@ -12,6 +12,9 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedBadgeRouteImport } from './routes/_authenticated/badge'
+import { Route as AuthenticatedDiarioRouteImport } from './routes/_authenticated/diario'
+import { Route as AuthenticatedProfiloRouteImport } from './routes/_authenticated/profilo'
 import { Route as AuthenticatedComuneSlugRouteImport } from './routes/_authenticated/comune.$slug'
 import { Route as AuthenticatedRegioneSlugRouteImport } from './routes/_authenticated/regione.$slug'
 
@@ -29,6 +32,21 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedBadgeRoute = AuthenticatedBadgeRouteImport.update({
+  id: '/badge',
+  path: '/badge',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedDiarioRoute = AuthenticatedDiarioRouteImport.update({
+  id: '/diario',
+  path: '/diario',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedProfiloRoute = AuthenticatedProfiloRouteImport.update({
+  id: '/profilo',
+  path: '/profilo',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedComuneSlugRoute = AuthenticatedComuneSlugRouteImport.update({
   id: '/comune/$slug',
   path: '/comune/$slug',
@@ -44,12 +62,18 @@ const AuthenticatedRegioneSlugRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/badge': typeof AuthenticatedBadgeRoute
+  '/diario': typeof AuthenticatedDiarioRoute
+  '/profilo': typeof AuthenticatedProfiloRoute
   '/comune/$slug': typeof AuthenticatedComuneSlugRoute
   '/regione/$slug': typeof AuthenticatedRegioneSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/badge': typeof AuthenticatedBadgeRoute
+  '/diario': typeof AuthenticatedDiarioRoute
+  '/profilo': typeof AuthenticatedProfiloRoute
   '/comune/$slug': typeof AuthenticatedComuneSlugRoute
   '/regione/$slug': typeof AuthenticatedRegioneSlugRoute
 }
@@ -58,19 +82,39 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/_authenticated/badge': typeof AuthenticatedBadgeRoute
+  '/_authenticated/diario': typeof AuthenticatedDiarioRoute
+  '/_authenticated/profilo': typeof AuthenticatedProfiloRoute
   '/_authenticated/comune/$slug': typeof AuthenticatedComuneSlugRoute
   '/_authenticated/regione/$slug': typeof AuthenticatedRegioneSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/comune/$slug' | '/regione/$slug'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/badge'
+    | '/diario'
+    | '/profilo'
+    | '/comune/$slug'
+    | '/regione/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/comune/$slug' | '/regione/$slug'
+  to:
+    | '/'
+    | '/auth'
+    | '/badge'
+    | '/diario'
+    | '/profilo'
+    | '/comune/$slug'
+    | '/regione/$slug'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/_authenticated/badge'
+    | '/_authenticated/diario'
+    | '/_authenticated/profilo'
     | '/_authenticated/comune/$slug'
     | '/_authenticated/regione/$slug'
   fileRoutesById: FileRoutesById
@@ -104,6 +148,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/badge': {
+      id: '/_authenticated/badge'
+      path: '/badge'
+      fullPath: '/badge'
+      preLoaderRoute: typeof AuthenticatedBadgeRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/diario': {
+      id: '/_authenticated/diario'
+      path: '/diario'
+      fullPath: '/diario'
+      preLoaderRoute: typeof AuthenticatedDiarioRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/profilo': {
+      id: '/_authenticated/profilo'
+      path: '/profilo'
+      fullPath: '/profilo'
+      preLoaderRoute: typeof AuthenticatedProfiloRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/comune/$slug': {
       id: '/_authenticated/comune/$slug'
       path: '/comune/$slug'
@@ -122,11 +187,17 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedBadgeRoute: typeof AuthenticatedBadgeRoute
+  AuthenticatedDiarioRoute: typeof AuthenticatedDiarioRoute
+  AuthenticatedProfiloRoute: typeof AuthenticatedProfiloRoute
   AuthenticatedComuneSlugRoute: typeof AuthenticatedComuneSlugRoute
   AuthenticatedRegioneSlugRoute: typeof AuthenticatedRegioneSlugRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedBadgeRoute: AuthenticatedBadgeRoute,
+  AuthenticatedDiarioRoute: AuthenticatedDiarioRoute,
+  AuthenticatedProfiloRoute: AuthenticatedProfiloRoute,
   AuthenticatedComuneSlugRoute: AuthenticatedComuneSlugRoute,
   AuthenticatedRegioneSlugRoute: AuthenticatedRegioneSlugRoute,
 }
