@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { UserRound, LogOut, Loader2, Pencil, Check, X } from "lucide-react";
 import { toast } from "sonner";
@@ -7,6 +7,8 @@ import { useAuth } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
 import { geoQuery, visitsQuery } from "@/lib/queries";
 import { computeProgress } from "@/lib/progress";
+import { BADGES } from "@/lib/badges";
+import { badgesQuery } from "@/lib/badge-queries";
 import { PersonalPage, PersonalPageError } from "@/components/explorer/PersonalPage";
 import { ProgressBar, formatPercent } from "@/components/explorer/ProgressBar";
 import { Button } from "@/components/ui/button";
@@ -26,6 +28,7 @@ function Profile({ userId }: { userId: string }) {
   const { session } = useAuth();
   const { data: geo } = useSuspenseQuery(geoQuery);
   const { data: visits } = useSuspenseQuery(visitsQuery(userId));
+  const { data: badges } = useSuspenseQuery(badgesQuery(userId));
   const navigate = Route.useNavigate();
   const [busy, setBusy] = useState(false);
   const stats = computeProgress(geo.regions, geo.municipalities, new Set(visits.filter(v => v.visited).map(v => v.istat_code)));
@@ -55,6 +58,7 @@ function Profile({ userId }: { userId: string }) {
     {editing && <form onSubmit={saveName} className="flex flex-wrap items-end gap-2"><label className="min-w-0 flex-1 text-sm font-medium">Nome visualizzato<Input className="mt-2 bg-card" value={draftName} onChange={e => setDraftName(e.target.value)} maxLength={80} autoFocus /></label><Button type="submit" size="icon" aria-label="Salva nome" title="Salva nome" disabled={savingName}>{savingName ? <Loader2 className="animate-spin" /> : <Check />}</Button><Button variant="ghost" size="icon" aria-label="Annulla" title="Annulla" onClick={() => setEditing(false)}><X /></Button></form>}
     <section className="grid grid-cols-2 gap-3 sm:grid-cols-3">{[{ value: stats.national.visited, label: "Città visitate" }, { value: stats.regionsExplored, label: "Regioni esplorate" }, { value: formatPercent(stats.national.percent), label: "Completamento catalogo" }].map((stat, i) => <div key={stat.label} className={`rounded-lg border bg-card p-4 ${i === 2 ? "col-span-2 sm:col-span-1" : ""}`}><p className="font-sans text-3xl font-semibold tabular-nums text-primary">{stat.value}</p><p className="mt-2 text-sm text-muted-foreground">{stat.label}</p></div>)}</section>
     <section><ProgressBar value={stats.national.percent} /><p className="mt-3 text-sm text-muted-foreground">{stats.national.visited} su {stats.national.total} città nel catalogo</p></section>
+    <section className="flex items-center justify-between gap-3 border-y py-5"><div><h2 className="text-2xl font-semibold">Le mie conquiste</h2><p className="mt-1 text-sm text-muted-foreground">{badges.earned.length} / {BADGES.length} badge ottenuti</p></div><Button asChild variant="outline"><Link to="/badge">Collezione</Link></Button></section>
     <Button variant="outline" disabled={busy} onClick={logout}>{busy ? <Loader2 className="animate-spin" /> : <LogOut />}Logout</Button>
   </div>;
 }
