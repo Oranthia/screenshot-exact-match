@@ -9,7 +9,7 @@ export function MunicipalityCard({ name, slug, province, region, coatUrl, visite
     <Link
       to="/comune/$slug"
       params={{ slug }}
-      className="flex items-center gap-4 rounded-2xl border bg-card p-3 pr-4 shadow-card transition-all hover:-translate-y-0.5 hover:shadow-lift"
+      className="flex min-w-0 items-center gap-2 rounded-2xl border bg-card p-3 shadow-card transition-all hover:-translate-y-0.5 hover:shadow-lift sm:gap-4 sm:pr-4"
     >
       <Crest name={name} url={coatUrl} visited={visited} />
       <div className="min-w-0 flex-1">

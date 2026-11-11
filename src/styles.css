@@ -193,6 +193,10 @@
 .badge-medal-large .badge-ornament { top: 10px; }
 .badge-medal-large .badge-ornament-bottom { top: auto; bottom: 12px; }
 .badge-medal-large .badge-lock { top: 98px; }
+@media (max-width: 360px) {
+  .toaster { max-width: calc(100vw - 24px); }
+  [data-sonner-toast] { max-width: 100%; }
+}
 .bottom-navigation { padding-bottom: env(safe-area-inset-bottom, 0px); }
 .app-with-navigation { padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px)); }
 .app-with-navigation main { animation: page-arrive 180ms ease-out; }
