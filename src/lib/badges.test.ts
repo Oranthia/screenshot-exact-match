@@ -21,7 +21,7 @@ describe("deterministic badge thresholds", () => {
   });
 });
 describe("featured achievements", () => {
-  const earned = ["prima-impronta", "esploratore-curioso", "viandante", "tre-terre"];
+  const earned = ["prima-impronta", "esploratore-curioso", "viandante", "tre-terre"] as const;
   it("allows three unlocked badges in the supplied order", () => {
     expect(validateFeatured([earned[2], earned[0], earned[1]], earned)).toEqual(["viandante", "prima-impronta", "esploratore-curioso"]);
   });
