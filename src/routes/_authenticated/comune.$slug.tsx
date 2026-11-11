@@ -25,6 +25,8 @@ export const Route = createFileRoute("/_authenticated/comune/$slug")({
       { name: "description", content: "Stemma, stato di visita, note e ricordi del comune." },
       { property: "og:title", content: "Scheda comune — Italia Explorer" },
       { property: "og:description", content: "Il tuo diario di viaggio per questo comune." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: MunicipalityPage,
@@ -43,7 +45,6 @@ function MunicipalityPage() {
   const visited = visit?.visited ?? false;
 
   const [notes, setNotes] = useState("");
-  const [animate, setAnimate] = useState(false);
   useEffect(() => setNotes(visit?.notes ?? ""), [visit?.notes, m?.istat_code]);
 
   if (geo.data && !m) {
@@ -82,7 +83,7 @@ function MunicipalityPage() {
 
         <section className={cn("paper relative overflow-hidden rounded-3xl border p-6 shadow-lift transition-colors sm:p-8", visited && "border-gold")}>
           <div className="flex flex-col items-center gap-6 text-center sm:flex-row sm:text-left">
-            <Crest name={m.name} url={m.coat_of_arms_url} visited={visited} size="lg" animate={animate} />
+            <Crest key={m.istat_code} name={m.name} url={m.coat_of_arms_url} visited={visited} size="lg" />
             <div className="flex-1">
               <p className="text-xs uppercase tracking-[0.2em] text-gold-foreground">Comune · ISTAT {m.istat_code}</p>
               <h1 className="text-5xl font-semibold leading-none">{m.name}</h1>
@@ -93,7 +94,7 @@ function MunicipalityPage() {
                 <Switch
                   checked={visited}
                   disabled={save.isPending}
-                  onCheckedChange={(on) => { setAnimate(on); persist({ visited: on }, on ? `${m.name} sbloccata!` : undefined); }}
+                  onCheckedChange={(on) => persist({ visited: on }, on ? `${m.name} sbloccata!` : undefined)}
                   aria-label="Visitata"
                 />
                 <span className={cn("text-sm font-semibold", visited ? "text-primary" : "text-muted-foreground")}>

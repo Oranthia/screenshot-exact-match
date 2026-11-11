@@ -172,3 +172,8 @@
 @utility animate-shine { animation: shine 0.9s ease-out both; }
 @utility crest-locked { filter: grayscale(1); opacity: 0.55; }
 
+.crest-initial { font: 600 30px var(--font-display); }
+@media (prefers-reduced-motion: reduce) {
+  .animate-unlock, .animate-shine { animation: none; }
+}
+
