@@ -20,3 +20,6 @@
 - [x] V1.2 P1: compact badge grid, earned filters and direct three-slot showcase.
 - [x] V1.2 P2: reorder Home, recent photo previews, city save feedback and private cover selection.
 - [x] V1.2: 64 regression tests passed; real-account covers, notes, showcase slots, error fallbacks and 320/390/1280px checks completed. Limits documented in ux-v12-audit.md.
+
+- [x] Final validation V1.2: real two-test-photo deletion, alternative diary cover, empty-photo fallback, deletion error and cleanup verified; 64 tests passed; report and manual steps in final-validation-v12.md.
+- [ ] Final validation V1.2 tests 1, 3 and 4: fresh credential login, two-account isolation and three newly awarded badges in one operation — blocked by missing dedicated test accounts and credential login; existing-session concurrency tested separately, not counted as triple unlock.
