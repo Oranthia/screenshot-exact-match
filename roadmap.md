@@ -16,3 +16,7 @@
 - [x] Run targeted tests and verify public pages (17 tests passed; no browser runtime errors).
 - [ ] Finish prior audit of photo/video persistence after logout and cross-user access — visits now verified with the owner's account; remaining checks require suitable media and a second authorized account.
 - [x] Full ISTAT import deferred by the user's new reduced-city-catalog brief.
+- [ ] V1.2 P0: diagnose and repair real diary covers and loading/error states.
+- [ ] V1.2 P1: compact badge grid, earned filters and direct three-slot showcase.
+- [ ] V1.2 P2: reorder Home, recent photo previews, city save feedback and private cover selection.
+- [ ] V1.2: run regression tests and real-account mobile/desktop checks; report unverified cases.
