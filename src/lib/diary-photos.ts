@@ -6,6 +6,7 @@ import { firstDiaryPhotos } from "./diary";
 export const diaryPhotosQuery = (userId: string, cityCodes: string[]) => queryOptions({
   queryKey: ["media", userId, "diary", [...cityCodes].sort()],
   staleTime: 1000 * 60 * 45,
+  refetchInterval: 1000 * 60 * 45,
   queryFn: async () => {
     if (!cityCodes.length) return [];
     const rows: VisitMedia[] = [];
@@ -21,7 +22,6 @@ export const diaryPhotosQuery = (userId: string, cityCodes: string[]) => queryOp
     if (!photos.length) return [];
     const { data, error } = await supabase.storage.from("visit-media").createSignedUrls(photos.map(p => p.storage_path), 3600);
     if (error) throw error;
-    if (data?.some(p => p.error || !p.signedUrl)) throw new Error("Impossibile caricare le anteprime.");
-    return photos.map((photo, i) => ({ ...photo, url: data?.[i]?.signedUrl ?? "" }));
+    return photos.map((photo, i) => ({ ...photo, url: data?.[i]?.error ? "" : data?.[i]?.signedUrl ?? "" }));
   },
 });

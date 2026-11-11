@@ -27,7 +27,7 @@ export function diaryEntries(cities: Municipality[], visits: Visit[], filters: {
 
 export function firstDiaryPhotos(rows: VisitMedia[]) {
   const first = new Map<string, VisitMedia>();
-  for (const row of [...rows].sort((a, b) => a.created_at.localeCompare(b.created_at) || a.id.localeCompare(b.id))) {
+  for (const row of [...rows].sort((a, b) => Number(b.is_cover ?? false) - Number(a.is_cover ?? false) || a.created_at.localeCompare(b.created_at) || a.id.localeCompare(b.id))) {
     if (row.media_type === "photo" && !first.has(row.istat_code)) first.set(row.istat_code, row);
   }
   return [...first.values()];
