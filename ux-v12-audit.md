@@ -27,6 +27,9 @@
 - Home, Badge, Diario e Venezia provati a 320, 390 e 1280px: nessun overflow orizzontale; nessun errore JavaScript nelle prove principali. Immagini e griglie ispezionate visivamente.
 - Metadati specifici già presenti su tutte le pagine di contenuto, inclusa Home.
 
+## Test automatici
+- 64 test superati in 13 file: progressi, visite/cache, diario, copertine, badge, slot, stemmi e navigazione.
+
 ## Limiti delle verifiche
 - Nessun nuovo accesso tramite credenziali: persistenza verificata dopo logout e ripristino della sessione autorizzata.
 - Nessuna fotografia personale eliminata: scelta alternativa dopo eliminazione verificata dal test della selezione, non tramite cancellazione reale.
