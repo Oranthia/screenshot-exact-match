@@ -1,0 +1,838 @@
+{
+  "source": "https://github.com/matteocontrini/comuni-json",
+  "note": "Curated initial cities; province and region checked against public geographic dataset. New official ISTAT values intentionally left empty until verified against current official ISTAT release.",
+  "cities": [
+    {
+      "name": "Torino",
+      "region_code": "01",
+      "province_name": "Torino",
+      "province_code": "001",
+      "abbreviation": "TO",
+      "source_istat": "001272"
+    },
+    {
+      "name": "Novara",
+      "region_code": "01",
+      "province_name": "Novara",
+      "province_code": "003",
+      "abbreviation": "NO",
+      "source_istat": "003106"
+    },
+    {
+      "name": "Alessandria",
+      "region_code": "01",
+      "province_name": "Alessandria",
+      "province_code": "006",
+      "abbreviation": "AL",
+      "source_istat": "006003"
+    },
+    {
+      "name": "Asti",
+      "region_code": "01",
+      "province_name": "Asti",
+      "province_code": "005",
+      "abbreviation": "AT",
+      "source_istat": "005005"
+    },
+    {
+      "name": "Cuneo",
+      "region_code": "01",
+      "province_name": "Cuneo",
+      "province_code": "004",
+      "abbreviation": "CN",
+      "source_istat": "004078"
+    },
+    {
+      "name": "Verbania",
+      "region_code": "01",
+      "province_name": "Verbano-Cusio-Ossola",
+      "province_code": "103",
+      "abbreviation": "VB",
+      "source_istat": "103072"
+    },
+    {
+      "name": "Aosta",
+      "region_code": "02",
+      "province_name": "Valle d'Aosta/Vallée d'Aoste",
+      "province_code": "007",
+      "abbreviation": "AO",
+      "source_istat": "007003"
+    },
+    {
+      "name": "Milano",
+      "region_code": "03",
+      "province_name": "Milano",
+      "province_code": "015",
+      "abbreviation": "MI",
+      "source_istat": "015146"
+    },
+    {
+      "name": "Bergamo",
+      "region_code": "03",
+      "province_name": "Bergamo",
+      "province_code": "016",
+      "abbreviation": "BG",
+      "source_istat": "016024"
+    },
+    {
+      "name": "Brescia",
+      "region_code": "03",
+      "province_name": "Brescia",
+      "province_code": "017",
+      "abbreviation": "BS",
+      "source_istat": "017029"
+    },
+    {
+      "name": "Como",
+      "region_code": "03",
+      "province_name": "Como",
+      "province_code": "013",
+      "abbreviation": "CO",
+      "source_istat": "013075"
+    },
+    {
+      "name": "Cremona",
+      "region_code": "03",
+      "province_name": "Cremona",
+      "province_code": "019",
+      "abbreviation": "CR",
+      "source_istat": "019036"
+    },
+    {
+      "name": "Lecco",
+      "region_code": "03",
+      "province_name": "Lecco",
+      "province_code": "097",
+      "abbreviation": "LC",
+      "source_istat": "097042"
+    },
+    {
+      "name": "Mantova",
+      "region_code": "03",
+      "province_name": "Mantova",
+      "province_code": "020",
+      "abbreviation": "MN",
+      "source_istat": "020030"
+    },
+    {
+      "name": "Monza",
+      "region_code": "03",
+      "province_name": "Monza e della Brianza",
+      "province_code": "108",
+      "abbreviation": "MB",
+      "source_istat": "108033"
+    },
+    {
+      "name": "Pavia",
+      "region_code": "03",
+      "province_name": "Pavia",
+      "province_code": "018",
+      "abbreviation": "PV",
+      "source_istat": "018110"
+    },
+    {
+      "name": "Varese",
+      "region_code": "03",
+      "province_name": "Varese",
+      "province_code": "012",
+      "abbreviation": "VA",
+      "source_istat": "012133"
+    },
+    {
+      "name": "Trento",
+      "region_code": "04",
+      "province_name": "Trento",
+      "province_code": "022",
+      "abbreviation": "TN",
+      "source_istat": "022205"
+    },
+    {
+      "name": "Bolzano",
+      "region_code": "04",
+      "province_name": "Bolzano/Bozen",
+      "province_code": "021",
+      "abbreviation": "BZ",
+      "source_istat": "021008"
+    },
+    {
+      "name": "Merano",
+      "region_code": "04",
+      "province_name": "Bolzano/Bozen",
+      "province_code": "021",
+      "abbreviation": "BZ",
+      "source_istat": "021051"
+    },
+    {
+      "name": "Venezia",
+      "region_code": "05",
+      "province_name": "Venezia",
+      "province_code": "027",
+      "abbreviation": "VE",
+      "source_istat": "027042"
+    },
+    {
+      "name": "Verona",
+      "region_code": "05",
+      "province_name": "Verona",
+      "province_code": "023",
+      "abbreviation": "VR",
+      "source_istat": "023091"
+    },
+    {
+      "name": "Padova",
+      "region_code": "05",
+      "province_name": "Padova",
+      "province_code": "028",
+      "abbreviation": "PD",
+      "source_istat": "028060"
+    },
+    {
+      "name": "Vicenza",
+      "region_code": "05",
+      "province_name": "Vicenza",
+      "province_code": "024",
+      "abbreviation": "VI",
+      "source_istat": "024116"
+    },
+    {
+      "name": "Treviso",
+      "region_code": "05",
+      "province_name": "Treviso",
+      "province_code": "026",
+      "abbreviation": "TV",
+      "source_istat": "026086"
+    },
+    {
+      "name": "Belluno",
+      "region_code": "05",
+      "province_name": "Belluno",
+      "province_code": "025",
+      "abbreviation": "BL",
+      "source_istat": "025006"
+    },
+    {
+      "name": "Rovigo",
+      "region_code": "05",
+      "province_name": "Rovigo",
+      "province_code": "029",
+      "abbreviation": "RO",
+      "source_istat": "029041"
+    },
+    {
+      "name": "Trieste",
+      "region_code": "06",
+      "province_name": "Trieste",
+      "province_code": "032",
+      "abbreviation": "TS",
+      "source_istat": "032006"
+    },
+    {
+      "name": "Udine",
+      "region_code": "06",
+      "province_name": "Udine",
+      "province_code": "030",
+      "abbreviation": "UD",
+      "source_istat": "030129"
+    },
+    {
+      "name": "Pordenone",
+      "region_code": "06",
+      "province_name": "Pordenone",
+      "province_code": "093",
+      "abbreviation": "PN",
+      "source_istat": "093033"
+    },
+    {
+      "name": "Gorizia",
+      "region_code": "06",
+      "province_name": "Gorizia",
+      "province_code": "031",
+      "abbreviation": "GO",
+      "source_istat": "031007"
+    },
+    {
+      "name": "Genova",
+      "region_code": "07",
+      "province_name": "Genova",
+      "province_code": "010",
+      "abbreviation": "GE",
+      "source_istat": "010025"
+    },
+    {
+      "name": "La Spezia",
+      "region_code": "07",
+      "province_name": "La Spezia",
+      "province_code": "011",
+      "abbreviation": "SP",
+      "source_istat": "011015"
+    },
+    {
+      "name": "Savona",
+      "region_code": "07",
+      "province_name": "Savona",
+      "province_code": "009",
+      "abbreviation": "SV",
+      "source_istat": "009056"
+    },
+    {
+      "name": "Imperia",
+      "region_code": "07",
+      "province_name": "Imperia",
+      "province_code": "008",
+      "abbreviation": "IM",
+      "source_istat": "008031"
+    },
+    {
+      "name": "Sanremo",
+      "region_code": "07",
+      "province_name": "Imperia",
+      "province_code": "008",
+      "abbreviation": "IM",
+      "source_istat": "008055"
+    },
+    {
+      "name": "Bologna",
+      "region_code": "08",
+      "province_name": "Bologna",
+      "province_code": "037",
+      "abbreviation": "BO",
+      "source_istat": "037006"
+    },
+    {
+      "name": "Modena",
+      "region_code": "08",
+      "province_name": "Modena",
+      "province_code": "036",
+      "abbreviation": "MO",
+      "source_istat": "036023"
+    },
+    {
+      "name": "Parma",
+      "region_code": "08",
+      "province_name": "Parma",
+      "province_code": "034",
+      "abbreviation": "PR",
+      "source_istat": "034027"
+    },
+    {
+      "name": "Reggio nell'Emilia",
+      "region_code": "08",
+      "province_name": "Reggio nell'Emilia",
+      "province_code": "035",
+      "abbreviation": "RE",
+      "source_istat": "035033"
+    },
+    {
+      "name": "Ravenna",
+      "region_code": "08",
+      "province_name": "Ravenna",
+      "province_code": "039",
+      "abbreviation": "RA",
+      "source_istat": "039014"
+    },
+    {
+      "name": "Ferrara",
+      "region_code": "08",
+      "province_name": "Ferrara",
+      "province_code": "038",
+      "abbreviation": "FE",
+      "source_istat": "038008"
+    },
+    {
+      "name": "Rimini",
+      "region_code": "08",
+      "province_name": "Rimini",
+      "province_code": "099",
+      "abbreviation": "RN",
+      "source_istat": "099014"
+    },
+    {
+      "name": "Piacenza",
+      "region_code": "08",
+      "province_name": "Piacenza",
+      "province_code": "033",
+      "abbreviation": "PC",
+      "source_istat": "033032"
+    },
+    {
+      "name": "Forlì",
+      "region_code": "08",
+      "province_name": "Forlì-Cesena",
+      "province_code": "040",
+      "abbreviation": "FC",
+      "source_istat": "040012"
+    },
+    {
+      "name": "Firenze",
+      "region_code": "09",
+      "province_name": "Firenze",
+      "province_code": "048",
+      "abbreviation": "FI",
+      "source_istat": "048017"
+    },
+    {
+      "name": "Pisa",
+      "region_code": "09",
+      "province_name": "Pisa",
+      "province_code": "050",
+      "abbreviation": "PI",
+      "source_istat": "050026"
+    },
+    {
+      "name": "Siena",
+      "region_code": "09",
+      "province_name": "Siena",
+      "province_code": "052",
+      "abbreviation": "SI",
+      "source_istat": "052032"
+    },
+    {
+      "name": "Lucca",
+      "region_code": "09",
+      "province_name": "Lucca",
+      "province_code": "046",
+      "abbreviation": "LU",
+      "source_istat": "046017"
+    },
+    {
+      "name": "Arezzo",
+      "region_code": "09",
+      "province_name": "Arezzo",
+      "province_code": "051",
+      "abbreviation": "AR",
+      "source_istat": "051002"
+    },
+    {
+      "name": "Livorno",
+      "region_code": "09",
+      "province_name": "Livorno",
+      "province_code": "049",
+      "abbreviation": "LI",
+      "source_istat": "049009"
+    },
+    {
+      "name": "Grosseto",
+      "region_code": "09",
+      "province_name": "Grosseto",
+      "province_code": "053",
+      "abbreviation": "GR",
+      "source_istat": "053011"
+    },
+    {
+      "name": "Prato",
+      "region_code": "09",
+      "province_name": "Prato",
+      "province_code": "100",
+      "abbreviation": "PO",
+      "source_istat": "100005"
+    },
+    {
+      "name": "Perugia",
+      "region_code": "10",
+      "province_name": "Perugia",
+      "province_code": "054",
+      "abbreviation": "PG",
+      "source_istat": "054039"
+    },
+    {
+      "name": "Terni",
+      "region_code": "10",
+      "province_name": "Terni",
+      "province_code": "055",
+      "abbreviation": "TR",
+      "source_istat": "055032"
+    },
+    {
+      "name": "Assisi",
+      "region_code": "10",
+      "province_name": "Perugia",
+      "province_code": "054",
+      "abbreviation": "PG",
+      "source_istat": "054001"
+    },
+    {
+      "name": "Orvieto",
+      "region_code": "10",
+      "province_name": "Terni",
+      "province_code": "055",
+      "abbreviation": "TR",
+      "source_istat": "055023"
+    },
+    {
+      "name": "Ancona",
+      "region_code": "11",
+      "province_name": "Ancona",
+      "province_code": "042",
+      "abbreviation": "AN",
+      "source_istat": "042002"
+    },
+    {
+      "name": "Pesaro",
+      "region_code": "11",
+      "province_name": "Pesaro e Urbino",
+      "province_code": "041",
+      "abbreviation": "PU",
+      "source_istat": "041044"
+    },
+    {
+      "name": "Urbino",
+      "region_code": "11",
+      "province_name": "Pesaro e Urbino",
+      "province_code": "041",
+      "abbreviation": "PU",
+      "source_istat": "041067"
+    },
+    {
+      "name": "Macerata",
+      "region_code": "11",
+      "province_name": "Macerata",
+      "province_code": "043",
+      "abbreviation": "MC",
+      "source_istat": "043023"
+    },
+    {
+      "name": "Ascoli Piceno",
+      "region_code": "11",
+      "province_name": "Ascoli Piceno",
+      "province_code": "044",
+      "abbreviation": "AP",
+      "source_istat": "044007"
+    },
+    {
+      "name": "Roma",
+      "region_code": "12",
+      "province_name": "Roma",
+      "province_code": "058",
+      "abbreviation": "RM",
+      "source_istat": "058091"
+    },
+    {
+      "name": "Viterbo",
+      "region_code": "12",
+      "province_name": "Viterbo",
+      "province_code": "056",
+      "abbreviation": "VT",
+      "source_istat": "056059"
+    },
+    {
+      "name": "Latina",
+      "region_code": "12",
+      "province_name": "Latina",
+      "province_code": "059",
+      "abbreviation": "LT",
+      "source_istat": "059011"
+    },
+    {
+      "name": "Frosinone",
+      "region_code": "12",
+      "province_name": "Frosinone",
+      "province_code": "060",
+      "abbreviation": "FR",
+      "source_istat": "060038"
+    },
+    {
+      "name": "Rieti",
+      "region_code": "12",
+      "province_name": "Rieti",
+      "province_code": "057",
+      "abbreviation": "RI",
+      "source_istat": "057059"
+    },
+    {
+      "name": "L'Aquila",
+      "region_code": "13",
+      "province_name": "L'Aquila",
+      "province_code": "066",
+      "abbreviation": "AQ",
+      "source_istat": "066049"
+    },
+    {
+      "name": "Pescara",
+      "region_code": "13",
+      "province_name": "Pescara",
+      "province_code": "068",
+      "abbreviation": "PE",
+      "source_istat": "068028"
+    },
+    {
+      "name": "Teramo",
+      "region_code": "13",
+      "province_name": "Teramo",
+      "province_code": "067",
+      "abbreviation": "TE",
+      "source_istat": "067041"
+    },
+    {
+      "name": "Chieti",
+      "region_code": "13",
+      "province_name": "Chieti",
+      "province_code": "069",
+      "abbreviation": "CH",
+      "source_istat": "069022"
+    },
+    {
+      "name": "Campobasso",
+      "region_code": "14",
+      "province_name": "Campobasso",
+      "province_code": "070",
+      "abbreviation": "CB",
+      "source_istat": "070006"
+    },
+    {
+      "name": "Isernia",
+      "region_code": "14",
+      "province_name": "Isernia",
+      "province_code": "094",
+      "abbreviation": "IS",
+      "source_istat": "094023"
+    },
+    {
+      "name": "Termoli",
+      "region_code": "14",
+      "province_name": "Campobasso",
+      "province_code": "070",
+      "abbreviation": "CB",
+      "source_istat": "070078"
+    },
+    {
+      "name": "Napoli",
+      "region_code": "15",
+      "province_name": "Napoli",
+      "province_code": "063",
+      "abbreviation": "NA",
+      "source_istat": "063049"
+    },
+    {
+      "name": "Salerno",
+      "region_code": "15",
+      "province_name": "Salerno",
+      "province_code": "065",
+      "abbreviation": "SA",
+      "source_istat": "065116"
+    },
+    {
+      "name": "Caserta",
+      "region_code": "15",
+      "province_name": "Caserta",
+      "province_code": "061",
+      "abbreviation": "CE",
+      "source_istat": "061022"
+    },
+    {
+      "name": "Avellino",
+      "region_code": "15",
+      "province_name": "Avellino",
+      "province_code": "064",
+      "abbreviation": "AV",
+      "source_istat": "064008"
+    },
+    {
+      "name": "Benevento",
+      "region_code": "15",
+      "province_name": "Benevento",
+      "province_code": "062",
+      "abbreviation": "BN",
+      "source_istat": "062008"
+    },
+    {
+      "name": "Sorrento",
+      "region_code": "15",
+      "province_name": "Napoli",
+      "province_code": "063",
+      "abbreviation": "NA",
+      "source_istat": "063080"
+    },
+    {
+      "name": "Bari",
+      "region_code": "16",
+      "province_name": "Bari",
+      "province_code": "072",
+      "abbreviation": "BA",
+      "source_istat": "072006"
+    },
+    {
+      "name": "Lecce",
+      "region_code": "16",
+      "province_name": "Lecce",
+      "province_code": "075",
+      "abbreviation": "LE",
+      "source_istat": "075035"
+    },
+    {
+      "name": "Taranto",
+      "region_code": "16",
+      "province_name": "Taranto",
+      "province_code": "073",
+      "abbreviation": "TA",
+      "source_istat": "073027"
+    },
+    {
+      "name": "Brindisi",
+      "region_code": "16",
+      "province_name": "Brindisi",
+      "province_code": "074",
+      "abbreviation": "BR",
+      "source_istat": "074001"
+    },
+    {
+      "name": "Foggia",
+      "region_code": "16",
+      "province_name": "Foggia",
+      "province_code": "071",
+      "abbreviation": "FG",
+      "source_istat": "071024"
+    },
+    {
+      "name": "Matera",
+      "region_code": "17",
+      "province_name": "Matera",
+      "province_code": "077",
+      "abbreviation": "MT",
+      "source_istat": "077014"
+    },
+    {
+      "name": "Potenza",
+      "region_code": "17",
+      "province_name": "Potenza",
+      "province_code": "076",
+      "abbreviation": "PZ",
+      "source_istat": "076063"
+    },
+    {
+      "name": "Reggio di Calabria",
+      "region_code": "18",
+      "province_name": "Reggio Calabria",
+      "province_code": "080",
+      "abbreviation": "RC",
+      "source_istat": "080063"
+    },
+    {
+      "name": "Catanzaro",
+      "region_code": "18",
+      "province_name": "Catanzaro",
+      "province_code": "079",
+      "abbreviation": "CZ",
+      "source_istat": "079023"
+    },
+    {
+      "name": "Cosenza",
+      "region_code": "18",
+      "province_name": "Cosenza",
+      "province_code": "078",
+      "abbreviation": "CS",
+      "source_istat": "078045"
+    },
+    {
+      "name": "Crotone",
+      "region_code": "18",
+      "province_name": "Crotone",
+      "province_code": "101",
+      "abbreviation": "KR",
+      "source_istat": "101010"
+    },
+    {
+      "name": "Vibo Valentia",
+      "region_code": "18",
+      "province_name": "Vibo Valentia",
+      "province_code": "102",
+      "abbreviation": "VV",
+      "source_istat": "102047"
+    },
+    {
+      "name": "Palermo",
+      "region_code": "19",
+      "province_name": "Palermo",
+      "province_code": "082",
+      "abbreviation": "PA",
+      "source_istat": "082053"
+    },
+    {
+      "name": "Catania",
+      "region_code": "19",
+      "province_name": "Catania",
+      "province_code": "087",
+      "abbreviation": "CT",
+      "source_istat": "087015"
+    },
+    {
+      "name": "Messina",
+      "region_code": "19",
+      "province_name": "Messina",
+      "province_code": "083",
+      "abbreviation": "ME",
+      "source_istat": "083048"
+    },
+    {
+      "name": "Siracusa",
+      "region_code": "19",
+      "province_name": "Siracusa",
+      "province_code": "089",
+      "abbreviation": "SR",
+      "source_istat": "089017"
+    },
+    {
+      "name": "Ragusa",
+      "region_code": "19",
+      "province_name": "Ragusa",
+      "province_code": "088",
+      "abbreviation": "RG",
+      "source_istat": "088009"
+    },
+    {
+      "name": "Trapani",
+      "region_code": "19",
+      "province_name": "Trapani",
+      "province_code": "081",
+      "abbreviation": "TP",
+      "source_istat": "081021"
+    },
+    {
+      "name": "Agrigento",
+      "region_code": "19",
+      "province_name": "Agrigento",
+      "province_code": "084",
+      "abbreviation": "AG",
+      "source_istat": "084001"
+    },
+    {
+      "name": "Cagliari",
+      "region_code": "20",
+      "province_name": "Cagliari",
+      "province_code": "092",
+      "abbreviation": "CA",
+      "source_istat": "092009"
+    },
+    {
+      "name": "Sassari",
+      "region_code": "20",
+      "province_name": "Sassari",
+      "province_code": "090",
+      "abbreviation": "SS",
+      "source_istat": "090064"
+    },
+    {
+      "name": "Nuoro",
+      "region_code": "20",
+      "province_name": "Nuoro",
+      "province_code": "091",
+      "abbreviation": "NU",
+      "source_istat": "091051"
+    },
+    {
+      "name": "Oristano",
+      "region_code": "20",
+      "province_name": "Oristano",
+      "province_code": "095",
+      "abbreviation": "OR",
+      "source_istat": "095038"
+    },
+    {
+      "name": "Olbia",
+      "region_code": "20",
+      "province_name": "Sassari",
+      "province_code": "090",
+      "abbreviation": "SS",
+      "source_istat": "090047"
+    }
+  ]
+}
