@@ -26,7 +26,10 @@ export function MediaGallery({ userId, istat }: { userId: string; istat: string 
   const [editing, setEditing] = useState<Item | null>(null);
   const [caption, setCaption] = useState("");
   const [deleting, setDeleting] = useState<Item | null>(null);
-  const refresh = () => qc.invalidateQueries({ queryKey: ["media", userId] });
+  const refresh = () => {
+    qc.invalidateQueries({ queryKey: ["media", userId] });
+    qc.invalidateQueries({ queryKey: ["badges", userId] });
+  };
 
   async function onFiles(files: FileList | null) {
     if (!files?.length) return;

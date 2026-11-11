@@ -14,6 +14,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { AuthProvider, useAuth } from "@/lib/auth";
 import { AppNavigation } from "@/components/explorer/AppNavigation";
+import { BadgeObserver } from "@/components/explorer/BadgeObserver";
 import { Toaster } from "@/components/ui/sonner";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
@@ -143,6 +144,8 @@ function RootComponent() {
           if (event === "SIGNED_OUT") {
             queryClient.removeQueries({ queryKey: ["visits"] });
             queryClient.removeQueries({ queryKey: ["media"] });
+            queryClient.cancelQueries({ queryKey: ["badges"] });
+            queryClient.removeQueries({ queryKey: ["badges"] });
           }
           else queryClient.invalidateQueries();
         }}
@@ -161,6 +164,7 @@ function NavigationShell() {
   const visible = !!session && pathname !== "/auth";
   return <div className={visible ? "app-with-navigation min-h-screen" : "min-h-screen"}>
     <Outlet />
+    {session && <BadgeObserver key={session.user.id} userId={session.user.id} />}
     {visible && <AppNavigation />}
   </div>;
 }

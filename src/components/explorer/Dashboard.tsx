@@ -11,6 +11,7 @@ import { RegionCard } from "./RegionCard";
 import { MunicipalityCard } from "./MunicipalityCard";
 import { StatTile } from "./StatTile";
 import { DemoNotice } from "./DemoNotice";
+import { BadgeShowcase } from "./BadgeShowcase";
 
 const norm = (s: string) => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
@@ -51,6 +52,7 @@ export function Dashboard({ userId }: { userId: string }) {
         </div>
       </section>
 
+      <BadgeShowcase userId={userId} />
       {!g.catalogComplete && <DemoNotice catalogCount={g.municipalities.length} />}
 
       <section className="space-y-3">
