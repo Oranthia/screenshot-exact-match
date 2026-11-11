@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { ImagePlus, Loader2, Pencil, Play, Trash2 } from "lucide-react";
+import { ImagePlus, Loader2, Pencil, Play, Trash2, Star } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { mediaQuery } from "@/lib/queries";
@@ -26,6 +26,7 @@ export function MediaGallery({ userId, istat }: { userId: string; istat: string 
   const [editing, setEditing] = useState<Item | null>(null);
   const [caption, setCaption] = useState("");
   const [deleting, setDeleting] = useState<Item | null>(null);
+  const [coverPending, setCoverPending] = useState(false);
   const refresh = () => {
     qc.invalidateQueries({ queryKey: ["media", userId] });
     qc.invalidateQueries({ queryKey: ["badges", userId] });
@@ -66,6 +67,16 @@ export function MediaGallery({ userId, istat }: { userId: string; istat: string 
     if (error) toast.error("Impossibile salvare la didascalia");
     else { toast.success("Didascalia aggiornata"); refresh(); }
     setEditing(null);
+  }
+
+  async function setCover(item: Item) {
+    setCoverPending(true);
+    try {
+      const { error } = await supabase.rpc("set_my_city_cover", { _media_id: item.id });
+      if (error) throw error;
+      refresh(); toast.success("Copertina aggiornata");
+    } catch { toast.error("Impossibile aggiornare la copertina. Riprova."); }
+    finally { setCoverPending(false); }
   }
 
   async function confirmDelete() {
@@ -111,7 +122,7 @@ export function MediaGallery({ userId, istat }: { userId: string; istat: string 
         ))}
         {q.data?.map((m) => (
           <figure key={m.id} className="group relative overflow-hidden rounded-xl border bg-muted">
-            <button type="button" className="block aspect-square w-full" onClick={() => setViewing(m)} aria-label={`Apri ${m.file_name}`}>
+            <Button variant="ghost" className="block aspect-square h-auto w-full rounded-none p-0" onClick={() => setViewing(m)} aria-label={`Apri ${m.file_name}`}>
               {m.media_type === "photo" ? (
                 <img src={m.url} alt={m.caption ?? m.file_name} className="h-full w-full object-cover" loading="lazy" />
               ) : (
@@ -122,7 +133,8 @@ export function MediaGallery({ userId, istat }: { userId: string; istat: string 
                   </span>
                 </div>
               )}
-            </button>
+            </Button>
+            {m.media_type === "photo" && <Button variant="secondary" size="sm" className="w-full rounded-none text-xs" disabled={coverPending || m.is_cover} onClick={() => setCover(m)}><Star className="h-3 w-3" />{m.is_cover ? "Copertina" : "Imposta come copertina"}</Button>}
             {m.caption && <figcaption className="truncate px-2 py-1.5 text-xs">{m.caption}</figcaption>}
             <div className="absolute right-1.5 top-1.5 flex gap-1">
               <Button size="icon" variant="secondary" className="h-7 w-7" aria-label="Modifica didascalia"

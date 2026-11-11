@@ -48,3 +48,6 @@ use the editor.
 - Award badges only through protected database functions/triggers; keep badge_rules thresholds in parity with the browser-safe badge catalog. Why: clients cannot invent achievements, historical awards survive corrections, and graphics remain replaceable.
 - Use one identity-scoped badges query and root observer; invalidate after successful visit/media changes and clear on logout. Why: avoid repeated evaluations and keep collection/showcase consistent.
 - Save the whole featured-badge order atomically through the owner-scoped database function. Why: enforce three unique earned badges without partial replacement or cross-user writes.
+- Preserve exact showcase positions through the protected slot function, swapping an already featured selection atomically. Why: empty slots must not collapse or duplicate badges.
+- Store a unique photo-only cover flag per owner/city on media; select the earliest remaining photo when no cover exists. Why: deletions need no visit changes or public storage.
+- Share DiaryCover for diary and recent-city images, refresh signed URLs before expiry and retry image failures once per photo. Why: avoid blank covers and retry loops while preserving private caches.

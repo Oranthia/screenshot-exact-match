@@ -98,6 +98,7 @@ export const mediaQuery = (userId: string, istat: string) =>
   queryOptions({
     queryKey: ["media", userId, istat],
     staleTime: 1000 * 60 * 45,
+    refetchInterval: 1000 * 60 * 45,
     queryFn: async () => {
       const data: VisitMedia[] = [];
       for (let from = 0; ; from += 1000) {

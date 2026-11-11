@@ -8,6 +8,7 @@ import { diaryEntries, type DiarySort } from "@/lib/diary";
 import { diaryPhotosQuery } from "@/lib/diary-photos";
 import { PersonalPage, PersonalPageError } from "@/components/explorer/PersonalPage";
 import { Crest } from "@/components/explorer/Crest";
+import { DiaryCover } from "@/components/explorer/DiaryCover";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -64,7 +65,7 @@ function Diary({ userId }: { userId: string }) {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{visible.map(({ city, visit }) => {
         const photo = photoByCity.get(city.istat_code);
         return <Link key={city.istat_code} to="/comune/$slug" params={{ slug: city.slug }} className="overflow-hidden rounded-lg border bg-card shadow-card transition-shadow hover:shadow-lift">
-          {photo ? <img src={photo.url} alt={photo.caption ?? `Ricordo di ${city.name}`} loading="lazy" className="aspect-[16/9] w-full object-cover" /> : <div className="flex aspect-[16/9] items-center justify-center border-b bg-parchment"><Crest name={city.name} url={city.coat_of_arms_url} visited size="lg" /></div>}
+          <DiaryCover name={city.name} coatUrl={city.coat_of_arms_url} photo={photo} pending={photos.isPending} onRetry={() => { if (!photos.isFetching) void photos.refetch(); }} />
           <div className="p-4"><div className="flex items-start gap-3"><div className="min-w-0 flex-1"><h2 className="break-words text-2xl font-semibold">{city.name}</h2><p className="text-sm text-muted-foreground">{geo.regionByCode.get(city.region_code)?.name}</p></div>{photo && city.coat_of_arms_url && <Crest name={city.name} url={city.coat_of_arms_url} visited />}</div>{visit.visit_date && <p className="mt-2 flex items-center gap-2 text-sm text-muted-foreground"><CalendarDays aria-hidden="true" className="h-3.5 w-3.5 shrink-0" />{new Date(`${visit.visit_date}T00:00:00`).toLocaleDateString("it-IT", { day: "numeric", month: "long", year: "numeric" })}</p>}{visit.notes?.trim() && <p className="mt-3 line-clamp-2 break-words text-sm leading-relaxed text-foreground/85">{visit.notes}</p>}</div>
         </Link>;
       })}</div>

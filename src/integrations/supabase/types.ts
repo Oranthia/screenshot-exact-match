@@ -215,6 +215,7 @@ export type Database = {
           created_at: string
           file_name: string
           id: string
+          is_cover: boolean
           istat_code: string
           media_type: string
           storage_path: string
@@ -225,6 +226,7 @@ export type Database = {
           created_at?: string
           file_name: string
           id?: string
+          is_cover?: boolean
           istat_code: string
           media_type: string
           storage_path: string
@@ -235,6 +237,7 @@ export type Database = {
           created_at?: string
           file_name?: string
           id?: string
+          is_cover?: boolean
           istat_code?: string
           media_type?: string
           storage_path?: string
@@ -264,6 +267,11 @@ export type Database = {
           metric: string
           threshold: number
         }[]
+      }
+      set_my_city_cover: { Args: { _media_id: string }; Returns: undefined }
+      set_my_featured_badge_slot: {
+        Args: { _badge_id: string; _position: number }
+        Returns: undefined
       }
       set_my_featured_badges: { Args: { _ids: string[] }; Returns: undefined }
       sync_my_badges: { Args: never; Returns: Json }
