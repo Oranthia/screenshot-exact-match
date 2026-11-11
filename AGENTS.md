@@ -44,3 +44,4 @@ use the editor.
 - Derive diary entries from the shared visits cache and load photo previews only for the visible page, under the existing private media cache prefix. Why: visit toggles stay immediate and media remains owner-scoped and cleared on logout.
 - Keep region display ordering in the browser-safe region-order helper without changing progress calculations. Why: presentation ranking must not affect visit totals.
 - Store the optional display name through the existing auth user's metadata and keep logout in Profile. Why: personal presentation needs no new tables or authentication flow.
+- Diary date sorting uses the supplied visit date, otherwise the existing updated_at timestamp only for ordering, with a city-key tie-breaker; never display a fallback as a visit date. Why: the current schema has no visit creation timestamp and missing dates must not be invented.

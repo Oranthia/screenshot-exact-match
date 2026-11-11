@@ -43,7 +43,7 @@ export function Dashboard({ userId }: { userId: string }) {
         <div aria-hidden className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full border border-gold/30" />
         <div aria-hidden className="pointer-events-none absolute -right-6 -top-6 h-36 w-36 rounded-full border border-gold/20" />
         <p className="text-xs uppercase tracking-[0.22em] text-gold">Il tuo passaporto</p>
-        <h1 className="mt-1 text-3xl font-semibold sm:text-5xl">Italia esplorata al <span className="tabular-nums">{formatPercent(stats.national.percent)}</span></h1>
+        <h1 className="mt-1 text-3xl font-semibold sm:text-5xl">Italia esplorata al <span className="font-sans tabular-nums">{formatPercent(stats.national.percent)}</span></h1>
         <ProgressBar value={stats.national.percent} tone="gold" className="mt-4 h-2 bg-primary-foreground/15" />
         <div className="mt-4 grid grid-cols-2 gap-3">
           <StatTile label="Città visitate" value={`${stats.national.visited}`} sub={`su ${stats.national.total} nel catalogo`} />

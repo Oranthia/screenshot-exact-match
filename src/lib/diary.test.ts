@@ -37,4 +37,18 @@ describe("personal diary", () => {
     const rows = [{ id: "2", istat_code: "a", media_type: "photo", created_at: "2026-11-02" }, { id: "1", istat_code: "a", media_type: "photo", created_at: "2026-11-01" }, { id: "0", istat_code: "a", media_type: "video", created_at: "2026-10-01" }] as VisitMedia[];
     expect(firstDiaryPhotos(rows).map(p => p.id)).toEqual(["1"]);
   });
+  it("sorts oldest visits first", () => {
+    const cities = [city("Roma", "a"), city("Bari", "b")];
+    expect(diaryEntries(cities, [visit("a", true, "2026-11-02"), visit("b", true, "2026-11-01")], { ...filters, sort: "date-asc" }).map(e => e.city.name)).toEqual(["Bari", "Roma"]);
+  });
+  it("sorts names Z-A", () => {
+    expect(diaryEntries([city("Bari", "b"), city("Roma", "a")], [visit("b", true), visit("a", true)], { ...filters, sort: "name-desc" }).map(e => e.city.name)).toEqual(["Roma", "Bari"]);
+  });
+  it("uses the existing saved timestamp when visit dates are missing without inventing visit dates", () => {
+    const cities = [city("Roma", "a"), city("Bari", "b")];
+    const visits = [{ ...visit("a", true), updated_at: "2026-11-03T12:00:00Z" }, visit("b", true, "2026-11-02")];
+    expect(diaryEntries(cities, visits, filters).map(e => e.city.name)).toEqual(["Roma", "Bari"]);
+    expect(diaryEntries(cities, visits, { ...filters, sort: "date-asc" }).map(e => e.city.name)).toEqual(["Bari", "Roma"]);
+    expect(visits[0]?.visit_date).toBeNull();
+  });
 });
