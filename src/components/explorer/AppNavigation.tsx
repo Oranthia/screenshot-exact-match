@@ -16,7 +16,7 @@ export function AppNavigation({ desktop = false }: { desktop?: boolean }) {
       <div className={cn(desktop ? "flex gap-1" : "mx-auto grid max-w-lg grid-cols-4 px-2")}>
         {destinations.map(({ to, label, icon: Icon }) => (
           <Button key={to} asChild variant="ghost" className={cn("rounded-lg", desktop ? "h-10 px-3" : "h-16 flex-col gap-1 px-1 text-xs [&_svg]:size-5")}>
-            <Link to={to} activeOptions={{ exact: true }} activeProps={{ className: "text-primary bg-accent font-semibold", "aria-current": "page" }} inactiveProps={{ className: "text-muted-foreground" }}>
+            <Link to={to} activeOptions={{ exact: true, includeSearch: false }} activeProps={{ className: "text-primary bg-accent font-semibold", "aria-current": "page" }} inactiveProps={{ className: "text-muted-foreground" }}>
               <Icon aria-hidden="true" /><span>{label}</span>
             </Link>
           </Button>
