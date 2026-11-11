@@ -147,7 +147,7 @@
   }
   h1, h2, h3 {
     font-family: var(--font-display);
-    letter-spacing: -0.01em;
+    letter-spacing: 0;
   }
 }
 
@@ -193,6 +193,11 @@
 .badge-medal-large .badge-ornament { top: 10px; }
 .badge-medal-large .badge-ornament-bottom { top: auto; bottom: 12px; }
 .badge-medal-large .badge-lock { top: 98px; }
+.badge-collection-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 359px) { .badge-collection-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 640px) { .badge-collection-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (min-width: 1024px) { .badge-collection-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
+@media (max-width: 639px) { .badge-sheet { top: auto; bottom: 0; transform: translateX(-50%); border-radius: 8px 8px 0 0; padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px)); } }
 @media (max-width: 360px) {
   .toaster[data-sonner-toaster] { --width: calc(100vw - 24px) !important; width: var(--width) !important; max-width: var(--width); left: 50% !important; right: auto !important; transform: translateX(-50%) !important; }
   [data-sonner-toast] { max-width: 100%; }
