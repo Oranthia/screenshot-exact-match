@@ -1,6 +1,7 @@
 import { queryOptions, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
+import { optimisticVisit, type VisitPatch } from "./visit-cache";
 
 export type Region = Tables<"regions">;
 export type Province = Tables<"provinces">;
@@ -57,7 +58,7 @@ export const visitsQuery = (userId: string) =>
 export function useSaveVisit(userId: string) {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: async (v: { istat_code: string; visited?: boolean; visit_date?: string | null; notes?: string | null }) => {
+    mutationFn: async (v: VisitPatch) => {
       const { data, error } = await supabase
         .from("user_visits")
         .upsert({ user_id: userId, ...v }, { onConflict: "user_id,istat_code" })
@@ -65,6 +66,16 @@ export function useSaveVisit(userId: string) {
         .single();
       if (error) throw error;
       return data;
+    },
+    onMutate: async (patch) => {
+      const key = ["visits", userId];
+      await qc.cancelQueries({ queryKey: key });
+      const previous = qc.getQueryData<Visit[]>(key);
+      qc.setQueryData<Visit[]>(key, optimisticVisit(previous ?? [], userId, patch));
+      return { previous };
+    },
+    onError: (_error, _patch, context) => {
+      qc.setQueryData(["visits", userId], context?.previous ?? []);
     },
     onSuccess: (row) => {
       qc.setQueryData<Visit[]>(["visits", userId], (old) => {

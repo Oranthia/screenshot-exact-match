@@ -36,3 +36,4 @@ use the editor.
 - ISTAT codes are text (leading zeros kept). Full catalog is loaded via `scripts/import-istat.ts`, which also flips `catalog_meta.is_complete`.
 - Render all municipal coats through the shared Crest component, with transition-only unlock animation and failed-image fallback; why: list and detail states must stay consistent without duplicating assets.
 - Bulk coat associations are validated by `src/lib/coat-import.ts` and applied as data updates matching ISTAT codes, only to empty URLs; why: protect existing artwork and user visits.
+- Optimistically patch the shared visits query cache and restore it on save failure; why: every mounted list and detail must reflect the same visit state immediately.
