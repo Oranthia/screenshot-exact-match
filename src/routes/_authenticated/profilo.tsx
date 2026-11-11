@@ -29,7 +29,7 @@ function Profile({ userId }: { userId: string }) {
   const [busy, setBusy] = useState(false);
   const stats = computeProgress(geo.regions, geo.municipalities, new Set(visits.filter(v => v.visited).map(v => v.istat_code)));
   const metadata = session?.user.user_metadata;
-  const name = metadata?.display_name ?? metadata?.full_name ?? metadata?.name;
+  const name = metadata?.["display_name"] ?? metadata?.["full_name"] ?? metadata?.["name"];
   async function logout() {
     setBusy(true);
     const { error } = await supabase.auth.signOut();
