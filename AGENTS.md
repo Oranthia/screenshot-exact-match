@@ -28,3 +28,9 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project rules
+- Progress (national/regional %, explored/completed) is computed only in `src/lib/progress.ts` from DB rows; never hardcode counts. Why: catalog grows via ISTAT import.
+- User data (visits, media) is read/written from the browser Supabase client under RLS; geo tables are public read-only. Why: simple, per-user isolation enforced in DB.
+- Media files live in the private `visit-media` bucket under `<user_id>/<istat>/…`; DB stores only the path. Why: storage RLS keys on the first folder.
+- ISTAT codes are text (leading zeros kept). Full catalog is loaded via `scripts/import-istat.ts`, which also flips `catalog_meta.is_complete`.
