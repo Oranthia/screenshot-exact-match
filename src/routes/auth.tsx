@@ -20,6 +20,8 @@ export const Route = createFileRoute("/auth")({
       { name: "description", content: "Accedi o registrati per salvare i comuni italiani che hai visitato." },
       { property: "og:title", content: "Accedi — Italia Explorer" },
       { property: "og:description", content: "Il tuo passaporto digitale dei comuni italiani." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: AuthPage,

@@ -21,6 +21,8 @@ export const Route = createFileRoute("/_authenticated/regione/$slug")({
       { name: "description", content: "Comuni della regione, progresso di visita e ricerca." },
       { property: "og:title", content: "Regione — Italia Explorer" },
       { property: "og:description", content: "Esplora i comuni della regione." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: RegionPage,
