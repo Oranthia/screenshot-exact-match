@@ -194,7 +194,7 @@
 .badge-medal-large .badge-ornament-bottom { top: auto; bottom: 12px; }
 .badge-medal-large .badge-lock { top: 98px; }
 @media (max-width: 360px) {
-  .toaster { max-width: calc(100vw - 24px); }
+  .toaster[data-sonner-toaster] { --width: calc(100vw - 24px) !important; width: var(--width) !important; max-width: var(--width); left: 50% !important; right: auto !important; transform: translateX(-50%) !important; }
   [data-sonner-toast] { max-width: 100%; }
 }
 .bottom-navigation { padding-bottom: env(safe-area-inset-bottom, 0px); }
