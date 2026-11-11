@@ -42,3 +42,5 @@ use the editor.
 - Clear private visits and media query caches on sign-out; why: signed media URLs must not linger in the next session's cache.
 - Share primary navigation across the root mobile shell and desktop header; keep new personal pages under the existing protected layout. Why: preserve the existing home and session gate without rebuilding pages.
 - Derive diary entries from the shared visits cache and load photo previews only for the visible page, under the existing private media cache prefix. Why: visit toggles stay immediate and media remains owner-scoped and cleared on logout.
+- Keep region display ordering in the browser-safe region-order helper without changing progress calculations. Why: presentation ranking must not affect visit totals.
+- Store the optional display name through the existing auth user's metadata and keep logout in Profile. Why: personal presentation needs no new tables or authentication flow.

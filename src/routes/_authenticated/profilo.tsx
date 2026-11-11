@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { UserRound, LogOut, Loader2 } from "lucide-react";
+import { UserRound, LogOut, Loader2, Pencil, Check, X } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
@@ -10,6 +10,7 @@ import { computeProgress } from "@/lib/progress";
 import { PersonalPage, PersonalPageError } from "@/components/explorer/PersonalPage";
 import { ProgressBar, formatPercent } from "@/components/explorer/ProgressBar";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export const Route = createFileRoute("/_authenticated/profilo")({
   head: () => ({ meta: [
@@ -30,6 +31,18 @@ function Profile({ userId }: { userId: string }) {
   const stats = computeProgress(geo.regions, geo.municipalities, new Set(visits.filter(v => v.visited).map(v => v.istat_code)));
   const metadata = session?.user.user_metadata;
   const name = metadata?.["display_name"] ?? metadata?.["full_name"] ?? metadata?.["name"];
+  const [editing, setEditing] = useState(false);
+  const [draftName, setDraftName] = useState("");
+  const [savingName, setSavingName] = useState(false);
+  async function saveName(e: React.FormEvent) {
+    e.preventDefault();
+    setSavingName(true);
+    const { error } = await supabase.auth.updateUser({ data: { display_name: draftName.trim() } });
+    setSavingName(false);
+    if (error) { toast.error("Impossibile salvare il nome. Riprova."); return; }
+    setEditing(false);
+    toast.success("Nome aggiornato");
+  }
   async function logout() {
     setBusy(true);
     const { error } = await supabase.auth.signOut();
@@ -38,8 +51,9 @@ function Profile({ userId }: { userId: string }) {
     await navigate({ to: "/auth", search: { redirect: undefined } });
   }
   return <div className="space-y-10"><header><p className="text-xs uppercase tracking-widest text-gold-foreground">Il tuo passaporto</p><h1 className="mt-1 text-4xl font-semibold">Il mio profilo</h1></header>
-    <section className="flex items-center gap-5 border-b pb-8"><div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-accent"><UserRound className="h-9 w-9 text-primary" strokeWidth={1.5} /></div><div className="min-w-0">{typeof name === "string" && name.trim() && <h2 className="break-words text-3xl font-semibold">{name}</h2>}<p className="break-all text-muted-foreground">{session?.user.email}</p></div></section>
-    <section className="grid gap-6 sm:grid-cols-3"><div><p className="text-4xl font-semibold text-primary">{stats.national.visited}</p><p className="mt-2 text-sm text-muted-foreground">Città visitate</p></div><div><p className="text-4xl font-semibold text-primary">{stats.regionsExplored}</p><p className="mt-2 text-sm text-muted-foreground">Regioni esplorate</p></div><div><p className="text-4xl font-semibold text-primary">{formatPercent(stats.national.percent)}</p><p className="mt-2 text-sm text-muted-foreground">Completamento del catalogo</p></div></section>
+    <section className="flex items-center gap-4 border-b pb-6"><div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-accent"><UserRound className="h-8 w-8 text-primary" strokeWidth={1.5} /></div><div className="min-w-0 flex-1"><div className="flex items-center gap-2">{typeof name === "string" && name.trim() ? <h2 className="min-w-0 break-words text-3xl font-semibold">{name}</h2> : <span className="text-sm text-muted-foreground">Nome visualizzato</span>}<Button variant="ghost" size="icon" aria-label="Modifica nome" title="Modifica nome" onClick={() => { setDraftName(typeof name === "string" ? name : ""); setEditing(true); }}><Pencil /></Button></div><p className="break-all text-sm text-muted-foreground">{session?.user.email}</p></div></section>
+    {editing && <form onSubmit={saveName} className="flex flex-wrap items-end gap-2"><label className="min-w-0 flex-1 text-sm font-medium">Nome visualizzato<Input className="mt-2 bg-card" value={draftName} onChange={e => setDraftName(e.target.value)} maxLength={80} autoFocus /></label><Button type="submit" size="icon" aria-label="Salva nome" title="Salva nome" disabled={savingName}>{savingName ? <Loader2 className="animate-spin" /> : <Check />}</Button><Button variant="ghost" size="icon" aria-label="Annulla" title="Annulla" onClick={() => setEditing(false)}><X /></Button></form>}
+    <section className="grid grid-cols-2 gap-3 sm:grid-cols-3">{[{ value: stats.national.visited, label: "Città visitate" }, { value: stats.regionsExplored, label: "Regioni esplorate" }, { value: formatPercent(stats.national.percent), label: "Completamento catalogo" }].map((stat, i) => <div key={stat.label} className={`rounded-lg border bg-card p-4 ${i === 2 ? "col-span-2 sm:col-span-1" : ""}`}><p className="font-sans text-3xl font-semibold tabular-nums text-primary">{stat.value}</p><p className="mt-2 text-sm text-muted-foreground">{stat.label}</p></div>)}</section>
     <section><ProgressBar value={stats.national.percent} /><p className="mt-3 text-sm text-muted-foreground">{stats.national.visited} su {stats.national.total} città nel catalogo</p></section>
     <Button variant="outline" disabled={busy} onClick={logout}>{busy ? <Loader2 className="animate-spin" /> : <LogOut />}Logout</Button>
   </div>;
