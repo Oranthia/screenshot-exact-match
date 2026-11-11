@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { Plus } from "lucide-react";
 import { toast } from "sonner";
 import { BADGES, BADGE_SECTIONS, badgeUnit, type BadgeDefinition } from "@/lib/badges";
 import { badgesQuery } from "@/lib/badge-queries";
+import { validateFeaturedSlot } from "@/lib/featured-slot";
 import { PersonalPage, PersonalPageError } from "@/components/explorer/PersonalPage";
 import { BadgeMedal } from "@/components/explorer/BadgeMedal";
 import { ProgressBar } from "@/components/explorer/ProgressBar";
@@ -35,6 +35,7 @@ function Collection({ userId }: { userId: string }) {
   async function updateSlot(position: number, id: string | null) {
     setPending(true);
     try {
+      validateFeaturedSlot(position, id, data);
       const { error } = await supabase.rpc("set_my_featured_badge_slot", { _position: position, _badge_id: id as string });
       if (error) throw error;
       await qc.invalidateQueries({ queryKey: badgesQuery(userId).queryKey });

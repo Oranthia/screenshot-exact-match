@@ -5,6 +5,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { BADGES, type BadgeState } from "@/lib/badges";
 import { badgesQuery } from "@/lib/badge-queries";
+import { validateFeaturedSlot } from "@/lib/featured-slot";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { BadgeMedal } from "./BadgeMedal";
@@ -19,6 +20,7 @@ export function FeaturedSlots({ userId, data }: { userId: string; data: BadgeSta
     if (slot === null) return;
     setPending(true);
     try {
+      validateFeaturedSlot(slot, id, data);
       const { error } = await supabase.rpc("set_my_featured_badge_slot", { _position: slot, _badge_id: id as string });
       if (error) throw error;
       await qc.invalidateQueries({ queryKey: badgesQuery(userId).queryKey });
