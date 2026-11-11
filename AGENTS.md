@@ -51,3 +51,5 @@ use the editor.
 - Preserve exact showcase positions through the protected slot function, swapping an already featured selection atomically. Why: empty slots must not collapse or duplicate badges.
 - Store a unique photo-only cover flag per owner/city on media; select the earliest remaining photo when no cover exists. Why: deletions need no visit changes or public storage.
 - Share DiaryCover for diary and recent-city images, refresh signed URLs before expiry and retry image failures once per photo. Why: avoid blank covers and retry loops while preserving private caches.
+- Album and Timeline consume the same diary entries and visible-page photos; timeline grouping uses visit_date only, with undated entries separate. Why: presentation modes must not create extra reads or invented dates.
+- Persist diary mode in identity-scoped localStorage after hydration; keep view renderers keyed by visit ID. Why: preferences stay separate from visits and renderers can later accept multiple experiences.

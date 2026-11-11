@@ -1,4 +1,5 @@
 # Tasks
+- [ ] V1.3 Diary V2 phase 1: Album/Timeline views, real-date groups and year filter, identity-scoped local preference, shared existing queries and mobile/desktop regression checks; no schema changes.
 - [x] Implement 12 permanent badges, protected automatic/retroactive awards, private three-slot showcase, details, Home/Profile summaries and notifications; 60 tests passed, real-account retroactive city/photo awards, showcase add/remove/logout persistence, rejected invalid writes and ON/OFF history verified. See badge-audit.md.
 - [ ] Complete live badge checks for five cities with media, three-slot replacement/reordering and two-user isolation — needs suitable authorized accounts and earned milestones; threshold/selection rules are unit-tested, protections checked live.
 - [x] Complete V1.1 Diary sort directions, active-filter indicator/reset, photo-and-crest cards and legible national percentage; all 37 tests passed; real-account desktop/390px/320px checks passed with no runtime errors. Real photo-cover visual verification awaits a personal photograph in the diary.
