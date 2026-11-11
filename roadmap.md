@@ -1,4 +1,6 @@
 # Tasks
+- [ ] Audit visits, persistence, isolation, large catalog search, crests, errors and mobile/desktop; fix only demonstrated defects.
+- [ ] Review live database and storage policies and report verification limits.
 - [x] Improve shared crest states, fallback and unlock animation.
 - [x] Update visit state immediately in shared lists, with rollback on failure.
 - [x] Provide a validated ISTAT-to-image bulk association procedure without replacements.
