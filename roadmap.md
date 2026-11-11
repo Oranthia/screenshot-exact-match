@@ -1,5 +1,5 @@
 # Tasks
-- [ ] Refine Home, Diary, region cards and Profile incrementally; verify mobile/desktop and preserve existing data flows.
+- [x] Refine Home, Diary, region cards and Profile incrementally; 19 tests passed; real account checks on mobile/desktop verified filters, 20 region links, display-name persistence and logout with no runtime errors.
 - [x] Add shared mobile/desktop navigation and Diary, preparatory Badges and real Profile pages without changing visit logic or database.
 - [x] Test navigation, diary filtering and ON/OFF updates with a real account, profile email and logout on 390px mobile and desktop screens; 22 targeted tests passed, no browser runtime errors.
 - [x] Adapt the existing catalog non-destructively to 104 real cities across all 20 regions, with stable internal IDs and optional official ISTAT codes.
