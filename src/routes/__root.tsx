@@ -138,7 +138,10 @@ function RootComponent() {
       <AuthProvider
         onIdentityChange={(event) => {
           router.invalidate();
-          if (event === "SIGNED_OUT") queryClient.removeQueries({ queryKey: ["visits"] });
+          if (event === "SIGNED_OUT") {
+            queryClient.removeQueries({ queryKey: ["visits"] });
+            queryClient.removeQueries({ queryKey: ["media"] });
+          }
           else queryClient.invalidateQueries();
         }}
       >

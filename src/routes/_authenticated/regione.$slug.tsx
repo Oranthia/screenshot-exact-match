@@ -63,7 +63,14 @@ function RegionPage() {
     );
   }
 
-  const p = geo.data && region ? computeProgress([region], geo.data.municipalities.filter((m) => m.region_code === region.code), visitedSet).perRegion.get(region.code)! : null;
+  const p = geo.data && region ? computeProgress([region], geo.data.municipalities.filter((m) => m.region_code === region.code), visitedSet).perRegion.get(region.code) : null;
+
+  if (geo.isError || visits.isError) {
+    return <div className="min-h-screen"><AppHeader /><main className="mx-auto max-w-5xl px-4 py-6 text-center">
+      <p className="text-destructive">Impossibile caricare i dati. Riprova più tardi.</p>
+      <Button variant="outline" className="mt-4" onClick={() => { geo.refetch(); visits.refetch(); }}>Riprova</Button>
+    </main></div>;
+  }
 
   return (
     <div className="min-h-screen">

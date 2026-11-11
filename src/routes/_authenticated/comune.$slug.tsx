@@ -47,6 +47,13 @@ function MunicipalityPage() {
   const [notes, setNotes] = useState("");
   useEffect(() => setNotes(visit?.notes ?? ""), [visit?.notes, m?.istat_code]);
 
+  if (geo.isError || visits.isError) {
+    return <div className="min-h-screen"><AppHeader /><main className="mx-auto max-w-3xl px-4 py-6 text-center">
+      <p className="text-destructive">Impossibile caricare i dati. Riprova più tardi.</p>
+      <Button variant="outline" className="mt-4" onClick={() => { geo.refetch(); visits.refetch(); }}>Riprova</Button>
+    </main></div>;
+  }
+
   if (geo.data && !m) {
     return (
       <div className="min-h-screen"><AppHeader />

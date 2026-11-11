@@ -37,3 +37,5 @@ use the editor.
 - Render all municipal coats through the shared Crest component, with transition-only unlock animation and failed-image fallback; why: list and detail states must stay consistent without duplicating assets.
 - Bulk coat associations are validated by `src/lib/coat-import.ts` and applied as data updates matching ISTAT codes, only to empty URLs; why: protect existing artwork and user visits.
 - Optimistically patch the shared visits query cache and restore it on save failure; why: every mounted list and detail must reflect the same visit state immediately.
+- Paginate complete geo, visit and media reads with a unique ordering tie-breaker; why: Data API caps responses at 1000 rows and repeated names or timestamps must not cause skipped rows.
+- Clear private visits and media query caches on sign-out; why: signed media URLs must not linger in the next session's cache.
