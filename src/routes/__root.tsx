@@ -4,6 +4,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
   type ErrorComponentProps,
@@ -11,7 +12,8 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import { AuthProvider } from "@/lib/auth";
+import { AuthProvider, useAuth } from "@/lib/auth";
+import { AppNavigation } from "@/components/explorer/AppNavigation";
 import { Toaster } from "@/components/ui/sonner";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
@@ -82,7 +84,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     // twitter:image here: every page without its own would inherit the root's preview image.
     meta: [
       { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
       { title: "Italia Explorer — Il tuo passaporto delle città" },
       { name: "description", content: "Segna le città italiane che hai visitato, conserva i tuoi ricordi e segui il progresso nelle 20 regioni." },
       { name: "theme-color", content: "#1f3d2b" },
@@ -146,9 +148,19 @@ function RootComponent() {
         }}
       >
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-        <Outlet />
+        <NavigationShell />
         <Toaster position="top-center" />
       </AuthProvider>
     </QueryClientProvider>
   );
+}
+
+function NavigationShell() {
+  const { session } = useAuth();
+  const pathname = useRouterState({ select: state => state.location.pathname });
+  const visible = !!session && pathname !== "/auth";
+  return <div className={visible ? "app-with-navigation min-h-screen" : "min-h-screen"}>
+    <Outlet />
+    {visible && <AppNavigation />}
+  </div>;
 }

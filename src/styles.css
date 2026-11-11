@@ -173,7 +173,13 @@
 @utility crest-locked { filter: grayscale(1); opacity: 0.55; }
 
 .crest-initial { font: 600 30px var(--font-display); }
+.bottom-navigation { padding-bottom: env(safe-area-inset-bottom, 0px); }
+.app-with-navigation { padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px)); }
+.app-with-navigation main { animation: page-arrive 180ms ease-out; }
+@keyframes page-arrive { from { opacity: 0.7; transform: translateY(3px); } to { opacity: 1; transform: translateY(0); } }
+@media (min-width: 768px) { .app-with-navigation { padding-bottom: 0; } }
 @media (prefers-reduced-motion: reduce) {
   .animate-unlock, .animate-shine { animation: none; }
+  .app-with-navigation main { animation: none; }
 }
 

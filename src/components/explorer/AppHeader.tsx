@@ -3,6 +3,8 @@ import { LogOut } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
+import { AppNavigation } from "./AppNavigation";
+import { toast } from "sonner";
 
 export function AppHeader() {
   const { session } = useAuth();
@@ -12,14 +14,18 @@ export function AppHeader() {
       <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
         <Link to="/" className="flex items-center gap-2">
           <img src="/favicon.png" alt="" width={28} height={28} className="rounded-md" />
-          <span className="font-display text-xl font-semibold tracking-tight">Italia Explorer</span>
+          <span className="font-display text-xl font-semibold">Italia Explorer</span>
         </Link>
+        {session && (
+          <AppNavigation desktop />
+        )}
         {session && (
           <Button
             variant="ghost"
             size="sm"
             onClick={async () => {
-              await supabase.auth.signOut();
+              const { error } = await supabase.auth.signOut();
+              if (error) { toast.error("Logout non riuscito. Riprova."); return; }
               navigate({ to: "/auth", search: { redirect: undefined } });
             }}
           >
