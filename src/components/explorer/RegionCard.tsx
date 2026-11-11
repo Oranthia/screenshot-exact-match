@@ -25,7 +25,7 @@ export function RegionCard({ name, slug, progress }: { name: string; slug: strin
       </div>
       <div className="flex items-baseline justify-between text-sm">
         <span className="text-muted-foreground">
-          {empty ? "Catalogo in arrivo" : `${progress.visited} / ${progress.total} comuni`}
+          {empty ? "Catalogo in arrivo" : `${progress.visited} / ${progress.total} città`}
         </span>
         <span className="font-semibold tabular-nums">{formatPercent(progress.percent)}</span>
       </div>
