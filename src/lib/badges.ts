@@ -22,7 +22,7 @@ export const badgeUnit = (metric: BadgeMetric) => metric === "cities" ? "città 
 export type BadgeMetrics = Record<BadgeMetric, number>;
 export type BadgeState = { earned: { badge_id: string; earned_at: string }[]; featured: { badge_id: string; position: number }[]; metrics: BadgeMetrics };
 export function eligibleBadges(metrics: BadgeMetrics) { return BADGES.filter(b => metrics[b.metric] >= b.threshold).map(b => b.id); }
-export function validateFeatured(ids: string[], earned: string[]) {
+export function validateFeatured(ids: readonly string[], earned: readonly string[]) {
   if (ids.length > 3) throw new Error("Puoi esporre al massimo 3 conquiste.");
   if (new Set(ids).size !== ids.length) throw new Error("Una conquista può apparire una sola volta.");
   if (ids.some(id => !earned.includes(id))) throw new Error("Puoi esporre solo conquiste ottenute.");
