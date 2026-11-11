@@ -83,8 +83,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Italia Explorer — Il tuo passaporto dei comuni" },
-      { name: "description", content: "Segna i comuni italiani che hai visitato, conserva i tuoi ricordi e segui il progresso nelle 20 regioni." },
+      { title: "Italia Explorer — Il tuo passaporto delle città" },
+      { name: "description", content: "Segna le città italiane che hai visitato, conserva i tuoi ricordi e segui il progresso nelle 20 regioni." },
       { name: "theme-color", content: "#1f3d2b" },
       { name: "apple-mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-title", content: "Italia Explorer" },
@@ -138,7 +138,10 @@ function RootComponent() {
       <AuthProvider
         onIdentityChange={(event) => {
           router.invalidate();
-          if (event === "SIGNED_OUT") queryClient.removeQueries({ queryKey: ["visits"] });
+          if (event === "SIGNED_OUT") {
+            queryClient.removeQueries({ queryKey: ["visits"] });
+            queryClient.removeQueries({ queryKey: ["media"] });
+          }
           else queryClient.invalidateQueries();
         }}
       >

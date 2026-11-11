@@ -35,24 +35,30 @@ export type Database = {
       municipalities: {
         Row: {
           coat_of_arms_url: string | null
+          id: string
           istat_code: string
           name: string
+          official_istat_code: string | null
           province_code: string
           region_code: string
           slug: string
         }
         Insert: {
           coat_of_arms_url?: string | null
+          id?: string
           istat_code: string
           name: string
+          official_istat_code?: string | null
           province_code: string
           region_code: string
           slug: string
         }
         Update: {
           coat_of_arms_url?: string | null
+          id?: string
           istat_code?: string
           name?: string
+          official_istat_code?: string | null
           province_code?: string
           region_code?: string
           slug?: string

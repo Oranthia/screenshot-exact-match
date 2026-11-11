@@ -13,7 +13,7 @@ async function fetchAll<T>(table: "municipalities"): Promise<T[]> {
   const out: T[] = [];
   const page = 1000;
   for (let from = 0; ; from += page) {
-    const { data, error } = await supabase.from(table).select("*").order("name").range(from, from + page - 1);
+    const { data, error } = await supabase.from(table).select("*").order("name").order("istat_code").range(from, from + page - 1);
     if (error) throw error;
     out.push(...(data as T[]));
     if (!data || data.length < page) break;
@@ -33,6 +33,7 @@ export const geoQuery = queryOptions({
     ]);
     if (regions.error) throw regions.error;
     if (provinces.error) throw provinces.error;
+    if (meta.error) throw meta.error;
     return {
       regions: regions.data,
       provinces: provinces.data,
@@ -49,9 +50,15 @@ export const visitsQuery = (userId: string) =>
   queryOptions({
     queryKey: ["visits", userId],
     queryFn: async () => {
-      const { data, error } = await supabase.from("user_visits").select("*").order("updated_at", { ascending: false });
-      if (error) throw error;
-      return data;
+      const rows: Visit[] = [];
+      for (let from = 0; ; from += 1000) {
+        const { data, error } = await supabase.from("user_visits").select("*").eq("user_id", userId)
+          .order("updated_at", { ascending: false }).order("id").range(from, from + 999);
+        if (error) throw error;
+        rows.push(...(data ?? []));
+        if (!data || data.length < 1000) break;
+      }
+      return rows;
     },
   });
 
@@ -89,18 +96,23 @@ export function useSaveVisit(userId: string) {
 export const mediaQuery = (userId: string, istat: string) =>
   queryOptions({
     queryKey: ["media", userId, istat],
+    staleTime: 1000 * 60 * 45,
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("visit_media")
-        .select("*")
-        .eq("istat_code", istat)
-        .order("created_at", { ascending: false });
-      if (error) throw error;
+      const data: VisitMedia[] = [];
+      for (let from = 0; ; from += 1000) {
+        const { data: page, error } = await supabase.from("visit_media").select("*")
+          .eq("user_id", userId).eq("istat_code", istat)
+          .order("created_at", { ascending: false }).order("id").range(from, from + 999);
+        if (error) throw error;
+        data.push(...(page ?? []));
+        if (!page || page.length < 1000) break;
+      }
       if (!data.length) return [];
       const { data: signed, error: sErr } = await supabase.storage
         .from("visit-media")
         .createSignedUrls(data.map((m) => m.storage_path), 60 * 60);
       if (sErr) throw sErr;
+      if (signed?.some((item) => item.error || !item.signedUrl)) throw new Error("Impossibile caricare alcuni ricordi.");
       return data.map((m, i) => ({ ...m, url: signed?.[i]?.signedUrl ?? "" }));
     },
   });
