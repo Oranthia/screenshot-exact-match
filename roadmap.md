@@ -20,3 +20,5 @@
 - [x] V1.2 P1: compact badge grid, earned filters and direct three-slot showcase.
 - [x] V1.2 P2: reorder Home, recent photo previews, city save feedback and private cover selection.
 - [x] V1.2: 64 regression tests passed; real-account covers, notes, showcase slots, error fallbacks and 320/390/1280px checks completed. Limits documented in ux-v12-audit.md.
+
+- [ ] Final validation V1.2: fresh test-account login, real test-photo deletion, two-account isolation and simultaneous triple badge awards; mark unexecuted checks and blockers explicitly.
