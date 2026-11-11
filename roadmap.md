@@ -1,6 +1,6 @@
 # Tasks
-- [ ] Add shared mobile/desktop navigation and Diary, preparatory Badges and real Profile pages without changing visit logic or database.
-- [ ] Test navigation, diary filtering and immediate updates, profile and logout on small and desktop screens.
+- [x] Add shared mobile/desktop navigation and Diary, preparatory Badges and real Profile pages without changing visit logic or database.
+- [x] Test navigation, diary filtering and ON/OFF updates with a real account, profile email and logout on 390px mobile and desktop screens; 22 targeted tests passed, no browser runtime errors.
 - [x] Adapt the existing catalog non-destructively to 104 real cities across all 20 regions, with stable internal IDs and optional official ISTAT codes.
 - [x] Update catalog copy and percentages to the expanding city catalog while preserving design and visits.
 - [x] Verify the city catalog and finish the functional audit report in functional-audit.md.
@@ -10,5 +10,5 @@
 - [x] Update visit state immediately in shared lists, with rollback on failure.
 - [x] Provide a validated ISTAT-to-image bulk association procedure without replacements.
 - [x] Run targeted tests and verify public pages (17 tests passed; no browser runtime errors).
-- [ ] Verify real signed-in visits, photo/video persistence after logout, and cross-user access — blocked because there are no registered accounts; isolated flows and policy review completed.
+- [ ] Finish prior audit of photo/video persistence after logout and cross-user access — visits now verified with the owner's account; remaining checks require suitable media and a second authorized account.
 - [x] Full ISTAT import deferred by the user's new reduced-city-catalog brief.
