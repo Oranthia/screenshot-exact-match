@@ -9,6 +9,10 @@ export function localDemoPlugin(): Plugin {
     config(_config, env) {
       enabled = allowLocalDemo(env.command, env.mode, process.env['ITALIA_LOCAL_DEMO'], 'localhost');
       if (process.env['ITALIA_LOCAL_DEMO'] === '1' && !enabled) throw new Error('Local demo is serve/development only. Remove ITALIA_LOCAL_DEMO before building.');
+      if (enabled) return { resolve: { alias: [
+        { find: /^@\/data\/backend$/, replacement: resolve(process.cwd(), 'src/demo/adapter.ts') },
+        { find: /^@\/components\/ui\/sonner$/, replacement: resolve(process.cwd(), 'src/demo/controls.tsx') },
+      ] } };
     },
     configResolved(config) { root = config.root; },
     configureServer(server) {
