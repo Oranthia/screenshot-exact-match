@@ -1,5 +1,5 @@
 # Tasks
-- [ ] Frontend-first Phase 1: revise the selected plan section, document docs/FRONTEND_BASELINE.md, preserve all 85 tests and add only missing fixture-based regression checks; no application/backend changes and do not start Phase 2.
+- [x] Frontend-first Phase 1: revised plan section; docs/FRONTEND_BASELINE.md; all 85 existing tests preserved plus 9 targeted fixture tests (94 passed, 0 failed/skipped); application/backend unchanged. Phase 2 not started; remaining unit/live gaps documented in baseline.
 - [x] Final verification V1.4: actual migration and preserved originals verified; report in final-validation-v14.md, all technical memories cleaned up.
 - [x] V1.4: additive experiences migration; 1 migrated experience, 2 original photos/files, dates/notes, covers and badge history preserved.
 - [x] V1.4: city experience list/detail, atomic creation with ON confirmation, independent media and retryable deletion verified.
