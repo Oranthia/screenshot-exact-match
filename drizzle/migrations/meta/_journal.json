@@ -36,6 +36,20 @@
       "when": 1794406574239,
       "tag": "0004_private_diary_covers_and_featured_slots",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1794477884113,
+      "tag": "0005_private_multiple_visit_experiences",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1794478060930,
+      "tag": "0006_enforce_atomic_experience_creation",
+      "breakpoints": true
     }
   ]
 }

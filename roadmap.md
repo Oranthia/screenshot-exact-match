@@ -1,7 +1,9 @@
 # Tasks
-- [ ] V1.4: additive experiences migration and integrity checks; preserve legacy records, storage paths, covers and badge history.
-- [ ] V1.4: city experience list/detail, atomic creation with ON confirmation, independent media and recoverable deletion.
-- [ ] V1.4: city-based Album and experience-based Timeline, regression tests, real-owner desktop/mobile checks and final report.
+- [x] Final verification V1.4: actual migration and preserved originals verified; report in final-validation-v14.md, all technical memories cleaned up.
+- [x] V1.4: additive experiences migration; 1 migrated experience, 2 original photos/files, dates/notes, covers and badge history preserved.
+- [x] V1.4: city experience list/detail, atomic creation with ON confirmation, independent media and retryable deletion verified.
+- [x] V1.4: city-based Album and experience-based Timeline; 85/85 tests passed; real-owner desktop/mobile checks without runtime errors.
+- [ ] V1.4 live two-user isolation — blocked by lack of a second authorized account; policies and owner/city constraints reviewed, not counted as two-user test.
 - [x] V1.3 Diary V2 phase 1: Album/Timeline views, real-date groups and year filter, identity-scoped local preference and shared existing queries; 69 tests passed, real-owner photo/filter/navigation/persistence checks on 320/390/1280px, isolated undated/year-group fixture verified; no schema, policy or visit changes.
 - [x] Implement 12 permanent badges, protected automatic/retroactive awards, private three-slot showcase, details, Home/Profile summaries and notifications; 60 tests passed, real-account retroactive city/photo awards, showcase add/remove/logout persistence, rejected invalid writes and ON/OFF history verified. See badge-audit.md.
 - [ ] Complete live badge checks for five cities with media, three-slot replacement/reordering and two-user isolation — needs suitable authorized accounts and earned milestones; threshold/selection rules are unit-tested, protections checked live.

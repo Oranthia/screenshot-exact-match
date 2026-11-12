@@ -209,10 +209,68 @@ export type Database = {
           },
         ]
       }
+      visit_experiences: {
+        Row: {
+          city_id: string
+          created_at: string
+          deleting: boolean
+          id: string
+          istat_code: string
+          legacy_source_key: string | null
+          notes: string | null
+          title: string
+          updated_at: string
+          user_id: string
+          visit_date: string | null
+        }
+        Insert: {
+          city_id: string
+          created_at?: string
+          deleting?: boolean
+          id?: string
+          istat_code: string
+          legacy_source_key?: string | null
+          notes?: string | null
+          title?: string
+          updated_at?: string
+          user_id: string
+          visit_date?: string | null
+        }
+        Update: {
+          city_id?: string
+          created_at?: string
+          deleting?: boolean
+          id?: string
+          istat_code?: string
+          legacy_source_key?: string | null
+          notes?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+          visit_date?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "visit_experiences_city_id_fkey"
+            columns: ["city_id"]
+            isOneToOne: false
+            referencedRelation: "municipalities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "visit_experiences_istat_code_fkey"
+            columns: ["istat_code"]
+            isOneToOne: false
+            referencedRelation: "municipalities"
+            referencedColumns: ["istat_code"]
+          },
+        ]
+      }
       visit_media: {
         Row: {
           caption: string | null
           created_at: string
+          experience_id: string | null
           file_name: string
           id: string
           is_cover: boolean
@@ -224,6 +282,7 @@ export type Database = {
         Insert: {
           caption?: string | null
           created_at?: string
+          experience_id?: string | null
           file_name: string
           id?: string
           is_cover?: boolean
@@ -235,6 +294,7 @@ export type Database = {
         Update: {
           caption?: string | null
           created_at?: string
+          experience_id?: string | null
           file_name?: string
           id?: string
           is_cover?: boolean
@@ -244,6 +304,13 @@ export type Database = {
           user_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "media_experience_owner_city"
+            columns: ["experience_id", "user_id", "istat_code"]
+            isOneToOne: false
+            referencedRelation: "visit_experiences"
+            referencedColumns: ["id", "user_id", "istat_code"]
+          },
           {
             foreignKeyName: "visit_media_istat_code_fkey"
             columns: ["istat_code"]
@@ -267,6 +334,34 @@ export type Database = {
           metric: string
           threshold: number
         }[]
+      }
+      create_my_experience: {
+        Args: {
+          _city_id: string
+          _confirm_visit: boolean
+          _notes: string
+          _title: string
+          _visit_date: string
+        }
+        Returns: {
+          city_id: string
+          created_at: string
+          deleting: boolean
+          id: string
+          istat_code: string
+          legacy_source_key: string | null
+          notes: string | null
+          title: string
+          updated_at: string
+          user_id: string
+          visit_date: string | null
+        }
+        SetofOptions: {
+          from: "*"
+          to: "visit_experiences"
+          isOneToOne: true
+          isSetofReturn: false
+        }
       }
       set_my_city_cover: { Args: { _media_id: string }; Returns: undefined }
       set_my_featured_badge_slot: {

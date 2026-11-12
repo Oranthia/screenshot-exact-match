@@ -1,20 +1,14 @@
-import { useEffect, useState } from "react";
-import { createFileRoute, Link, useBlocker } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { CalendarIcon, ChevronLeft, Loader2, X } from "lucide-react";
-import { format } from "date-fns";
-import { it } from "date-fns/locale";
+import { ChevronLeft, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/lib/auth";
 import { geoQuery, useSaveVisit, visitsQuery } from "@/lib/queries";
 import { AppHeader } from "@/components/explorer/AppHeader";
 import { Crest } from "@/components/explorer/Crest";
-import { MediaGallery } from "@/components/explorer/MediaGallery";
+import { CityExperiences } from "@/components/explorer/CityExperiences";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 
@@ -44,13 +38,6 @@ function MunicipalityPage() {
   const visit = m ? visits.data?.find((v) => v.istat_code === m.istat_code) : undefined;
   const visited = visit?.visited ?? false;
 
-  const [notes, setNotes] = useState("");
-  const [savedNotes, setSavedNotes] = useState("");
-  const [notesState, setNotesState] = useState<"idle" | "pending" | "saved" | "error">("idle");
-  useEffect(() => { setNotes(visit?.notes ?? ""); setSavedNotes(visit?.notes ?? ""); setNotesState("idle"); }, [m?.istat_code, visits.isPending]);
-  const dirty = notes !== savedNotes;
-  useBlocker({ shouldBlockFn: () => dirty && !window.confirm("Hai modifiche non salvate. Vuoi lasciare la pagina?"), enableBeforeUnload: dirty });
-
   if (geo.isError || visits.isError) {
     return <div className="min-h-screen"><AppHeader /><main className="mx-auto max-w-3xl px-4 py-6 text-center">
       <p className="text-destructive">Impossibile caricare i dati. Riprova più tardi.</p>
@@ -74,7 +61,7 @@ function MunicipalityPage() {
 
   const province = geo.data.provinceByCode.get(m.province_code);
   const region = geo.data.regionByCode.get(m.region_code);
-  const date = visit?.visit_date ? new Date(`${visit.visit_date}T00:00:00`) : undefined;
+
 
   const persist = (patch: { visited?: boolean; visit_date?: string | null; notes?: string | null }, ok?: string) =>
     save.mutate({ istat_code: m.istat_code, ...patch }, {
@@ -118,44 +105,7 @@ function MunicipalityPage() {
           {!m.coat_of_arms_url && <p className="mt-4 text-center text-xs text-muted-foreground sm:text-left">Stemma ufficiale non ancora disponibile.</p>}
         </section>
 
-        <section className="space-y-3">
-          <h2 className="text-2xl font-semibold">Data della visita</h2>
-          <div className="flex items-center gap-2">
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline" className={cn("justify-start rounded-xl", !date && "text-muted-foreground")}>
-                  <CalendarIcon className="h-4 w-4" />
-                  {date ? format(date, "d MMMM yyyy", { locale: it }) : "Scegli una data (facoltativa)"}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
-                <Calendar mode="single" locale={it} selected={date} disabled={{ after: new Date() }}
-                  onSelect={(d) => persist({ visit_date: d ? format(d, "yyyy-MM-dd") : null }, "Data salvata")} />
-              </PopoverContent>
-            </Popover>
-            {date && (
-              <Button variant="ghost" size="icon" aria-label="Rimuovi data" onClick={() => persist({ visit_date: null })}><X className="h-4 w-4" /></Button>
-            )}
-          </div>
-        </section>
-
-        <section className="space-y-3">
-          <h2 className="text-2xl font-semibold">Note di viaggio</h2>
-          <Textarea aria-label="Note di viaggio" value={notes} onChange={(e) => { setNotes(e.target.value); setNotesState("idle"); }} rows={5} maxLength={5000}
-            placeholder="Racconta la tua esperienza: cosa hai visto, mangiato, chi hai incontrato…" className="rounded-xl bg-card" />
-          <div className="flex items-center justify-between gap-3">
-            <p role="status" className={cn("text-xs", notesState === "error" ? "text-destructive" : "text-muted-foreground")}>{notesState === "pending" ? "Salvataggio in corso..." : notesState === "error" ? "Errore durante il salvataggio" : notesState === "saved" ? "Salvato" : dirty ? "Modifiche non salvate" : ""}</p>
-            <Button disabled={save.isPending || !dirty} onClick={async () => {
-              const value = notes.trim(); setNotesState("pending");
-              try { await save.mutateAsync({ istat_code: m.istat_code, notes: value || null }); setSavedNotes(value); setNotes(value); setNotesState("saved"); }
-              catch { setNotesState("error"); }
-            }}>
-              Salva note
-            </Button>
-          </div>
-        </section>
-
-        <MediaGallery userId={userId} istat={m.istat_code} />
+        <CityExperiences userId={userId} city={m} />
       </main>
     </div>
   );
