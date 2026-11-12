@@ -1,14 +1,15 @@
 # Tasks
-- [ ] Collaudo live finale: login/logout, persistenza, isolamento A/B, CRUD esperienze/foto/copertine, progressi ON/OFF e tre badge simultanei — bloccato: identificare i due account dedicati e ottenere le rispettive sessioni autorizzate; non usare l'account personale. Stato in docs/LIVE_FINAL_REPORT.md.
+- [x] Collaudo live finale: due account confermati solo tecnici; isolamento bidirezionale, CRUD/foto/copertine, logout, sessioni autorizzate, ON/OFF e tre nuovi badge simultanei B PASS; pulizia completata. Vedi docs/LIVE_FINAL_REPORT.md.
+- [ ] Nuovo login reale tramite form — NON ESEGUITO: manca un canale autorizzato per autenticazione con credenziali; sessioni gestite non sostituiscono questa prova. Nessuna pubblicazione dichiarata pronta.
 - [x] Fase 4: opt-in localhost-only demo A–D, same screens with synthetic adapter, 133/133 tests and verified isolated CRUD/media/network; real app/auth/data unchanged. See docs/PHASE_4_REPORT.md.
 - [x] Fase 3: Home states/retry, accessibility and responsive hardening, 119/119 tests, read-only live checks at five widths and documentation; backend/personal data unchanged. See docs/PHASE_3_REPORT.md.
-- [ ] Fase 3 live technical experience create/edit/delete — blocked by absence of an authorized dedicated test account; no writes on the main account.
+- [x] Fase 3 live technical experience create/edit/delete — verified on both authorized technical accounts in final live validation.
 - [x] Frontend-first Phase 1: revised plan section; docs/FRONTEND_BASELINE.md; all 85 existing tests preserved plus 9 targeted fixture tests (94 passed, 0 failed/skipped); application/backend unchanged. Phase 2 not started; remaining unit/live gaps documented in baseline.
 - [x] Final verification V1.4: actual migration and preserved originals verified; report in final-validation-v14.md, all technical memories cleaned up.
 - [x] V1.4: additive experiences migration; 1 migrated experience, 2 original photos/files, dates/notes, covers and badge history preserved.
 - [x] V1.4: city experience list/detail, atomic creation with ON confirmation, independent media and retryable deletion verified.
 - [x] V1.4: city-based Album and experience-based Timeline; 85/85 tests passed; real-owner desktop/mobile checks without runtime errors.
-- [ ] V1.4 live two-user isolation — blocked by lack of a second authorized account; policies and owner/city constraints reviewed, not counted as two-user test.
+- [x] V1.4 live two-user isolation — owner reads, cross-owner rejected reads/writes/deletes and private storage tested both ways in final validation.
 - [x] V1.3 Diary V2 phase 1: Album/Timeline views, real-date groups and year filter, identity-scoped local preference and shared existing queries; 69 tests passed, real-owner photo/filter/navigation/persistence checks on 320/390/1280px, isolated undated/year-group fixture verified; no schema, policy or visit changes.
 - [x] Implement 12 permanent badges, protected automatic/retroactive awards, private three-slot showcase, details, Home/Profile summaries and notifications; 60 tests passed, real-account retroactive city/photo awards, showcase add/remove/logout persistence, rejected invalid writes and ON/OFF history verified. See badge-audit.md.
 - [ ] Complete live badge checks for five cities with media, three-slot replacement/reordering and two-user isolation — needs suitable authorized accounts and earned milestones; threshold/selection rules are unit-tested, protections checked live.
@@ -33,10 +34,10 @@
 - [x] V1.2: 64 regression tests passed; real-account covers, notes, showcase slots, error fallbacks and 320/390/1280px checks completed. Limits documented in ux-v12-audit.md.
 
 - [x] Final validation V1.2: real two-test-photo deletion, alternative diary cover, empty-photo fallback, deletion error and cleanup verified; 64 tests passed; report and manual steps in final-validation-v12.md.
-- [ ] Final validation V1.2 tests 1, 3 and 4: fresh credential login, two-account isolation and three newly awarded badges in one operation — blocked by missing dedicated test accounts and credential login; existing-session concurrency tested separately, not counted as triple unlock.
+- [x] Final validation V1.2 tests 3 and 4: two-account isolation and three newly awarded badges in one ON verified; test 1 credential login remains open above.
 - [x] Fase 2: contratti di dominio, adapter reale, letture e scritture migrate (105 test).
 
 ## Fase 5 — Portabilità
 - [x] Analisi stack, .env.example, test portabilità, docs/PORTABILITY.md
-- [ ] Collaudo live A–D — bloccato: servono due account di test dedicati
+- [x] Collaudo live sicurezza/persistenza — due account autorizzati, esiti nel rapporto finale; nuovo login tramite form resta aperto sopra.
 - [ ] Collegamento GitHub — da fare dall'utente in Impostazioni → Git
