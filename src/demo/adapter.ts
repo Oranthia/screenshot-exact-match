@@ -63,7 +63,7 @@ export async function setFeaturedSlot(position: number, badgeId: string | null) 
 }
 export async function getSession(): Promise<AuthSession | null> {
   const s = demoState(); if (!s.signedIn) return null;
-  return { access_token: '', refresh_token: '', expires_in: 0, token_type: 'demo-not-a-token', user: { id: DEMO_OWNER, aud: 'demo-local', email: 'demo@example.invalid', app_metadata: {}, user_metadata: { display_name: s.name }, created_at: DEMO_DATE } };
+  return { access_token: '', refresh_token: '', expires_in: 0, token_type: 'bearer', user: { id: DEMO_OWNER, aud: 'demo-local', email: 'demo@example.invalid', app_metadata: {}, user_metadata: { display_name: s.name }, created_at: DEMO_DATE } };
 }
 export function toProfile(session: Pick<AuthSession, 'user'> | null): UserProfile | null { return session ? { id: session.user.id, email: session.user.email ?? null, displayName: session.user.user_metadata['display_name'] ?? null } : null; }
 export function onAuthChange(cb: (event: string, session: AuthSession | null) => void) { return subscribeDemo(() => { void getSession().then(s => cb(s ? 'USER_UPDATED' : 'SIGNED_OUT', s)); }); }
