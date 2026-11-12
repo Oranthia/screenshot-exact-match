@@ -109,3 +109,6 @@ Controlli live in sola lettura sulle quattro sezioni e città a 320/390/430/768/
 `bun run demo` serve le stesse schermate a localhost:8081 con adapter sintetico e scenari A–D. Nessuna modifica a sorgenti auth reali, contratti, adapter reali, regole, catalogo completo o dati personali. Sostituzione esclusiva serve/development tramite configurazione esplicita, build con flag rifiutata, host esterni 403 e import reali bloccati. Stato in memoria; reset/ricaricamento scartano modifiche, media aggiunti sono blob locali. Caratteri e immagine sintetica disponibili senza rete esterna.
 
 **133/133 test, 23 file**, 119 conservati più 14 mirati. Collaudo demo: A vuoto, C una città/tre esperienze, modifica letta nel Diario, OFF/ON, creazione con conferma e cancellazione indipendente, errori controllati, vetrina e upload solo browser. Zero richieste esterne o moduli client reali nel flusso finale; normale anteprima senza demo e gate reale ancora attivo. Galleria a cinque larghezze senza overflow. Queste prove NON sostituiscono scritture live autorizzate, RLS, bucket reali o due account. Dettagli in [PHASE_4_REPORT.md](PHASE_4_REPORT.md).
+
+## Fase 5
+138/138 test (133 + 5 portabilità); build OK; TypeScript OK; lint: 3 errori reali corretti, restano solo avvisi di formattazione Prettier preesistenti (non applicati per non toccare ~1650 righe).

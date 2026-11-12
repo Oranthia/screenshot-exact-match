@@ -3,6 +3,7 @@ import {QueryClient} from '@tanstack/react-query';
 const mocks=vi.hoisted(()=>({from:vi.fn(),signed:vi.fn(),remove:vi.fn()}));
 vi.mock('@/integrations/supabase/client',()=>({supabase:{from:mocks.from,storage:{from:()=>({createSignedUrls:mocks.signed,remove:mocks.remove})}}}));
 import {experiencesQuery,experiencePreviewsQuery,removeExperience} from './experience-queries';
+/* eslint-disable @typescript-eslint/no-explicit-any -- chainable test double */
 function builder(result:{data:unknown;error:unknown}) {const b:any={};for(const name of ['update','select','eq','order','in','limit','delete'])b[name]=vi.fn(()=>b);b.single=vi.fn(async()=>result);b.then=(resolve:any)=>Promise.resolve(result).then(resolve);return b;}
 describe('experience owner and media boundaries',()=>{
  beforeEach(()=>vi.clearAllMocks());
