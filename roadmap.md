@@ -1,4 +1,5 @@
 # Tasks
+- [ ] Final verification V1.4: report actual migration status, preserved data, independent experiences, diary, progress/badges and security; use only test content, no design changes beyond approved V1.4.
 - [ ] V1.4: additive experiences migration and integrity checks; preserve legacy records, storage paths, covers and badge history.
 - [ ] V1.4: city experience list/detail, atomic creation with ON confirmation, independent media and recoverable deletion.
 - [ ] V1.4: city-based Album and experience-based Timeline, regression tests, real-owner desktop/mobile checks and final report.
