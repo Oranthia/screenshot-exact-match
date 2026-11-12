@@ -12,7 +12,7 @@ Open your project in the [Lovable editor](https://lovable.dev) and keep building
 
 ## Development
 
-Per lavorare localmente usa Bun e la configurazione pubblica del backend esistente fornita dall’ambiente. Non inserire chiavi private nel repository. L’app usa il backend reale: non esiste una modalità offline/mock.
+Per lavorare localmente usa Bun. `bun run dev` usa il backend reale e la sua configurazione pubblica; non inserire chiavi private nel repository. La demo isolata si avvia separatamente con `bun run demo`.
 
 ```sh
 git clone <this-repository-url>
@@ -22,6 +22,13 @@ bun run dev
 ```
 
 ## Built with
+
+## Demo locale (Fase 4)
+Esegui `bun install` e `bun run demo`, poi apri **http://localhost:8081**. Non servono account o credenziali. Espandi la barra **DEMO LOCALE** per scegliere A (nuovo utente), B (viaggiatore attivo), C (tre esperienze a Venezia) o D (errori). Il pulsante Ripristina scenario e il ricaricamento scartano tutte le modifiche. Naviga tramite i link dell’app per conservare lo stato durante il collaudo.
+
+Le operazioni sono simulate in memoria; i file aggiunti rimangono temporanei nel browser, mai caricati online. Nessuna verifica demo certifica storage o sicurezza reali. `ITALIA_LOCAL_DEMO=1` viene impostata solo dal comando demo; qualsiasi build con questa variabile viene rifiutata, anche con modalità development. Il listener accetta solo localhost; la normale anteprima e la pubblicazione restano reali. Dettagli, scenari e limiti in [docs/PHASE_4_REPORT.md](docs/PHASE_4_REPORT.md).
+
+Suite attuale: **133 test passati** (119 conservati + 14 demo), con `bun run test`.
 
 - TanStack Start
 - TypeScript
