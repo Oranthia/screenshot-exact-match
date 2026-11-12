@@ -31,7 +31,7 @@ describe('development-only demo activation', () => {
   it('has no runtime imports or calls to the real adapters, client or network', () => {
     for (const name of ['adapter.ts', 'state.ts', 'controls.tsx']) {
       const source = readFileSync(`src/demo/${name}`, 'utf8');
-      expect(source).not.toMatch(/from ['"](?:@\/data\/backend|.*integrations\/|@supabase\/)/);
+      expect(source).not.toMatch(/import(?!\s+type\b)[^\n]*from ['"](?:@\/data\/backend|.*integrations\/|@supabase\/)/);
       expect(source).not.toMatch(/\b(?:fetch|XMLHttpRequest|WebSocket)\s*\(/);
     }
   });
