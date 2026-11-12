@@ -35,14 +35,12 @@ export interface Media {
 /** Media with a short-lived private link; "" means the link could not be created. */
 export interface SignedMedia extends Media { url: string }
 export interface ExperiencePreview { id: string; photos: number; videos: number; photo: SignedMedia | undefined }
+export type { BadgeMetrics, BadgeState } from "@/lib/badges";
 export interface EarnedBadge { badge_id: string; earned_at: string }
 export interface FeaturedBadge { badge_id: string; position: number }
 export interface UserProfile { id: string; email: string | null; displayName: string | null }
-export interface RegionProgress { visited: number; total: number; percent: number }
-export interface ProgressStats {
-  national: RegionProgress; perRegion: Map<string, RegionProgress>;
-  regionsExplored: number; regionsCompleted: number; regionsTotal: number;
-}
+export type { Progress, RegionProgress } from "@/lib/progress";
+export type ProgressStats = ReturnType<typeof import("@/lib/progress").computeProgress>;
 /** Private link lifetime; caches refresh before it expires. */
 export const SIGNED_URL_SECONDS = 60 * 60;
 export const MEDIA_REFRESH_MS = 1000 * 60 * 45;
