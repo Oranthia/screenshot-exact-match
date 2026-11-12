@@ -17,9 +17,9 @@ import {
 
 type Item = Awaited<ReturnType<NonNullable<ReturnType<typeof mediaQuery>["queryFn"]>>>[number];
 
-export function MediaGallery({ userId, istat }: { userId: string; istat: string }) {
+export function MediaGallery({ userId, istat, experienceId }: { userId: string; istat: string; experienceId: string }) {
   const qc = useQueryClient();
-  const q = useQuery(mediaQuery(userId, istat));
+  const q = useQuery(mediaQuery(userId, istat, experienceId));
   const input = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState<string[]>([]);
   const [viewing, setViewing] = useState<Item | null>(null);
@@ -44,7 +44,7 @@ export function MediaGallery({ userId, istat }: { userId: string; istat: string 
         const up = await supabase.storage.from("visit-media").upload(path, file, { contentType: mediaContentType(file) });
         if (up.error) throw up.error;
         const ins = await supabase.from("visit_media").insert({
-          user_id: userId, istat_code: istat, file_name: file.name, media_type: check.kind, storage_path: path,
+          user_id: userId, istat_code: istat, experience_id: experienceId, file_name: file.name, media_type: check.kind, storage_path: path,
         });
         if (ins.error) {
           await supabase.storage.from("visit-media").remove([path]);
@@ -111,7 +111,8 @@ export function MediaGallery({ userId, istat }: { userId: string; istat: string 
         />
       </div>
 
-      {q.isError && <p className="text-sm text-destructive">Impossibile caricare la galleria.</p>}
+      {q.isPending && <p role="status" className="text-sm text-muted-foreground">Caricamento ricordi…</p>}
+      {q.isError && <div role="alert" className="text-sm text-destructive">Impossibile caricare la galleria.<Button variant="ghost" onClick={() => q.refetch()}>Riprova</Button></div>}
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
         {uploading.map((n) => (

@@ -94,17 +94,19 @@ export function useSaveVisit(userId: string) {
   });
 }
 
-export const mediaQuery = (userId: string, istat: string) =>
+export const mediaQuery = (userId: string, istat: string, experienceId?: string) =>
   queryOptions({
-    queryKey: ["media", userId, istat],
+    queryKey: ["media", userId, istat, experienceId ?? "all"],
     staleTime: 1000 * 60 * 45,
     refetchInterval: 1000 * 60 * 45,
     queryFn: async () => {
       const data: VisitMedia[] = [];
       for (let from = 0; ; from += 1000) {
-        const { data: page, error } = await supabase.from("visit_media").select("*")
+        let request = supabase.from("visit_media").select("*")
           .eq("user_id", userId).eq("istat_code", istat)
           .order("created_at", { ascending: false }).order("id").range(from, from + 999);
+        if (experienceId) request = request.eq("experience_id", experienceId);
+        const { data: page, error } = await request;
         if (error) throw error;
         data.push(...(page ?? []));
         if (!page || page.length < 1000) break;

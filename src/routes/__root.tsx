@@ -142,6 +142,8 @@ function RootComponent() {
         onIdentityChange={(event) => {
           router.invalidate();
           if (event === "SIGNED_OUT") {
+            queryClient.cancelQueries({ queryKey: ["experiences"] });
+            queryClient.removeQueries({ queryKey: ["experiences"] });
             queryClient.removeQueries({ queryKey: ["visits"] });
             queryClient.removeQueries({ queryKey: ["media"] });
             queryClient.cancelQueries({ queryKey: ["badges"] });
