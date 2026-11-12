@@ -20,7 +20,7 @@ describe('experience editor operation boundaries', () => {
     mocks.rpc.mockResolvedValue({ data: experience('created'), error: null });
     render(<ExperienceEditor city={city} userId="fixture-owner" visited={false} />);
     fireEvent.change(screen.getByLabelText('Titolo dell’esperienza'), { target: { value: 'Secondo viaggio' } });
-    fireEvent.click(screen.getByRole('button', { name: 'Crea esperienza', exact: true }));
+    fireEvent.click(screen.getByRole('button', { name: /^Crea esperienza$/ }));
     expect(mocks.rpc).not.toHaveBeenCalled();
     fireEvent.click(await screen.findByRole('button', { name: 'Conferma e salva' }));
     await waitFor(() => expect(mocks.navigate).toHaveBeenCalled());
@@ -52,9 +52,9 @@ describe('experience editor operation boundaries', () => {
   it('does not navigate or refresh as successful when creation fails', async () => {
     mocks.rpc.mockResolvedValue({ data: null, error: new Error('fixture failure') });
     render(<ExperienceEditor city={city} userId="fixture-owner" visited />);
-    fireEvent.click(screen.getByRole('button', { name: 'Crea esperienza', exact: true }));
+    fireEvent.click(screen.getByRole('button', { name: /^Crea esperienza$/ }));
     await waitFor(() => expect(mocks.rpc).toHaveBeenCalledTimes(1));
-    await waitFor(() => expect(screen.getByRole('button', { name: 'Crea esperienza', exact: true })).not.toBeDisabled());
+    await waitFor(() => expect(screen.getByRole('button', { name: /^Crea esperienza$/ })).not.toBeDisabled());
     expect(mocks.navigate).not.toHaveBeenCalled();
     expect(mocks.refresh).not.toHaveBeenCalled();
   });
