@@ -16,11 +16,11 @@ Nessun cambiamento a codice applicativo, design, dipendenze, autenticazione, dat
 | Accesso | Interfacce email/password e registrazione con conferma | Servizio di autenticazione attuale; nuovo login con credenziali non riprovato |
 | Aspetto | Componenti condivisi, palette e font esistenti, layout mobile/desktop, fallback stemmi/foto | Coerenza da rifinire per pagina, senza ridisegno globale |
 
-**Non risultano CRUD personali simulati nell’app attuale.** I mock presenti nei test non sono una modalità dimostrativa dell’app. Il catalogo selezionato di 104 città è reale ma incompleto: non è l’elenco nazionale ISTAT completo. Gli scudi senza immagine sono fallback dichiarati, non stemmi inventati. Le percentuali sono calcolate sulle righe disponibili. Non risultano funzioni prodotto AI, mappe, social o pagamenti da completare.
+**Non risultano CRUD personali simulati nell’app attuale.** I mock presenti nei test non sono una modalità dimostrativa dell’app. Il catalogo selezionato di 104 città è reale ma incompleto: non è l’elenco nazionale ISTAT completo. Gli scudi senza immagine sono fallback dichiarati, non stemmi inventati. Le percentuali sono calcolate sulle righe disponibili. Non risultano funzioni prodotto AI, mappe, social o pagamenti da completare. Questi comportamenti costituiscono la baseline da preservare nella Fase 1.
 
 ## Dipendenze e punti da separare
-- Letture già raccolte in query condivise, ma scritture dirette al servizio presenti in MediaGallery, ExperienceEditor, Profilo e Badge; autenticazione presente anche nella protezione delle pagine.
-- Modelli applicativi derivati dai tipi generati del database; manca un contratto di dominio indipendente dal fornitore.
+- Letture già raccolte in query condivise, ma scritture dirette al servizio presenti in MediaGallery, ExperienceEditor, Profilo e Badge; autenticazione presente anche nella protezione delle pagine. Documentare queste dipendenze, senza separarle durante la Fase 1.
+- Modelli applicativi derivati dai tipi generati del database; manca un contratto di dominio indipendente dal fornitore. Nessun nuovo tipo applicativo o adapter nella Fase 1.
 - Logica pura già riutilizzabile: progressi, filtri/ordinamenti Diario, raggruppamenti esperienze, validazione media e regole badge. Conservarla, senza duplicare formule.
 - Funzioni database indispensabili oggi: creazione esperienza con conferma ON, assegnazione badge, posizioni vetrina e copertina. In una simulazione potranno essere riprodotte solo come comportamento dimostrativo, mai come garanzia di sicurezza reale.
 - Configurazione di avvio usa `@lovable.dev/vite-tanstack-config`, TanStack Start e un target di pubblicazione Cloudflare. Sono dipendenze di toolchain da documentare, non prova che l’editor sia obbligatorio per avviare il codice.
@@ -31,7 +31,11 @@ Nessun cambiamento a codice applicativo, design, dipendenze, autenticazione, dat
 ## Ordine di completamento proposto
 
 ### 1. Fissare la base di regressione
-Inventario di tutte le pagine e azioni esistenti, con stato reale/temporaneo e matrice caricamento, vuoto, errore, successo. Conservare gli 85 test e aggiungere prove mirate solo sulle aree toccate. Nessuna modifica allo schema o ai dati.
+**Fase approvata e unico ambito di esecuzione attuale.** Usare l’audit già completato, senza ripeterlo, per creare `docs/FRONTEND_BASELINE.md`: inventario sintetico di pagine, azioni, dipendenze, persistenza/preferenze locali/stati temporanei e matrice caricamento, vuoto, errore, successo; elencare gli stati mancanti senza implementarli e rimandare ai report esistenti anziché duplicarli.
+
+Conservare integralmente gli 85 test; aggiungere soltanto prove mirate con fixture sulle lacune effettive: indipendenza stato città/esperienze e OFF/ON, modifica/eliminazione indipendente, riferimenti media/copertine, raggruppamenti/filtri/ordinamenti/preferenze Diario e notifiche/vetrina badge. Verificare la centralizzazione delle formule di progresso e delle regole badge senza cambiarle. Eseguire la suite completa; documentare eventuali bug preesistenti, senza correggerli in questa fase.
+
+Consentite solo documentazione e test: nessuna modifica a codice applicativo, design, navigazione, autenticazione, autorizzazioni, upload, database, policy, catalogo delle 104 città o regole di business; nessuna nuova libreria, infrastruttura, modalità mock o adapter e nessun utilizzo di dati personali nelle prove. Il report finale elencherà file toccati, copertura concreta, test superati/falliti/saltati, lacune unitarie/live, problemi con severità e conferma di conservazione. Valutare la preparazione alla Fase 2, **senza avviarla automaticamente**. Nessuna modifica allo schema o ai dati.
 
 **Criterio:** ON/OFF non perde ricordi; più esperienze non aumentano città/progressi; badge e vetrina restano invariati.
 
