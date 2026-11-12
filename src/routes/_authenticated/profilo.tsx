@@ -4,7 +4,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { UserRound, LogOut, Loader2, Pencil, Check, X } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/lib/auth";
-import { supabase } from "@/integrations/supabase/client";
+import { signOut, updateDisplayName } from "@/data/backend";
 import { geoQuery, visitsQuery } from "@/lib/queries";
 import { computeProgress } from "@/lib/progress";
 import { BADGES } from "@/lib/badges";
@@ -40,7 +40,7 @@ function Profile({ userId }: { userId: string }) {
   async function saveName(e: React.FormEvent) {
     e.preventDefault();
     setSavingName(true);
-    const { error } = await supabase.auth.updateUser({ data: { display_name: draftName.trim() } });
+    const error = await updateDisplayName(draftName.trim()).then(() => null, (e: unknown) => e ?? true);
     setSavingName(false);
     if (error) { toast.error("Impossibile salvare il nome. Riprova."); return; }
     setEditing(false);
@@ -48,7 +48,7 @@ function Profile({ userId }: { userId: string }) {
   }
   async function logout() {
     setBusy(true);
-    const { error } = await supabase.auth.signOut();
+    const error = await signOut().then(() => null, (e: unknown) => e ?? true);
     setBusy(false);
     if (error) { toast.error("Logout non riuscito. Riprova."); return; }
     await navigate({ to: "/auth", search: { redirect: undefined } });

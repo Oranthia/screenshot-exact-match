@@ -11,7 +11,7 @@ import { ProgressBar } from "@/components/explorer/ProgressBar";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { FeaturedSlots } from "@/components/explorer/FeaturedSlots";
-import { supabase } from "@/integrations/supabase/client";
+import { setFeaturedSlot } from "@/data/backend";
 import { useQueryClient } from "@tanstack/react-query";
 
 export const Route = createFileRoute("/_authenticated/badge")({
@@ -36,8 +36,7 @@ function Collection({ userId }: { userId: string }) {
     setPending(true);
     try {
       validateFeaturedSlot(position, id, data);
-      const { error } = await supabase.rpc("set_my_featured_badge_slot", { _position: position, _badge_id: id as string });
-      if (error) throw error;
+      await setFeaturedSlot(position, id);
       await qc.invalidateQueries({ queryKey: badgesQuery(userId).queryKey });
       setPlacing(null); toast.success("Vetrina aggiornata");
     } catch { toast.error("Impossibile aggiornare la vetrina. Riprova."); }

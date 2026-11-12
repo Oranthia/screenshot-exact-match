@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
-import type { Session } from "@supabase/supabase-js";
-import { supabase } from "@/integrations/supabase/client";
+import { getSession, onAuthChange, type AuthSession as Session } from "@/data/backend";
 
 type AuthState = { session: Session | null; loading: boolean };
 const AuthContext = createContext<AuthState>({ session: null, loading: true });
@@ -8,12 +7,12 @@ const AuthContext = createContext<AuthState>({ session: null, loading: true });
 export function AuthProvider({ children, onIdentityChange }: { children: ReactNode; onIdentityChange?: (event: string) => void }) {
   const [state, setState] = useState<AuthState>({ session: null, loading: true });
   useEffect(() => {
-    const { data } = supabase.auth.onAuthStateChange((event, session) => {
+    const unsubscribe = onAuthChange((event, session) => {
       setState({ session, loading: false });
       if (event === "SIGNED_IN" || event === "SIGNED_OUT" || event === "USER_UPDATED") onIdentityChange?.(event);
     });
-    supabase.auth.getSession().then(({ data: d }) => setState({ session: d.session, loading: false }));
-    return () => data.subscription.unsubscribe();
+    getSession().then((session) => setState({ session, loading: false }));
+    return unsubscribe;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return <AuthContext.Provider value={state}>{children}</AuthContext.Provider>;
