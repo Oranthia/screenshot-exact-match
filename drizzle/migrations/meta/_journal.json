@@ -43,6 +43,13 @@
       "when": 1794477884113,
       "tag": "0005_private_multiple_visit_experiences",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1794478060930,
+      "tag": "0006_enforce_atomic_experience_creation",
+      "breakpoints": true
     }
   ]
 }
