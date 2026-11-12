@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Plus, ArrowLeftRight, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { setFeaturedSlot } from "@/data/backend";
 import { BADGES, type BadgeState } from "@/lib/badges";
 import { badgesQuery } from "@/lib/badge-queries";
 import { validateFeaturedSlot } from "@/lib/featured-slot";
@@ -21,8 +21,7 @@ export function FeaturedSlots({ userId, data }: { userId: string; data: BadgeSta
     setPending(true);
     try {
       validateFeaturedSlot(slot, id, data);
-      const { error } = await supabase.rpc("set_my_featured_badge_slot", { _position: slot, _badge_id: id as string });
-      if (error) throw error;
+      await setFeaturedSlot(slot, id);
       await qc.invalidateQueries({ queryKey: badgesQuery(userId).queryKey });
       setSlot(null); toast.success("Vetrina aggiornata");
     } catch { toast.error("Impossibile aggiornare la vetrina. Riprova."); }

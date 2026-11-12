@@ -1,47 +1,26 @@
 import { queryOptions, useMutation, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
-import type { Tables } from "@/integrations/supabase/types";
+import { fetchCatalog, fetchMedia, fetchVisits, saveVisit } from "@/data/backend";
+import type { City, Media, Province, Region, Visit } from "@/data/contracts";
+import { MEDIA_REFRESH_MS } from "@/data/contracts";
 import { optimisticVisit, type VisitPatch } from "./visit-cache";
 
-export type Region = Tables<"regions">;
-export type Province = Tables<"provinces">;
-export type Municipality = Tables<"municipalities">;
-export type Visit = Tables<"user_visits">;
-export type VisitMedia = Tables<"visit_media">;
-
-async function fetchAll<T>(table: "municipalities"): Promise<T[]> {
-  const out: T[] = [];
-  const page = 1000;
-  for (let from = 0; ; from += page) {
-    const { data, error } = await supabase.from(table).select("*").order("name").order("istat_code").range(from, from + page - 1);
-    if (error) throw error;
-    out.push(...(data as T[]));
-    if (!data || data.length < page) break;
-  }
-  return out;
-}
+export type { Region, Province, Visit };
+export type Municipality = City;
+export type VisitMedia = Media;
 
 export const geoQuery = queryOptions({
   queryKey: ["geo"],
   staleTime: 1000 * 60 * 30,
   queryFn: async () => {
-    const [regions, provinces, meta, municipalities] = await Promise.all([
-      supabase.from("regions").select("*").order("name"),
-      supabase.from("provinces").select("*"),
-      supabase.from("catalog_meta").select("*").maybeSingle(),
-      fetchAll<Municipality>("municipalities"),
-    ]);
-    if (regions.error) throw regions.error;
-    if (provinces.error) throw provinces.error;
-    if (meta.error) throw meta.error;
+    const { regions, provinces, cities, catalogComplete, nationalTotal } = await fetchCatalog();
     return {
-      regions: regions.data,
-      provinces: provinces.data,
-      provinceByCode: new Map(provinces.data.map((p) => [p.code, p])),
-      regionByCode: new Map(regions.data.map((r) => [r.code, r])),
-      municipalities,
-      catalogComplete: meta.data?.is_complete ?? false,
-      nationalTotal: meta.data?.national_total ?? 7896,
+      regions,
+      provinces,
+      provinceByCode: new Map(provinces.map((p) => [p.code, p])),
+      regionByCode: new Map(regions.map((r) => [r.code, r])),
+      municipalities: cities,
+      catalogComplete,
+      nationalTotal,
     };
   },
 });
@@ -49,31 +28,13 @@ export const geoQuery = queryOptions({
 export const visitsQuery = (userId: string) =>
   queryOptions({
     queryKey: ["visits", userId],
-    queryFn: async () => {
-      const rows: Visit[] = [];
-      for (let from = 0; ; from += 1000) {
-        const { data, error } = await supabase.from("user_visits").select("*").eq("user_id", userId)
-          .order("updated_at", { ascending: false }).order("id").range(from, from + 999);
-        if (error) throw error;
-        rows.push(...(data ?? []));
-        if (!data || data.length < 1000) break;
-      }
-      return rows;
-    },
+    queryFn: () => fetchVisits(userId),
   });
 
 export function useSaveVisit(userId: string) {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: async (v: VisitPatch) => {
-      const { data, error } = await supabase
-        .from("user_visits")
-        .upsert({ user_id: userId, ...v }, { onConflict: "user_id,istat_code" })
-        .select()
-        .single();
-      if (error) throw error;
-      return data;
-    },
+    mutationFn: (v: VisitPatch) => saveVisit(userId, v),
     onMutate: async (patch) => {
       const key = ["visits", userId];
       await qc.cancelQueries({ queryKey: key });
@@ -97,26 +58,7 @@ export function useSaveVisit(userId: string) {
 export const mediaQuery = (userId: string, istat: string, experienceId?: string) =>
   queryOptions({
     queryKey: ["media", userId, istat, experienceId ?? "all"],
-    staleTime: 1000 * 60 * 45,
-    refetchInterval: 1000 * 60 * 45,
-    queryFn: async () => {
-      const data: VisitMedia[] = [];
-      for (let from = 0; ; from += 1000) {
-        let request = supabase.from("visit_media").select("*")
-          .eq("user_id", userId).eq("istat_code", istat)
-          .order("created_at", { ascending: false }).order("id").range(from, from + 999);
-        if (experienceId) request = request.eq("experience_id", experienceId);
-        const { data: page, error } = await request;
-        if (error) throw error;
-        data.push(...(page ?? []));
-        if (!page || page.length < 1000) break;
-      }
-      if (!data.length) return [];
-      const { data: signed, error: sErr } = await supabase.storage
-        .from("visit-media")
-        .createSignedUrls(data.map((m) => m.storage_path), 60 * 60);
-      if (sErr) throw sErr;
-      if (signed?.some((item) => item.error || !item.signedUrl)) throw new Error("Impossibile caricare alcuni ricordi.");
-      return data.map((m, i) => ({ ...m, url: signed?.[i]?.signedUrl ?? "" }));
-    },
+    staleTime: MEDIA_REFRESH_MS,
+    refetchInterval: MEDIA_REFRESH_MS,
+    queryFn: () => fetchMedia(userId, istat, experienceId),
   });

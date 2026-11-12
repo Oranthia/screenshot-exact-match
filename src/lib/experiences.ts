@@ -1,7 +1,7 @@
-import type { Tables } from '@/integrations/supabase/types';
 import type { Municipality, Visit } from './queries';
 import { diaryEntries, normalizeCityName, type DiarySort } from './diary';
-export type Experience = Tables<'visit_experiences'>;
+import type { Experience } from '@/data/contracts';
+export type { Experience };
 export const experienceTitle = (title: string) => title.trim() || 'Ricordo di viaggio';
 export function sortExperiences(rows: Experience[], ascending = false) {
   return [...rows].sort((a,b) => !a.visit_date && b.visit_date ? 1 : a.visit_date && !b.visit_date ? -1 : (ascending ? 1 : -1) * (a.visit_date ?? '').localeCompare(b.visit_date ?? '') || b.created_at.localeCompare(a.created_at) || a.id.localeCompare(b.id));

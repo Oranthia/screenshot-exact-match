@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useBlocker, useNavigate } from '@tanstack/react-router';
 import { useQueryClient } from '@tanstack/react-query';
 import { Loader2, Trash2 } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
+import { createExperience, updateExperience } from '@/data/backend';
 import type { Municipality } from '@/lib/queries';
 import { experienceTitle, type Experience } from '@/lib/experiences';
 import { refreshExperiences, removeExperience } from '@/lib/experience-queries';
@@ -23,11 +23,9 @@ export function ExperienceEditor({userId,city,item,visited}:{userId:string;city:
   try {
    let id=item?.id;
    if(item) {
-    const result=await supabase.from('visit_experiences').update({title:experienceTitle(title),visit_date:date || null,notes:notes || null}).eq('user_id',userId).eq('id',item.id).eq('deleting',false).select('id').single();
-    if(result.error) throw result.error;
+    await updateExperience(userId,item.id,{title:experienceTitle(title),visit_date:date || null,notes:notes || null});
    } else {
-    const result=await supabase.rpc('create_my_experience',{_city_id:city.id,_title:title,_visit_date:(date || null) as unknown as string,_notes:(notes || null) as unknown as string,_confirm_visit:confirmed});
-    if(result.error) throw result.error; id=result.data.id;
+    id=(await createExperience(city.id,{title,visit_date:date || null,notes:notes || null},confirmed)).id;
    }
    setSaved(JSON.stringify([title,date,notes]));setStatus('Salvato'); refreshExperiences(qc,userId);
    if(!item && id) await navigate({to:'/esperienza/$id',params:{id},ignoreBlocker:true});

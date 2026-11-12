@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { ImagePlus, Loader2, Pencil, Play, Trash2, Star } from "lucide-react";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
+import { deleteMedia, setCityCover, updateMediaCaption, uploadMedia } from "@/data/backend";
 import { mediaQuery } from "@/lib/queries";
 import { mediaContentType, validateMedia } from "@/lib/media";
 import { Button } from "@/components/ui/button";
@@ -39,17 +39,7 @@ export function MediaGallery({ userId, istat, experienceId }: { userId: string; 
       if (!check.ok) { toast.error(check.error); continue; }
       setUploading((u) => [...u, file.name]);
       try {
-        const ext = file.name.split(".").pop()?.toLowerCase() ?? "bin";
-        const path = `${userId}/${istat}/${crypto.randomUUID()}.${ext}`;
-        const up = await supabase.storage.from("visit-media").upload(path, file, { contentType: mediaContentType(file) });
-        if (up.error) throw up.error;
-        const ins = await supabase.from("visit_media").insert({
-          user_id: userId, istat_code: istat, experience_id: experienceId, file_name: file.name, media_type: check.kind, storage_path: path,
-        });
-        if (ins.error) {
-          await supabase.storage.from("visit-media").remove([path]);
-          throw ins.error;
-        }
+        await uploadMedia({ userId, istat, experienceId, file, kind: check.kind, contentType: mediaContentType(file) });
         toast.success(`${check.kind === "photo" ? "Foto" : "Video"} caricato`);
       } catch (e) {
         toast.error(`Caricamento di "${file.name}" non riuscito: ${(e as Error).message}`);
@@ -63,7 +53,7 @@ export function MediaGallery({ userId, istat, experienceId }: { userId: string; 
 
   async function saveCaption() {
     if (!editing) return;
-    const { error } = await supabase.from("visit_media").update({ caption: caption.trim() || null }).eq("id", editing.id);
+    const error = await updateMediaCaption(editing.id, caption.trim() || null).then(() => null, (e: unknown) => e ?? true);
     if (error) toast.error("Impossibile salvare la didascalia");
     else { toast.success("Didascalia aggiornata"); refresh(); }
     setEditing(null);
@@ -72,8 +62,7 @@ export function MediaGallery({ userId, istat, experienceId }: { userId: string; 
   async function setCover(item: Item) {
     setCoverPending(true);
     try {
-      const { error } = await supabase.rpc("set_my_city_cover", { _media_id: item.id });
-      if (error) throw error;
+      await setCityCover(item.id);
       refresh(); toast.success("Copertina aggiornata");
     } catch { toast.error("Impossibile aggiornare la copertina. Riprova."); }
     finally { setCoverPending(false); }
@@ -81,10 +70,9 @@ export function MediaGallery({ userId, istat, experienceId }: { userId: string; 
 
   async function confirmDelete() {
     if (!deleting) return;
-    const st = await supabase.storage.from("visit-media").remove([deleting.storage_path]);
-    if (st.error) { toast.error("Eliminazione del file non riuscita"); return; }
-    const { error } = await supabase.from("visit_media").delete().eq("id", deleting.id);
-    if (error) toast.error("Eliminazione non riuscita");
+    const failed = await deleteMedia(deleting).catch(() => "file" as const);
+    if (failed === "file") { toast.error("Eliminazione del file non riuscita"); return; }
+    if (failed) toast.error("Eliminazione non riuscita");
     else toast.success("Elemento eliminato");
     setDeleting(null);
     refresh();
