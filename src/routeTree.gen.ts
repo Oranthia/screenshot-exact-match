@@ -16,6 +16,7 @@ import { Route as AuthenticatedBadgeRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedDiarioRouteImport } from './routes/_authenticated/diario'
 import { Route as AuthenticatedProfiloRouteImport } from './routes/_authenticated/profilo'
 import { Route as AuthenticatedComuneSlugRouteImport } from './routes/_authenticated/comune.$slug'
+import { Route as AuthenticatedEsperienzaIdRouteImport } from './routes/_authenticated/esperienza.$id'
 import { Route as AuthenticatedRegioneSlugRouteImport } from './routes/_authenticated/regione.$slug'
 
 const IndexRoute = IndexRouteImport.update({
@@ -52,6 +53,12 @@ const AuthenticatedComuneSlugRoute = AuthenticatedComuneSlugRouteImport.update({
   path: '/comune/$slug',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedEsperienzaIdRoute =
+  AuthenticatedEsperienzaIdRouteImport.update({
+    id: '/esperienza/$id',
+    path: '/esperienza/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedRegioneSlugRoute =
   AuthenticatedRegioneSlugRouteImport.update({
     id: '/regione/$slug',
@@ -66,6 +73,7 @@ export interface FileRoutesByFullPath {
   '/diario': typeof AuthenticatedDiarioRoute
   '/profilo': typeof AuthenticatedProfiloRoute
   '/comune/$slug': typeof AuthenticatedComuneSlugRoute
+  '/esperienza/$id': typeof AuthenticatedEsperienzaIdRoute
   '/regione/$slug': typeof AuthenticatedRegioneSlugRoute
 }
 export interface FileRoutesByTo {
@@ -75,6 +83,7 @@ export interface FileRoutesByTo {
   '/diario': typeof AuthenticatedDiarioRoute
   '/profilo': typeof AuthenticatedProfiloRoute
   '/comune/$slug': typeof AuthenticatedComuneSlugRoute
+  '/esperienza/$id': typeof AuthenticatedEsperienzaIdRoute
   '/regione/$slug': typeof AuthenticatedRegioneSlugRoute
 }
 export interface FileRoutesById {
@@ -86,6 +95,7 @@ export interface FileRoutesById {
   '/_authenticated/diario': typeof AuthenticatedDiarioRoute
   '/_authenticated/profilo': typeof AuthenticatedProfiloRoute
   '/_authenticated/comune/$slug': typeof AuthenticatedComuneSlugRoute
+  '/_authenticated/esperienza/$id': typeof AuthenticatedEsperienzaIdRoute
   '/_authenticated/regione/$slug': typeof AuthenticatedRegioneSlugRoute
 }
 export interface FileRouteTypes {
@@ -97,6 +107,7 @@ export interface FileRouteTypes {
     | '/diario'
     | '/profilo'
     | '/comune/$slug'
+    | '/esperienza/$id'
     | '/regione/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -106,6 +117,7 @@ export interface FileRouteTypes {
     | '/diario'
     | '/profilo'
     | '/comune/$slug'
+    | '/esperienza/$id'
     | '/regione/$slug'
   id:
     | '__root__'
@@ -116,6 +128,7 @@ export interface FileRouteTypes {
     | '/_authenticated/diario'
     | '/_authenticated/profilo'
     | '/_authenticated/comune/$slug'
+    | '/_authenticated/esperienza/$id'
     | '/_authenticated/regione/$slug'
   fileRoutesById: FileRoutesById
 }
@@ -176,6 +189,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedComuneSlugRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/esperienza/$id': {
+      id: '/_authenticated/esperienza/$id'
+      path: '/esperienza/$id'
+      fullPath: '/esperienza/$id'
+      preLoaderRoute: typeof AuthenticatedEsperienzaIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/regione/$slug': {
       id: '/_authenticated/regione/$slug'
       path: '/regione/$slug'
@@ -191,6 +211,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedDiarioRoute: typeof AuthenticatedDiarioRoute
   AuthenticatedProfiloRoute: typeof AuthenticatedProfiloRoute
   AuthenticatedComuneSlugRoute: typeof AuthenticatedComuneSlugRoute
+  AuthenticatedEsperienzaIdRoute: typeof AuthenticatedEsperienzaIdRoute
   AuthenticatedRegioneSlugRoute: typeof AuthenticatedRegioneSlugRoute
 }
 
@@ -199,6 +220,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDiarioRoute: AuthenticatedDiarioRoute,
   AuthenticatedProfiloRoute: AuthenticatedProfiloRoute,
   AuthenticatedComuneSlugRoute: AuthenticatedComuneSlugRoute,
+  AuthenticatedEsperienzaIdRoute: AuthenticatedEsperienzaIdRoute,
   AuthenticatedRegioneSlugRoute: AuthenticatedRegioneSlugRoute,
 }
 
