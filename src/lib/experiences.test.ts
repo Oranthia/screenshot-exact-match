@@ -1,0 +1,22 @@
+import {describe,it,expect} from 'vitest';
+import {experienceAlbum,experienceTimeline,experienceGroups,experienceTitle,sortExperiences,type Experience} from './experiences';
+import {computeProgress} from './progress';
+import type {Municipality,Visit,Region} from './queries';
+const city:Municipality={id:'city',istat_code:'a',name:'Venezia',slug:'venezia',province_code:'p',region_code:'05',official_istat_code:null,coat_of_arms_url:null};
+const visit:Visit={id:'v',user_id:'u',istat_code:'a',visited:true,visit_date:'2020-01-01',notes:'legacy',updated_at:'2026-11-01'};
+const item=(id:string,date:string|null):Experience=>({id,user_id:'u',city_id:'city',istat_code:'a',title:id,visit_date:date,notes:`note ${id}`,created_at:'2026-11-01',updated_at:'2026-11-01',legacy_source_key:null,deleting:false});
+const filters={q:'',region:'',year:'',sort:'date' as const};
+describe('multiple independent experiences',()=>{
+ it('keeps one album city for five experiences',()=>{const rows=Array.from({length:5},(_,i)=>item(String(i),'2026-11-05'));const album=experienceAlbum([city],[visit],rows,filters);expect(album).toHaveLength(1);expect(album[0]?.experienceCount).toBe(5);});
+ it('keeps same-date experiences distinct in the timeline',()=>{expect(experienceTimeline([city],[visit],[item('a','2026-11-05'),item('b','2026-11-05')],filters).map(e=>e.experience.id)).toEqual(['a','b']);});
+ it('puts undated experiences last without inventing dates',()=>{const sorted=sortExperiences([item('none',null),item('old','2025-06-12'),item('new','2026-11-05')]);expect(sorted.map(e=>e.id)).toEqual(['new','old','none']);expect(sorted[2]?.visit_date).toBeNull();});
+ it('groups undated experiences separately',()=>{const groups=experienceGroups(experienceTimeline([city],[visit],[item('none',null),item('new','2026-11-05')],filters));expect(groups.map(g=>g.key)).toEqual(['2026-11','undated']);expect(groups[1]?.year).toBe('');});
+ it('filters year by experience date only',()=>{expect(experienceTimeline([city],[visit],[item('old','2025-06-12'),item('none',null)],{...filters,year:'2025'}).map(e=>e.experience.id)).toEqual(['old']);});
+ it('filters by city and region',()=>{expect(experienceTimeline([city],[visit],[item('a',null)],{...filters,q:'vene',region:'05'})).toHaveLength(1);expect(experienceTimeline([city],[visit],[item('a',null)],{...filters,region:'01'})).toHaveLength(0);});
+ it('hides OFF experiences without altering memories and restores identical IDs on ON',()=>{const rows=[item('a','2026-11-05')];expect(experienceTimeline([city],[{...visit,visited:false}],rows,filters)).toEqual([]);expect(rows[0]?.notes).toBe('note a');expect(experienceTimeline([city],[visit],rows,filters)[0]?.experience.id).toBe('a');});
+ it('keeps a visited city with no detailed experiences in album only',()=>{expect(experienceAlbum([city],[visit],[],filters)[0]?.experienceCount).toBe(0);expect(experienceTimeline([city],[visit],[],filters)).toHaveLength(0);});
+ it('uses latest dated experience for album and never displays legacy dates',()=>{const album=experienceAlbum([city],[visit],[item('old','2025-06-12'),item('new','2026-11-05')],filters);expect(album[0]?.visit.visit_date).toBe('2026-11-05');expect(album[0]?.visit.notes).toBe('note new');expect(experienceAlbum([city],[visit],[],filters)[0]?.visit.visit_date).toBeNull();});
+ it('deleting one experience leaves the other and city state unchanged',()=>{const rows=[item('a',null),{...item('b',null),deleting:true}];expect(experienceTimeline([city],[visit],rows,filters).map(e=>e.experience.id)).toEqual(['a']);expect(visit.visited).toBe(true);});
+ it('defaults an empty title to Ricordo di viaggio',()=>{expect(experienceTitle('  ')).toBe('Ricordo di viaggio');expect(experienceTitle(' Weekend a Venezia ')).toBe('Weekend a Venezia');});
+ it('counts cities not experiences for national and regional percentages',()=>{const cities=[city,{...city,id:'other',istat_code:'b'}];const region={code:'05',name:'Veneto',slug:'veneto'} as Region;const rows=Array.from({length:5},(_,i)=>item(String(i),null));const album=experienceAlbum(cities,[visit],rows,filters);const progress=computeProgress([region],cities,new Set(album.map(e=>e.city.istat_code)));expect(progress.national.visited).toBe(1);expect(progress.national.percent).toBe(50);expect(progress.perRegion.get('05')?.percent).toBe(50);});
+});
