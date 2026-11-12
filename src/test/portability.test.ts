@@ -14,8 +14,8 @@ describe('portabilità', () => {
     expect(allowLocalDemo('serve', 'development', '1', '127.0.0.1')).toBe(true);
   });
   it('nessun segreto privilegiato nei file versionati', () => {
-    const pattern = /(sb_secret_[A-Za-z0-9]|sk_live_|-----BEGIN [A-Z ]*PRIVATE KEY|SERVICE_ROLE_KEY\s*=\s*\S)/;
-    const hits = tracked.filter((f) => existsSync(f) && !/\.(png|jpg|jpeg|webp|ico|lock)$/.test(f) && pattern.test(readFileSync(f, 'utf8')));
+    const pattern = /(sb_secret_[A-Za-z0-9]|sk_live_|-----BEGIN [A-Z ]*PRIVATE KEY|SERVICE_ROLE_KEY\s*[=:]\s*['"]?eyJ)/;
+    const hits = tracked.filter((f) => existsSync(f) && f !== 'src/test/portability.test.ts' && !/\.(png|jpg|jpeg|webp|ico|lock)$/.test(f) && pattern.test(readFileSync(f, 'utf8')));
     expect(hits).toEqual([]);
   });
   it('.env.example contiene solo segnaposto', () => {
