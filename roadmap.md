@@ -1,4 +1,5 @@
 # Tasks
+- [ ] Collaudo live finale: login/logout, persistenza, isolamento A/B, CRUD esperienze/foto/copertine, progressi ON/OFF e tre badge simultanei — bloccato: identificare i due account dedicati e ottenere le rispettive sessioni autorizzate; non usare l'account personale. Stato in docs/LIVE_FINAL_REPORT.md.
 - [x] Fase 4: opt-in localhost-only demo A–D, same screens with synthetic adapter, 133/133 tests and verified isolated CRUD/media/network; real app/auth/data unchanged. See docs/PHASE_4_REPORT.md.
 - [x] Fase 3: Home states/retry, accessibility and responsive hardening, 119/119 tests, read-only live checks at five widths and documentation; backend/personal data unchanged. See docs/PHASE_3_REPORT.md.
 - [ ] Fase 3 live technical experience create/edit/delete — blocked by absence of an authorized dedicated test account; no writes on the main account.
