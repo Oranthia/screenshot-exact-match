@@ -4,3 +4,4 @@ body { padding-top: 52px; }
 .demo-controls summary { min-height: 28px; }
 .demo-controls summary:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
 .app-with-navigation > header, .app-with-navigation header.sticky { top: 52px; }
+[data-sonner-toaster][data-y-position="top"] { top: 64px !important; }
