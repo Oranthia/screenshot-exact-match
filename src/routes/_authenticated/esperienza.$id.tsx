@@ -7,7 +7,7 @@ import {experiencesQuery} from '@/lib/experience-queries';
 import {AppHeader} from '@/components/explorer/AppHeader';
 import {ExperienceEditor} from '@/components/explorer/ExperienceEditor';
 import {Button} from '@/components/ui/button';
-export const Route=createFileRoute('/_authenticated/esperienza/$id')({validateSearch:(s:Record<string,unknown>)=>({city:typeof s.city==='string'?s.city:''}),head:()=>({meta:[{title:'Esperienza di viaggio — Italia Explorer'},{name:'description',content:'Date, note e ricordi privati della tua esperienza in Italia.'},{property:'og:title',content:'Esperienza di viaggio — Italia Explorer'},{property:'og:description',content:'I tuoi ricordi di viaggio personali.'},{property:'og:type',content:'website'},{name:'twitter:card',content:'summary_large_image'}]}),component:Page});
+export const Route=createFileRoute('/_authenticated/esperienza/$id')({validateSearch:(s:Record<string,unknown>):{city?:string}=>({city:typeof s['city']==='string'?s['city']:''}),head:()=>({meta:[{title:'Esperienza di viaggio — Italia Explorer'},{name:'description',content:'Date, note e ricordi privati della tua esperienza in Italia.'},{property:'og:title',content:'Esperienza di viaggio — Italia Explorer'},{property:'og:description',content:'I tuoi ricordi di viaggio personali.'},{property:'og:type',content:'website'},{name:'twitter:card',content:'summary_large_image'}]}),component:Page});
 function Page(){
  const {id}=Route.useParams();const search=Route.useSearch();const {session}=useAuth();const userId=session?.user.id ?? '';
  const geo=useQuery(geoQuery);const experiences=useQuery({...experiencesQuery(userId),enabled:!!userId});const visits=useQuery({...visitsQuery(userId),enabled:!!userId});

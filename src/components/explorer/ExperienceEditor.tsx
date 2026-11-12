@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogCancel, AlertDialogAction } from '@/components/ui/alert-dialog';
 import { MediaGallery } from './MediaGallery';
-export function ExperienceEditor({userId,city,item,visited}:{userId:string;city:Municipality;item?:Experience;visited:boolean}) {
+export function ExperienceEditor({userId,city,item,visited}:{userId:string;city:Municipality;item?:Experience | undefined;visited:boolean}) {
  const qc=useQueryClient(); const navigate=useNavigate();
  const [title,setTitle]=useState(item?.title ?? ''); const [date,setDate]=useState(item?.visit_date ?? ''); const [notes,setNotes]=useState(item?.notes ?? '');
  const [saved,setSaved]=useState(JSON.stringify([title,date,notes])); const dirty=JSON.stringify([title,date,notes])!==saved;
