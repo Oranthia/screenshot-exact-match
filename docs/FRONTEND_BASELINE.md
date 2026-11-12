@@ -63,3 +63,35 @@ Sono stati confrontati hash prima/dopo dei file applicativi, catalogo, configura
 **Fase 2 avviabile in modo incrementale**, iniziando dai contratti di lettura e mantenendo intatti i percorsi persistenti. La baseline non certifica ancora migrazione esterna o indipendenza dal backend, né elimina la necessità delle verifiche live prima di modificare scritture e autorizzazioni. **Fase 2 non avviata.**
 
 File della Fase 1: questo documento, `src/lib/frontend-baseline.test.ts`, `src/components/explorer/ExperienceEditor.test.tsx`, `src/components/explorer/BadgeObserver.test.tsx`, `roadmap.md` e revisione del piano archiviata in `.lovable/plan/`. Nessuna modifica ai 16 file di test precedenti o al codice applicativo.
+## Fase 2 — Separazione frontend / accesso ai dati
+
+### Dipendenze dirette trovate prima della Fase 2
+| Area | Punto di accesso diretto |
+|---|---|
+| Autenticazione e profilo | `lib/auth.tsx` (sessione), `routes/auth.tsx` (accesso/registrazione), `routes/_authenticated/profilo.tsx` (nome, logout), `_authenticated/route.tsx` (gate gestito, lasciato invariato) |
+| Regioni e città, statistiche | `lib/queries.ts` `geoQuery` (le statistiche erano già calcolate solo in `lib/progress.ts`) |
+| Visitata/Non visitata | `lib/queries.ts` `visitsQuery`, `useSaveVisit` |
+| Esperienze, date e note | `lib/experience-queries.ts`, `components/explorer/ExperienceEditor.tsx` (scritture dirette) |
+| Media e copertine | `lib/queries.ts` `mediaQuery`, `lib/diary-photos.ts`, `lib/experience-queries.ts` (anteprime), `components/explorer/MediaGallery.tsx` (upload, didascalia, copertina, eliminazione) |
+| Badge e vetrina | `lib/badge-queries.ts`, `components/explorer/FeaturedSlots.tsx`, `routes/_authenticated/badge.tsx` |
+
+### Struttura introdotta
+- `src/data/contracts.ts`: contratti di dominio (Region, Province, City, Visit, VisitPatch, Experience, ExperienceDraft, Media, SignedMedia, ExperiencePreview, EarnedBadge, FeaturedBadge, BadgeState, UserProfile, Progress/ProgressStats). Indipendenti dai tipi generati; `visit_date` facoltativa resta `null`, distinta da `created_at`/`updated_at`.
+- `src/data/backend/`: adapter reale per dominio (`geo`, `visits`, `experiences`, `media`, `badges`, `profile`), più `shared` (paginazione, URL firmati) e `mappers` (righe → contratti).
+- Hook e query (`lib/*-queries.ts`, `lib/queries.ts`) usano solo l’adapter; chiavi di cache, invalidazioni, aggiornamento ottimistico e rinnovo URL firmati invariati.
+- Funzioni server atomiche (creazione esperienza, copertina, vetrina, badge), RLS, bucket privato e gate di accesso invariati. Nessuna chiave privilegiata nel frontend.
+
+### Letture e scritture migrate
+Tutte: catalogo, visite, esperienze, media/anteprime/diario, badge, sessione; ON/OFF, crea/modifica/elimina esperienza, upload/didascalia/copertina/eliminazione media, vetrina, nome profilo, accesso/registrazione/logout.
+
+### Test
+105/105 superati (94 baseline + 11 in `src/data/backend/adapter.test.ts`: mapping, null/date facoltative, anteprime, profilo, errori, scritture vetrina/visite, separazione). Verifica reale in anteprima: Home, Diario, Badge, Profilo e scheda città caricano dati e foto private senza errori. Le scritture non sono state eseguite dal vivo per non alterare i dati personali: coperte solo da test automatici.
+
+### Problemi preesistenti (non regressioni, ancora aperti)
+- Gestione errori Home incompleta (media).
+- Messaggi e README obsoleti (bassa).
+
+### Attività residue
+- Componenti con stato/mutazioni (MediaGallery, ExperienceEditor, FeaturedSlots) chiamano l’adapter direttamente: si possono estrarre in hook dedicati se servirà.
+- Le pagine usano ancora i campi snake_case dei contratti, scelti per non toccare l’UI.
+- Il gate `_authenticated/route.tsx` resta sul client generato perché gestito dalla piattaforma.
