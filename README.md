@@ -67,3 +67,6 @@ Il catalogo iniziale comprende 104 città selezionate tra capoluoghi e destinazi
 Ogni città ha `id` UUID stabile, `official_istat_code` facoltativo e URL dello stemma facoltativo. Il campo storico `istat_code` è mantenuto come chiave immutabile di compatibilità per visite e storage: i nuovi record usano `city:<slug>`, non codici ISTAT inventati. Le 10 città già esistenti conservano chiavi, immagini e ricordi. Aggiungere un codice ufficiale non cambia le chiavi delle visite.
 
 Per aggiungere città si usano gli strumenti dati di Lovable: prima la provincia, poi la città, evitando conflitti su provincia e pagina. Nessun seed viene eseguito all'apertura delle schermate. Un eventuale importatore CSV futuro deve riconciliare città esistenti tramite codice ufficiale o pagina, senza mai cambiare le chiavi storiche; lo script storico `import-istat.ts` non va usato sul catalogo adattato senza questa riconciliazione. L’importazione completa ISTAT resta rinviata; i badge sono già implementati.
+
+## Portabilità (Fase 5)
+Avvio locale, ambienti, GitHub, backend e collaudi aperti: vedi [docs/PORTABILITY.md](docs/PORTABILITY.md). Variabili: `.env.example`.

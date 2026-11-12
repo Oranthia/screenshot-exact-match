@@ -34,3 +34,8 @@
 - [x] Final validation V1.2: real two-test-photo deletion, alternative diary cover, empty-photo fallback, deletion error and cleanup verified; 64 tests passed; report and manual steps in final-validation-v12.md.
 - [ ] Final validation V1.2 tests 1, 3 and 4: fresh credential login, two-account isolation and three newly awarded badges in one operation — blocked by missing dedicated test accounts and credential login; existing-session concurrency tested separately, not counted as triple unlock.
 - [x] Fase 2: contratti di dominio, adapter reale, letture e scritture migrate (105 test).
+
+## Fase 5 — Portabilità
+- [x] Analisi stack, .env.example, test portabilità, docs/PORTABILITY.md
+- [ ] Collaudo live A–D — bloccato: servono due account di test dedicati
+- [ ] Collegamento GitHub — da fare dall'utente in Impostazioni → Git

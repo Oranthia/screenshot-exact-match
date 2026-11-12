@@ -59,3 +59,4 @@ use the editor.
 - Keep Home query failures separate from valid empty results and retain successful cache data on refresh failure. Why: missing reads must never appear as zero progress.
 - Use Radix modal lifecycle hooks to restore the actual opening control for multi-trigger dialogs; keep mobile sheets on CSS individual translate. Why: keyboard focus and Tailwind v4 positioning must remain consistent.
 - Substitute demo adapters/auth only via the opt-in loopback serve/development plugin; reject flagged builds and real-client imports. Why: published auth and data must stay unchanged.
+- Keep `.env.example` placeholder-only and portability checks in `src/test/portability.test.ts`. Why: versioned code must stay secret-free and runnable outside the editor.
