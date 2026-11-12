@@ -49,11 +49,11 @@ function AuthPage() {
         else setSent(true);
       }
     } catch (err) {
-      const msg = (err as Error).message;
+      const msg = err instanceof Error ? err.message : "";
       toast.error(
         msg.includes("Invalid login") ? "Email o password non corretti." :
         msg.includes("already registered") ? "Questa email è già registrata. Accedi." :
-        msg.includes("Email not confirmed") ? "Conferma prima la tua email tramite il link ricevuto." : msg,
+        msg.includes("Email not confirmed") ? "Conferma prima la tua email tramite il link ricevuto." : "Accesso non riuscito. Riprova tra poco.",
       );
     } finally {
       setBusy(false);
@@ -90,10 +90,10 @@ function AuthPage() {
           )}
           <p className="mt-5 text-center text-sm text-muted-foreground">
             {mode === "in" ? "Non hai un account?" : "Hai già un account?"}{" "}
-            <button type="button" className="font-semibold text-primary underline-offset-4 hover:underline"
+            <Button type="button" variant="link" className="px-1 font-semibold"
               onClick={() => { setMode(mode === "in" ? "up" : "in"); setSent(false); }}>
               {mode === "in" ? "Registrati" : "Accedi"}
-            </button>
+            </Button>
           </p>
         </div>
       </main>

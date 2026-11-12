@@ -65,7 +65,7 @@ function Diary({ userId }: { userId: string }) {
     <div role="group" aria-label="Visualizzazione diario" className="inline-flex rounded-lg border bg-card p-1">{([['album', 'Album', Images], ['timeline', 'Cronologia', CalendarDays]] as const).map(([value, label, Icon]) => <Button key={value} variant={mode === value ? "secondary" : "ghost"} size="sm" aria-pressed={mode === value} onClick={() => { setMode(value); try { localStorage.setItem(diaryModeKey(userId), value); } catch { /* Browsing preferences are optional. */ } void update({ page: 1 }); }}><Icon className="h-4 w-4" />{label}</Button>)}</div>
     {experiences.isPending && <p role="status">Caricamento esperienze…</p>}
     {experiences.isError && <div role="alert">Impossibile caricare le esperienze.<Button variant="outline" onClick={() => experiences.refetch()}>Riprova</Button></div>}
-    {all.length === 0 ? <section className="flex flex-col items-center gap-5 py-16 text-center">
+    {all.length === 0 && (experiences.isPending || experiences.isError) ? null : all.length === 0 ? <section className="flex flex-col items-center gap-5 py-16 text-center">
       <BookOpen className="h-14 w-14 text-primary" strokeWidth={1.25} />
       <p className="max-w-md text-muted-foreground">Il tuo diario è ancora vuoto. Inizia a esplorare l'Italia e raccogli i tuoi ricordi!</p>
       <Button asChild><Link to="/">Esplora le città</Link></Button>
