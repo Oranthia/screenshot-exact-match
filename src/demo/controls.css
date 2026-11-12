@@ -1,0 +1,5 @@
+/* This stylesheet is reachable only through the development-only adapter substitution. */
+body { padding-top: 52px; }
+.demo-controls { position: fixed; inset: 0 0 auto; z-index: 60; max-height: 50dvh; overflow-y: auto; }
+.demo-controls summary { min-height: 28px; }
+.demo-controls summary:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
