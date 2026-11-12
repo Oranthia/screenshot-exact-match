@@ -29,9 +29,9 @@ describe('accessible feedback and Radix modals with isolated fixtures', () => {
     mount(<ExperienceEditor userId="fixture-owner" city={city} item={item} visited />);
     fireEvent.change(screen.getByLabelText('Titolo dell’esperienza'), { target: { value: 'Modificato' } });
     fireEvent.click(screen.getByRole('button', { name: 'Salva esperienza' }));
-    expect(screen.getByRole('status')).toHaveTextContent('Salvataggio in corso');
+    expect(screen.getAllByRole('status').some(node => node.textContent?.includes('Salvataggio in corso'))).toBe(true);
     expect(screen.getByRole('button', { name: 'Salva esperienza' })).toBeDisabled();
-    finish(); await waitFor(() => expect(screen.getByRole('status')).toHaveTextContent('Salvato'));
+    finish(); await waitFor(() => expect(screen.getAllByRole('status').some(node => node.textContent === 'Salvato')).toBe(true));
     expect(mocks.update).toHaveBeenCalledWith('fixture-owner', 'fixture-exp', { title: 'Modificato', visit_date: null, notes: null });
   });
   it('announces save failure and leaves the draft available for retry', async () => {
