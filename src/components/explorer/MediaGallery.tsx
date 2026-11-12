@@ -8,7 +8,7 @@ import { mediaContentType, validateMedia } from "@/lib/media";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
-  Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle,
+  Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogDescription,
 } from "@/components/ui/dialog";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription,
@@ -27,6 +27,8 @@ export function MediaGallery({ userId, istat, experienceId }: { userId: string; 
   const [caption, setCaption] = useState("");
   const [deleting, setDeleting] = useState<Item | null>(null);
   const [coverPending, setCoverPending] = useState(false);
+  const openingButton = useRef<HTMLButtonElement | null>(null);
+  const restoreFocus = (event: Event) => { if (openingButton.current?.isConnected) { event.preventDefault(); openingButton.current.focus(); } };
   const refresh = () => {
     qc.invalidateQueries({ queryKey: ["media", userId] });
     qc.invalidateQueries({ queryKey: ["badges", userId] });
@@ -41,8 +43,8 @@ export function MediaGallery({ userId, istat, experienceId }: { userId: string; 
       try {
         await uploadMedia({ userId, istat, experienceId, file, kind: check.kind, contentType: mediaContentType(file) });
         toast.success(`${check.kind === "photo" ? "Foto" : "Video"} caricato`);
-      } catch (e) {
-        toast.error(`Caricamento di "${file.name}" non riuscito: ${(e as Error).message}`);
+      } catch {
+        toast.error(`Caricamento di "${file.name}" non riuscito. Riprova.`);
       } finally {
         setUploading((u) => u.filter((n) => n !== file.name));
       }
@@ -80,7 +82,7 @@ export function MediaGallery({ userId, istat, experienceId }: { userId: string; 
 
   return (
     <section className="space-y-4">
-      <div className="flex items-center justify-between gap-3">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h2 className="text-2xl font-semibold">Galleria</h2>
           <p className="text-xs text-muted-foreground">Foto JPEG, PNG, WebP fino a 10 MB · Video MP4, MOV fino a 50 MB</p>
@@ -95,6 +97,7 @@ export function MediaGallery({ userId, istat, experienceId }: { userId: string; 
           multiple
           accept="image/jpeg,image/png,image/webp,video/mp4,video/quicktime,.mov"
           className="hidden"
+          aria-label="Aggiungi foto o video"
           onChange={(e) => onFiles(e.target.files)}
         />
       </div>
@@ -111,7 +114,7 @@ export function MediaGallery({ userId, istat, experienceId }: { userId: string; 
         ))}
         {q.data?.map((m) => (
           <figure key={m.id} className="group relative overflow-hidden rounded-xl border bg-muted">
-            <Button variant="ghost" className="block aspect-square h-auto w-full rounded-none p-0" onClick={() => setViewing(m)} aria-label={`Apri ${m.file_name}`}>
+            <Button variant="ghost" className="block aspect-square h-auto w-full rounded-none p-0" onClick={event => { openingButton.current = event.currentTarget; setViewing(m); }} aria-label={`Apri ${m.file_name}`}>
               {m.media_type === "photo" ? (
                 <img src={m.url} alt={m.caption ?? m.file_name} className="h-full w-full object-cover" loading="lazy" />
               ) : (
@@ -123,14 +126,14 @@ export function MediaGallery({ userId, istat, experienceId }: { userId: string; 
                 </div>
               )}
             </Button>
-            {m.media_type === "photo" && <Button variant="secondary" size="sm" className="w-full rounded-none text-xs" disabled={coverPending || m.is_cover} onClick={() => setCover(m)}><Star className="h-3 w-3" />{m.is_cover ? "Copertina" : "Imposta come copertina"}</Button>}
+            {m.media_type === "photo" && <Button variant="secondary" size="sm" className="h-auto min-h-11 w-full whitespace-normal rounded-none px-2 text-xs" disabled={coverPending || m.is_cover} onClick={() => setCover(m)}><Star className="h-3 w-3" />{m.is_cover ? "Copertina" : "Imposta come copertina"}</Button>}
             {m.caption && <figcaption className="truncate px-2 py-1.5 text-xs">{m.caption}</figcaption>}
             <div className="absolute right-1.5 top-1.5 flex gap-1">
-              <Button size="icon" variant="secondary" className="h-7 w-7" aria-label="Modifica didascalia"
-                onClick={() => { setEditing(m); setCaption(m.caption ?? ""); }}>
+              <Button size="icon" variant="secondary" className="h-11 w-11" aria-label="Modifica didascalia" title="Modifica didascalia"
+                onClick={event => { openingButton.current = event.currentTarget; setEditing(m); setCaption(m.caption ?? ""); }}>
                 <Pencil className="h-3.5 w-3.5" />
               </Button>
-              <Button size="icon" variant="secondary" className="h-7 w-7" aria-label="Elimina" onClick={() => setDeleting(m)}>
+              <Button size="icon" variant="secondary" className="h-11 w-11" aria-label="Elimina" title="Elimina" onClick={event => { openingButton.current = event.currentTarget; setDeleting(m); }}>
                 <Trash2 className="h-3.5 w-3.5" />
               </Button>
             </div>
@@ -144,8 +147,8 @@ export function MediaGallery({ userId, istat, experienceId }: { userId: string; 
       )}
 
       <Dialog open={!!viewing} onOpenChange={(o) => !o && setViewing(null)}>
-        <DialogContent className="max-w-3xl p-2">
-          <DialogHeader className="sr-only"><DialogTitle>{viewing?.file_name}</DialogTitle></DialogHeader>
+        <DialogContent onCloseAutoFocus={restoreFocus} className="max-w-3xl p-2">
+          <DialogHeader className="sr-only"><DialogTitle>{viewing?.file_name}</DialogTitle><DialogDescription>Ricordo di viaggio</DialogDescription></DialogHeader>
           {viewing?.media_type === "photo" ? (
             <img src={viewing.url} alt={viewing.caption ?? viewing.file_name} className="max-h-[80vh] w-full rounded-lg object-contain" />
           ) : viewing ? (
@@ -156,9 +159,9 @@ export function MediaGallery({ userId, istat, experienceId }: { userId: string; 
       </Dialog>
 
       <Dialog open={!!editing} onOpenChange={(o) => !o && setEditing(null)}>
-        <DialogContent>
-          <DialogHeader><DialogTitle>Modifica didascalia</DialogTitle></DialogHeader>
-          <Input value={caption} onChange={(e) => setCaption(e.target.value)} placeholder="Una breve descrizione" maxLength={200} />
+        <DialogContent onCloseAutoFocus={restoreFocus}>
+          <DialogHeader><DialogTitle>Modifica didascalia</DialogTitle><DialogDescription>Descrizione della fotografia o del video.</DialogDescription></DialogHeader>
+          <Input aria-label="Didascalia" value={caption} onChange={(e) => setCaption(e.target.value)} placeholder="Una breve descrizione" maxLength={200} />
           <DialogFooter>
             <Button variant="ghost" onClick={() => setEditing(null)}>Annulla</Button>
             <Button onClick={saveCaption}>Salva</Button>
@@ -167,7 +170,7 @@ export function MediaGallery({ userId, istat, experienceId }: { userId: string; 
       </Dialog>
 
       <AlertDialog open={!!deleting} onOpenChange={(o) => !o && setDeleting(null)}>
-        <AlertDialogContent>
+        <AlertDialogContent onCloseAutoFocus={restoreFocus}>
           <AlertDialogHeader>
             <AlertDialogTitle>Eliminare questo elemento?</AlertDialogTitle>
             <AlertDialogDescription>Il file verrà eliminato definitivamente.</AlertDialogDescription>

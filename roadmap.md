@@ -1,4 +1,6 @@
 # Tasks
+- [x] Fase 3: Home states/retry, accessibility and responsive hardening, 119/119 tests, read-only live checks at five widths and documentation; backend/personal data unchanged. See docs/PHASE_3_REPORT.md.
+- [ ] Fase 3 live technical experience create/edit/delete — blocked by absence of an authorized dedicated test account; no writes on the main account.
 - [x] Frontend-first Phase 1: revised plan section; docs/FRONTEND_BASELINE.md; all 85 existing tests preserved plus 9 targeted fixture tests (94 passed, 0 failed/skipped); application/backend unchanged. Phase 2 not started; remaining unit/live gaps documented in baseline.
 - [x] Final verification V1.4: actual migration and preserved originals verified; report in final-validation-v14.md, all technical memories cleaned up.
 - [x] V1.4: additive experiences migration; 1 migrated experience, 2 original photos/files, dates/notes, covers and badge history preserved.

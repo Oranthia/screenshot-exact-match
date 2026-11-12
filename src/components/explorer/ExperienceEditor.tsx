@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useBlocker, useNavigate } from '@tanstack/react-router';
 import { useQueryClient } from '@tanstack/react-query';
 import { Loader2, Trash2 } from 'lucide-react';
@@ -16,6 +16,7 @@ export function ExperienceEditor({userId,city,item,visited}:{userId:string;city:
  const [title,setTitle]=useState(item?.title ?? ''); const [date,setDate]=useState(item?.visit_date ?? ''); const [notes,setNotes]=useState(item?.notes ?? '');
  const [saved,setSaved]=useState(JSON.stringify([title,date,notes])); const dirty=JSON.stringify([title,date,notes])!==saved;
  const [busy,setBusy]=useState(false); const [error,setError]=useState(''); const [status,setStatus]=useState(''); const [confirm,setConfirm]=useState(false); const [deleting,setDeleting]=useState(false);
+ const saveButton=useRef<HTMLButtonElement>(null); const deleteButton=useRef<HTMLButtonElement>(null);
  useBlocker({shouldBlockFn:()=>dirty && !window.confirm('Hai modifiche non salvate. Vuoi lasciare la pagina?'),enableBeforeUnload:dirty});
  async function save(confirmed=false) {
   if(!item && !visited && !confirmed){setConfirm(true);return;}
@@ -38,17 +39,17 @@ export function ExperienceEditor({userId,city,item,visited}:{userId:string;city:
   finally {setBusy(false);setDeleting(false);}
  }
  return <div className="space-y-8">
-  {item?.deleting ? <div role="alert" className="space-y-3"><p className="text-destructive">Eliminazione da completare. Questa esperienza non compare nel Diario.</p><Button variant="destructive" disabled={busy} onClick={()=>setDeleting(true)}>Completa eliminazione</Button></div> : <>
+  {item?.deleting ? <div role="alert" className="space-y-3"><p className="text-destructive">Eliminazione da completare. Questa esperienza non compare nel Diario.</p><Button ref={deleteButton} variant="destructive" disabled={busy} onClick={()=>setDeleting(true)}>Completa eliminazione</Button></div> : <>
    <form className="space-y-5" onSubmit={e=>{e.preventDefault();void save();}}>
     <label className="block space-y-2"><span className="text-sm font-semibold">Titolo dell’esperienza</span><Input aria-label="Titolo dell’esperienza" value={title} maxLength={200} placeholder="Ricordo di viaggio" onChange={e=>setTitle(e.target.value)} /></label>
     <label className="block space-y-2"><span className="text-sm font-semibold">Data della visita (facoltativa)</span><Input type="date" aria-label="Data della visita" value={date} onChange={e=>setDate(e.target.value)} /></label>
     <label className="block space-y-2"><span className="text-sm font-semibold">Note personali</span><Textarea aria-label="Note personali" value={notes} rows={6} maxLength={5000} onChange={e=>setNotes(e.target.value)} /></label>
-    <div className="flex flex-wrap items-center justify-between gap-3"><p role="status" className="text-sm text-muted-foreground">{status || (dirty ? 'Modifiche non salvate' : '')}</p><Button type="submit" disabled={busy || (!!item && !dirty)}>{busy && <Loader2 className="h-4 w-4 animate-spin" />}{item ? 'Salva esperienza' : 'Crea esperienza'}</Button></div>
+    <div className="flex flex-wrap items-center justify-between gap-3"><p role="status" className="text-sm text-muted-foreground">{status || (dirty ? 'Modifiche non salvate' : '')}</p><Button ref={saveButton} type="submit" disabled={busy || (!!item && !dirty)}>{busy && <Loader2 className="h-4 w-4 animate-spin" />}{item ? 'Salva esperienza' : 'Crea esperienza'}</Button></div>
    </form>
-   {item && <><MediaGallery userId={userId} istat={city.istat_code} experienceId={item.id} /><Button variant="ghost" className="text-destructive" disabled={busy} onClick={()=>setDeleting(true)}><Trash2 />Elimina esperienza</Button></>}
+   {item && <><MediaGallery userId={userId} istat={city.istat_code} experienceId={item.id} /><Button ref={deleteButton} variant="ghost" className="text-destructive" disabled={busy} onClick={()=>setDeleting(true)}><Trash2 />Elimina esperienza</Button></>}
   </>}
   {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
-  <AlertDialog open={confirm} onOpenChange={setConfirm}><AlertDialogContent><AlertDialogHeader><AlertDialogTitle>Segnare {city.name} come visitata?</AlertDialogTitle><AlertDialogDescription>Creando questa esperienza, la città sarà anche segnata come visitata.</AlertDialogDescription></AlertDialogHeader><AlertDialogFooter><AlertDialogCancel>Annulla</AlertDialogCancel><AlertDialogAction disabled={busy} onClick={()=>void save(true)}>Conferma e salva</AlertDialogAction></AlertDialogFooter></AlertDialogContent></AlertDialog>
-  <AlertDialog open={deleting} onOpenChange={setDeleting}><AlertDialogContent><AlertDialogHeader><AlertDialogTitle>Eliminare questa esperienza?</AlertDialogTitle><AlertDialogDescription>Note, fotografie e video di questa esperienza saranno eliminati definitivamente. Le altre esperienze e lo stato della città resteranno invariati.</AlertDialogDescription></AlertDialogHeader><AlertDialogFooter><AlertDialogCancel>Annulla</AlertDialogCancel><AlertDialogAction disabled={busy} onClick={()=>void remove()}>Elimina esperienza e media</AlertDialogAction></AlertDialogFooter></AlertDialogContent></AlertDialog>
+  <AlertDialog open={confirm} onOpenChange={setConfirm}><AlertDialogContent onCloseAutoFocus={event=>{if(saveButton.current?.isConnected){event.preventDefault();saveButton.current.focus();}}}><AlertDialogHeader><AlertDialogTitle>Segnare {city.name} come visitata?</AlertDialogTitle><AlertDialogDescription>Creando questa esperienza, la città sarà anche segnata come visitata.</AlertDialogDescription></AlertDialogHeader><AlertDialogFooter><AlertDialogCancel>Annulla</AlertDialogCancel><AlertDialogAction disabled={busy} onClick={()=>void save(true)}>Conferma e salva</AlertDialogAction></AlertDialogFooter></AlertDialogContent></AlertDialog>
+  <AlertDialog open={deleting} onOpenChange={setDeleting}><AlertDialogContent onCloseAutoFocus={event=>{if(deleteButton.current?.isConnected){event.preventDefault();deleteButton.current.focus();}}}><AlertDialogHeader><AlertDialogTitle>Eliminare questa esperienza?</AlertDialogTitle><AlertDialogDescription>Note, fotografie e video di questa esperienza saranno eliminati definitivamente. Le altre esperienze e lo stato della città resteranno invariati.</AlertDialogDescription></AlertDialogHeader><AlertDialogFooter><AlertDialogCancel>Annulla</AlertDialogCancel><AlertDialogAction disabled={busy} onClick={()=>void remove()}>Elimina esperienza e media</AlertDialogAction></AlertDialogFooter></AlertDialogContent></AlertDialog>
  </div>;
 }

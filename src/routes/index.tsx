@@ -23,7 +23,7 @@ export const Route = createFileRoute("/")({
 function Index() {
   const { session, loading } = useAuth();
   return (
-    <div className="min-h-screen">
+    <div className="min-h-dvh">
       <AppHeader />
       <main className="mx-auto max-w-5xl px-4 py-6 sm:py-10">
         {loading ? <Skeleton className="h-64 rounded-3xl" /> : session ? <Dashboard userId={session.user.id} /> : <Landing />}
@@ -36,7 +36,7 @@ function Landing() {
   const features = [
     { icon: Stamp, title: "Timbra le città", text: "Ogni città visitata sblocca il suo stemma a colori." },
     { icon: MapPinned, title: "20 regioni", text: "Segui i progressi regione per regione, fino al completamento." },
-    { icon: Camera, title: "I tuoi ricordi", text: "Note, data della visita, foto e brevi video, tutto privato." },
+    { icon: Camera, title: "I tuoi ricordi", text: "Più esperienze per città, con date, note, foto e brevi video, tutto privato." },
   ];
   return (
     <div className="space-y-10">

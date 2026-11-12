@@ -10,6 +10,7 @@ import { experiencesQuery } from "@/lib/experience-queries";
 import { diaryPhotosQuery } from "@/lib/diary-photos";
 import { DiaryCover } from "./DiaryCover";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ProgressBar, formatPercent } from "./ProgressBar";
 import { RegionCard } from "./RegionCard";
@@ -37,7 +38,9 @@ export function Dashboard({ userId }: { userId: string }) {
     [geo.data, visitedSet],
   );
 
-  if (geo.isError || visits.isError) return <p className="p-8 text-center text-destructive">Impossibile caricare i dati. Riprova più tardi.</p>;
+  const primaryError = geo.isError || visits.isError;
+  const retryPrimary = () => { void geo.refetch(); void visits.refetch(); };
+  if (primaryError && (!geo.data || !visits.data)) return <div role="alert" className="space-y-3 p-8 text-center"><h1 className="text-3xl font-semibold">Il passaporto non si è caricato</h1><p className="text-sm text-destructive">Impossibile caricare statistiche e regioni. I tuoi ricordi sono al sicuro.</p><Button variant="outline" disabled={geo.isFetching || visits.isFetching} onClick={retryPrimary}>Riprova</Button></div>;
   if (!geo.data || !stats || !visits.data) return <DashboardSkeleton />;
   const g = geo.data;
 
@@ -46,6 +49,7 @@ export function Dashboard({ userId }: { userId: string }) {
 
   return (
     <div className="space-y-7 sm:space-y-9">
+      {primaryError && <div role="alert" className="flex flex-wrap items-center gap-3 text-sm text-destructive">Impossibile aggiornare le statistiche. Sono mostrati gli ultimi dati disponibili.<Button variant="outline" disabled={geo.isFetching || visits.isFetching} onClick={retryPrimary}>Riprova</Button></div>}
       <section className="bg-hero relative overflow-hidden rounded-3xl p-5 text-primary-foreground shadow-lift sm:p-8">
         <div aria-hidden className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full border border-gold/30" />
         <div aria-hidden className="pointer-events-none absolute -right-6 -top-6 h-36 w-36 rounded-full border border-gold/20" />
@@ -81,7 +85,9 @@ export function Dashboard({ userId }: { userId: string }) {
 
       <section className="space-y-3">
         <h2 className="text-2xl font-semibold">Ultime città visitate</h2>
-        {recentEntries.length === 0 ? (
+        {experiences.isError && <div role="alert" className="flex flex-wrap items-center gap-3 text-sm text-destructive">Impossibile caricare le esperienze.<Button variant="outline" disabled={experiences.isFetching} onClick={() => void experiences.refetch()}>Riprova</Button></div>}
+        {photos.isError && recentEntries.length > 0 && <div role="alert" className="flex flex-wrap items-center gap-3 text-sm text-destructive">Impossibile caricare le fotografie.<Button variant="outline" disabled={photos.isFetching} onClick={() => void photos.refetch()}>Riprova</Button></div>}
+        {experiences.isPending ? <div role="status" aria-label="Caricamento ultime città" className="grid gap-2 sm:grid-cols-2"><Skeleton className="h-24 rounded-lg" /><Skeleton className="h-24 rounded-lg" /></div> : recentEntries.length === 0 && !experiences.isError ? (
           <p className="rounded-2xl border border-dashed p-6 text-center text-sm text-muted-foreground">
             Il tuo passaporto è ancora vuoto. Cerca una città e segnala come visitata.
           </p>
@@ -114,7 +120,7 @@ export function Dashboard({ userId }: { userId: string }) {
 
 function DashboardSkeleton() {
   return (
-    <div className="space-y-6">
+    <div role="status" aria-label="Caricamento del passaporto" className="space-y-6">
       <Skeleton className="h-64 rounded-3xl" />
       <Skeleton className="h-12 rounded-2xl" />
       <div className="grid gap-3 sm:grid-cols-3">{Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-28 rounded-2xl" />)}</div>

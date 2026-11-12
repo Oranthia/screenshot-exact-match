@@ -95,3 +95,12 @@ Tutte: catalogo, visite, esperienze, media/anteprime/diario, badge, sessione; ON
 - Componenti con stato/mutazioni (MediaGallery, ExperienceEditor, FeaturedSlots) chiamano l’adapter direttamente: si possono estrarre in hook dedicati se servirà.
 - Le pagine usano ancora i campi snake_case dei contratti, scelti per non toccare l’UI.
 - Il gate `_authenticated/route.tsx` resta sul client generato perché gestito dalla piattaforma.
+
+## Fase 3 — Robustezza e accessibilità
+Baseline iniziale confermata: 105/105. Suite finale: **119/119**, 22 file, 14 nuove prove con sole fixture; 105 test precedenti conservati. Architettura, adapter, database, catalogo e regole invariati.
+
+Home ora distingue loading/vuoto/errore/successo, propone Riprova, mantiene dati disponibili dopo errore di refresh ed esplicita errori esperienze/foto senza inventare zeri. Diario non presenta loading/errore esperienze come vuoto. Errori accesso/upload sconosciuti non mostrano dettagli del servizio. Aggiornati README e testo ricordi multipli.
+
+Etichette didascalia/progressi/chiusura, descrizioni modali, focus visibile e ritorno al controllo iniziale, target mobile 44px, galleria multilinea, dialoghi scorrevoli e movimento ridotto. Posizionamento della vetrina mobile corretto per translate Tailwind v4. Nessun refactor esteso.
+
+Controlli live in sola lettura sulle quattro sezioni e città a 320/390/430/768/1280px: nessun overflow, main unico, zero pulsanti senza nome, zero errori runtime. Esperienza/galleria a 320px, Escape/Tab e ritorno focus, preferenza Cronologia dopo reload, errore Home controllato e recupero Riprova; conferma OFF annullata senza creazione. Scritture reali tecniche **NON ESEGUITE**: manca un account di test dedicato autorizzato. Restano i limiti live di sicurezza/storage e dispositivi fisici; vedi [report Fase 3](PHASE_3_REPORT.md) per dettaglio, file modificati e limiti.

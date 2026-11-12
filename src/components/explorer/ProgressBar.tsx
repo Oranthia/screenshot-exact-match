@@ -5,6 +5,7 @@ export function ProgressBar({ value, className, tone = "forest" }: { value: numb
   return (
     <div
       role="progressbar"
+      aria-label="Progresso"
       aria-valuenow={v}
       aria-valuemin={0}
       aria-valuemax={100}
