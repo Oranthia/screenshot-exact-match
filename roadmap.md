@@ -12,7 +12,8 @@
 - [x] V1.4 live two-user isolation — owner reads, cross-owner rejected reads/writes/deletes and private storage tested both ways in final validation.
 - [x] V1.3 Diary V2 phase 1: Album/Timeline views, real-date groups and year filter, identity-scoped local preference and shared existing queries; 69 tests passed, real-owner photo/filter/navigation/persistence checks on 320/390/1280px, isolated undated/year-group fixture verified; no schema, policy or visit changes.
 - [x] Implement 12 permanent badges, protected automatic/retroactive awards, private three-slot showcase, details, Home/Profile summaries and notifications; 60 tests passed, real-account retroactive city/photo awards, showcase add/remove/logout persistence, rejected invalid writes and ON/OFF history verified. See badge-audit.md.
-- [ ] Complete live badge checks for five cities with media, three-slot replacement/reordering and two-user isolation — needs suitable authorized accounts and earned milestones; threshold/selection rules are unit-tested, protections checked live.
+- [x] Live badge five-city media milestone and two-user isolation — verified in final validation.
+- [ ] Historical three-slot replacement/reordering live check — not part of this final test request; remains unverified.
 - [x] Complete V1.1 Diary sort directions, active-filter indicator/reset, photo-and-crest cards and legible national percentage; all 37 tests passed; real-account desktop/390px/320px checks passed with no runtime errors. Real photo-cover visual verification awaits a personal photograph in the diary.
 - [x] Refine Home, Diary, region cards and Profile incrementally; 19 tests passed; real account checks on mobile/desktop verified filters, 20 region links, display-name persistence and logout with no runtime errors.
 - [x] Add shared mobile/desktop navigation and Diary, preparatory Badges and real Profile pages without changing visit logic or database.
@@ -26,7 +27,8 @@
 - [x] Update visit state immediately in shared lists, with rollback on failure.
 - [x] Provide a validated ISTAT-to-image bulk association procedure without replacements.
 - [x] Run targeted tests and verify public pages (17 tests passed; no browser runtime errors).
-- [ ] Finish prior audit of photo/video persistence after logout and cross-user access — visits now verified with the owner's account; remaining checks require suitable media and a second authorized account.
+- [x] Photo persistence after logout and cross-user access — verified both ways in final validation.
+- [ ] Historical video persistence check — requires technical video; not part of this photo-only final request.
 - [x] Full ISTAT import deferred by the user's new reduced-city-catalog brief.
 - [x] V1.2 P0: diagnose and repair real diary covers and loading/error states.
 - [x] V1.2 P1: compact badge grid, earned filters and direct three-slot showcase.
