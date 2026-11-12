@@ -5,7 +5,8 @@ import { Search } from "lucide-react";
 import { geoQuery, visitsQuery } from "@/lib/queries";
 import { computeProgress } from "@/lib/progress";
 import { orderRegions } from "@/lib/region-order";
-import { diaryEntries } from "@/lib/diary";
+import { experienceAlbum } from "@/lib/experiences";
+import { experiencesQuery } from "@/lib/experience-queries";
 import { diaryPhotosQuery } from "@/lib/diary-photos";
 import { DiaryCover } from "./DiaryCover";
 import { Input } from "@/components/ui/input";
@@ -21,8 +22,9 @@ const norm = (s: string) => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").t
 export function Dashboard({ userId }: { userId: string }) {
   const geo = useQuery(geoQuery);
   const visits = useQuery(visitsQuery(userId));
+  const experiences = useQuery(experiencesQuery(userId));
   const [term, setTerm] = useState("");
-  const recentEntries = diaryEntries(geo.data?.municipalities ?? [], visits.data ?? [], { q: "", region: "", sort: "date" }).slice(0, 5);
+  const recentEntries = experienceAlbum(geo.data?.municipalities ?? [], visits.data ?? [], experiences.data ?? [], { q: "", region: "", sort: "date" }).slice(0, 5);
   const photos = useQuery(diaryPhotosQuery(userId, recentEntries.map(e => e.city.istat_code)));
   const photoByCity = new Map(photos.data?.map(p => [p.istat_code, p]));
 
