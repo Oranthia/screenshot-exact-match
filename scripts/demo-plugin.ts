@@ -35,7 +35,7 @@ export function localDemoPlugin(): Plugin {
       if (!enabled) return;
       const path = id.split('?')[0]?.replaceAll('\\', '/') ?? '';
       if (path.endsWith('/src/routes/_authenticated/route.tsx')) return { code: `import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'; import { getSession } from '@/data/backend'; export const Route = createFileRoute('/_authenticated')({ssr:false,beforeLoad:async({location})=>{if(!await getSession())throw redirect({to:'/auth',search:{redirect:location.href}});},component:()=> <Outlet/>});`, map: null };
-      if (path.endsWith('/src/start.ts')) return { code: code.replace('import { attachSupabaseAuth } from "@/integrations/supabase/auth-attacher";', '').replace('functionMiddleware: [attachSupabaseAuth]', 'functionMiddleware: []'), map: null };
+      if (path.endsWith('/src/start.ts')) return { code: code.replace(/import\s*\{\s*attachSupabaseAuth\s*\}\s*from\s*["']@\/integrations\/supabase\/auth-attacher["'];?/, '').replace(/\battachSupabaseAuth\b/g, 'undefined').replace(/functionMiddleware:\s*\[\s*undefined\s*\]/g, 'functionMiddleware: []'), map: null };
       if (path.endsWith('/src/demo/controls.tsx')) return { code: code.replace("from '@/components/ui/sonner'", "from '../components/ui/sonner'"), map: null };
       if (path.endsWith('/src/routes/__root.tsx')) return { code: code.replace('<NavigationShell />', '<Toaster position="top-center" /><NavigationShell />').replace('<Toaster position="top-center" />\n      </AuthProvider>', '</AuthProvider>'), map: null };
       if (path.includes('/src/data/backend/') || path.includes('/src/integrations/supabase/')) throw new Error(`Real backend module blocked in local demo: ${path}`);
