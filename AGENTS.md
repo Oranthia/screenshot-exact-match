@@ -58,3 +58,4 @@ use the editor.
 - UI, hooks and query modules access data only through `src/data/backend` and type data with `src/data/contracts.ts`; only the adapter, generated integration and managed auth gate import the database client (enforced by adapter.test.ts). Why: the backend can later be replaced without touching screens.
 - Keep Home query failures separate from valid empty results and retain successful cache data on refresh failure. Why: missing reads must never appear as zero progress.
 - Use Radix modal lifecycle hooks to restore the actual opening control for multi-trigger dialogs; keep mobile sheets on CSS individual translate. Why: keyboard focus and Tailwind v4 positioning must remain consistent.
+- Substitute demo adapters/auth only via the opt-in loopback serve/development plugin; reject flagged builds and real-client imports. Why: published auth and data must stay unchanged.

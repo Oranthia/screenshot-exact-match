@@ -1,0 +1,50 @@
+[
+  {
+    "name": "Torino",
+    "region_code": "01",
+    "province_name": "Torino",
+    "province_code": "001",
+    "abbreviation": "TO",
+    "source_istat": "001272"
+  },
+  {
+    "name": "Novara",
+    "region_code": "01",
+    "province_name": "Novara",
+    "province_code": "003",
+    "abbreviation": "NO",
+    "source_istat": "003106"
+  },
+  {
+    "name": "Venezia",
+    "region_code": "05",
+    "province_name": "Venezia",
+    "province_code": "027",
+    "abbreviation": "VE",
+    "source_istat": "027042"
+  },
+  {
+    "name": "Verona",
+    "region_code": "05",
+    "province_name": "Verona",
+    "province_code": "023",
+    "abbreviation": "VR",
+    "source_istat": "023091"
+  },
+  {
+    "name": "Firenze",
+    "region_code": "09",
+    "province_name": "Firenze",
+    "province_code": "048",
+    "abbreviation": "FI",
+    "source_istat": "048017"
+  },
+  {
+    "name": "Siena",
+    "region_code": "09",
+    "province_name": "Siena",
+    "province_code": "052",
+    "abbreviation": "SI",
+    "source_istat": "052032"
+  }
+]
